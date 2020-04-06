@@ -1,45 +1,48 @@
 enum ActivityType {
   Delivery = 0,
   Shopping,
-  Help,
+  HomeCare,
   Other,
 }
+
 enum ActivityStatus {
-  ReadyForAssigment = 0,
+  ReadyForAssignment = 0,
   Assigned,
   InProgress,
   Canceled,
   Done,
-  Review,
   Archived,
 }
+
 enum EmployeeType {
-  Volunteer = 0,
+  Admin = 0,
   Operator,
-  Admin,
+  Volunteer,
 }
 
-interface IactivityChange {
-  id: string;
+type Id = string;
+type EmployeeId = Id;
+
+interface IActivityHistory {
+  id: Id;
   time: number;
   status: ActivityType;
 }
 
-type statusHistory = IactivityChange[];
-
-interface IActivity {
-  id: string;
+export interface IActivity {
+  id: Id;
   type: ActivityType;
   description: string;
-  status: ActivityStatus;
-  assignedTo: string;
   address: string;
   estimation: number;
-  changes: statusHistory;
+  operatorId: EmployeeId; // who created
+  assignee: string; // who is assignee
+  status: ActivityStatus;
+  history: IActivityHistory[];
 }
 
 interface IEmployee {
-  id: string;
+  id: EmployeeId;
   type: EmployeeType;
   email: string;
   password: string;
