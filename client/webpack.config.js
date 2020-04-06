@@ -6,13 +6,13 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
   devServer: {
-    contentBase: path.join(__dirname, 'public'),
+    contentBase: path.join(__dirname, 'build'),
     compress: true,
     port: 3000,
   },
   entry: path.resolve(__dirname, 'src', 'index.tsx'),
   output: {
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
   },
   module: {
