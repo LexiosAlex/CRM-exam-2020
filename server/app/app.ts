@@ -1,4 +1,6 @@
 import express from 'express';
+import path from 'path';
+
 import './env/env';
 
 import * as firebase from 'firebase/app';
@@ -17,8 +19,10 @@ firebase.initializeApp(firebaseConfig);
 
 const app: express.Application = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.use('/static', express.static(path.join(__dirname, '../../client/build')));
+
+app.get('/', function (req, res) {
+  res.send('hello world');
 });
 
 app.listen(3050, () => {
