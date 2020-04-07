@@ -18,3 +18,9 @@ export const database = firebase.database();
 
 export const employeeRef = database.ref('employee');
 export const activitiesRef = database.ref('activities');
+
+export const DB_RESET_CONFIG = {
+  OPERATORS: 2,
+  VOLUNTEERS: 5,
+  ACTIVITIES: 15,
+};

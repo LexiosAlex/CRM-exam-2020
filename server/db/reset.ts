@@ -1,6 +1,6 @@
 import { ActivityType, ActivityStatus, EmployeeType, IActivity, IEmployee } from 'common/index';
 
-import { employeeRef, activitiesRef } from './config';
+import { employeeRef, activitiesRef, DB_RESET_CONFIG } from './config';
 
 function randomEnum<T>(anEnum: T): T[keyof T] {
   const enumValues = (Object.keys(anEnum)
@@ -16,8 +16,8 @@ const generateEmployee = (type: EmployeeType, count: number): IEmployee[] => {
   for (let i = 0; i < count; i++) {
     employeeList.push({
       type: type,
-      email: `email${Date.now()}`,
-      password: `password${Date.now()}`,
+      email: `employee${i}@crm`,
+      password: `crm${i}`,
     });
   }
   return employeeList;
@@ -28,11 +28,11 @@ const generateActivities = (count: number): IActivity[] => {
   for (let i = 0; i < count; i++) {
     const activity = {
       type: randomEnum(ActivityType),
-      description: `description${Math.random() * 100 * i}`,
-      address: `address${Math.random() * 100 * i}`,
-      estimation: Date.now() + Math.floor(Math.random() * 100),
-      operatorId: 'operatorId',
-      assignee: 'string',
+      description: `Activity description ${i}`,
+      address: `Activity address ${i}`,
+      estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
+      operatorId: 'operator id',
+      assignee: 'volunteer id',
       status: randomEnum(ActivityStatus),
       history: [],
     };
@@ -41,7 +41,10 @@ const generateActivities = (count: number): IActivity[] => {
   return activitiesList;
 };
 
+type DBConfig = { [key: string]: number };
+
 class DB {
+  config: DBConfig;
   total: number;
   totalDone: number;
 
@@ -55,8 +58,9 @@ class DB {
     }
   };
 
-  constructor(total: number) {
-    this.total = total;
+  constructor(config: DBConfig) {
+    this.config = config;
+    this.total = Object.keys(config).reduce((acc: number, key: string) => acc + config[key], 0);
     this.totalDone = 0;
 
     activitiesRef.set({});
@@ -93,17 +97,14 @@ class DB {
       )
     );
   }
+
+  generateData() {
+    this.writeUsersData(EmployeeType.Operator, this.config.OPERATORS);
+    this.writeUsersData(EmployeeType.Volunteer, this.config.VOLUNTEERS);
+    this.writeActivities(this.config.ACTIVITIES);
+  }
 }
 
-const COUNT: { [key: string]: number } = {
-  OPERATORS: 2,
-  VOLUNTEERS: 5,
-  ACTIVITIES: 15,
-};
+const db = new DB(DB_RESET_CONFIG);
 
-const TOTAL: number = Object.keys(COUNT).reduce((acc: number, key: string) => acc + COUNT[key], 0);
-
-const db = new DB(TOTAL);
-db.writeUsersData(EmployeeType.Operator, COUNT.OPERATORS);
-db.writeUsersData(EmployeeType.Volunteer, COUNT.VOLUNTEERS);
-db.writeActivities(COUNT.ACTIVITIES);
+db.generateData();
