@@ -21,28 +21,28 @@ export enum EmployeeType {
 }
 
 type Id = string;
-type EmployeeId = Id;
+export type EmployeeId = Id;
 
 interface IActivityHistory {
-  // id: Id;
+  id?: Id;
   time: number;
   status: ActivityType;
 }
 
 export interface IActivity {
-  // id: Id;
+  id?: Id;
   type: ActivityType;
   description: string;
   address: string;
   estimation: number;
-  operatorId: EmployeeId; // who created
-  assignee: string; // who is assignee
+  operatorId?: EmployeeId; // who created
+  assignee?: string; // who is assignee
   status: ActivityStatus;
   history: IActivityHistory[];
 }
 
 export interface IEmployee {
-  // id: EmployeeId;
+  id?: EmployeeId;
   type: EmployeeType;
   email: string;
   password: string;
