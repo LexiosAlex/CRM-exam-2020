@@ -1,7 +1,6 @@
+import './env/env';
 import express from 'express';
 import path from 'path';
-
-import './env/env';
 
 const app: express.Application = express();
 
