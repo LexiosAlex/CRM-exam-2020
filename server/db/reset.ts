@@ -1,65 +1,6 @@
+import { ActivityType, ActivityStatus, EmployeeType, IActivity, IEmployee } from 'common/index';
+
 import { employeeRef, activitiesRef } from './config';
-
-// import {
-//   ActivityStatus,
-//   ActivityType,
-//   EmployeeType,
-//   IActivity,
-//   IEmployee,
-// } from "common/common";
-//path doesn't work
-
-// import { ActivityType } from '../../common/common';
-
-export enum ActivityType {
-  Delivery = 0,
-  Shopping,
-  HomeCare,
-  Other,
-}
-
-export enum ActivityStatus {
-  ReadyForAssignment = 0,
-  Assigned,
-  InProgress,
-  Canceled,
-  Done,
-  Archived,
-}
-
-export enum EmployeeType {
-  Admin = 0,
-  Operator,
-  Volunteer,
-}
-
-type Id = string;
-type EmployeeId = Id;
-
-interface IActivityHistory {
-  // id: Id;
-  time: number;
-  status: ActivityType;
-}
-
-export interface IActivity {
-  // id: Id;
-  type: ActivityType;
-  description: string;
-  address: string;
-  estimation: number;
-  operatorId: EmployeeId; // who created
-  assignee: string; // who is assignee
-  status: ActivityStatus;
-  history: IActivityHistory[];
-}
-
-interface IEmployee {
-  // id: EmployeeId;
-  type: EmployeeType;
-  email: string;
-  password: string;
-}
 
 function randomEnum<T>(anEnum: T): T[keyof T] {
   const enumValues = (Object.keys(anEnum)

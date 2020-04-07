@@ -21,5 +21,5 @@
       "common/*": ["../common/*"]
     }
   },
-  "include": ["src", "custom.d.ts"]
+  "include": ["src", "custom.ts"]
 }

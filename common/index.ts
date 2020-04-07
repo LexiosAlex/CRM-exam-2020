@@ -41,7 +41,7 @@ export interface IActivity {
   history: IActivityHistory[];
 }
 
-interface IEmployee {
+export interface IEmployee {
   // id: EmployeeId;
   type: EmployeeType;
   email: string;
