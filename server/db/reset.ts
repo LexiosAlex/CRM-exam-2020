@@ -1,6 +1,13 @@
-import { ActivityType, ActivityStatus, EmployeeType, IActivity, IEmployee } from 'common/index';
+import {
+  ActivityStatus,
+  ActivityType,
+  EmployeeId,
+  EmployeeType,
+  IActivity,
+  IEmployee,
+} from 'common/index';
 
-import { employeeRef, activitiesRef, DB_RESET_CONFIG } from './config';
+import { activitiesRef, DB_RESET_CONFIG, employeeRef } from './config';
 
 function randomEnum<T>(anEnum: T): T[keyof T] {
   const enumValues = (Object.keys(anEnum)
@@ -10,6 +17,19 @@ function randomEnum<T>(anEnum: T): T[keyof T] {
   const randomEnumValue = enumValues[randomIndex];
   return randomEnumValue;
 }
+
+const getEmployeesIds = (employeeType: EmployeeType): EmployeeId[] => {
+  const employeesIds: EmployeeId[] = [];
+  employeeRef
+    .orderByChild('type')
+    .equalTo(employeeType)
+    .on('child_added', (snapshot) => {
+      snapshot.key != null && employeesIds.push(snapshot.key);
+      // Не уверен по поводу данного решения, но тс пишет, что потенцеальное значение null
+    });
+
+  return employeesIds;
+};
 
 const generateEmployee = (type: EmployeeType, count: number): IEmployee[] => {
   const employeeList: IEmployee[] = [];
@@ -25,14 +45,17 @@ const generateEmployee = (type: EmployeeType, count: number): IEmployee[] => {
 
 const generateActivities = (count: number): IActivity[] => {
   const activitiesList: IActivity[] = [];
+  const volunteersIds = getEmployeesIds(EmployeeType.Volunteer);
+  const operatorsIds = getEmployeesIds(EmployeeType.Operator);
+
   for (let i = 0; i < count; i++) {
     const activity = {
       type: randomEnum(ActivityType),
       description: `Activity description ${i}`,
       address: `Activity address ${i}`,
       estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
-      operatorId: 'operator id',
-      assignee: 'volunteer id',
+      operatorId: operatorsIds[Math.floor(Math.random() * (operatorsIds.length - 1))],
+      assignee: volunteersIds[Math.floor(Math.random() * (volunteersIds.length - 1))],
       status: randomEnum(ActivityStatus),
       history: [],
     };
