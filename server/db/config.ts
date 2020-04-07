@@ -1,5 +1,7 @@
-import '../env/env';
 import firebase from 'firebase';
+
+import '../app/env/env';
+
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: `${process.env.FIREBASE_PROJECT_ID}.firebaseapp.com`,
