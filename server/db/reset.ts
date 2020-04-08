@@ -35,60 +35,57 @@ const getEmployeesIds = (employeeType: EmployeeType): EmployeeId[] => {
 type DBConfig = { [key: string]: number };
 
 class DB {
-  config: DBConfig;
-  total: number;
-  totalDone: number;
+  readonly config: DBConfig;
+  readonly total: number;
 
-  done = (error: Error | null) => {
-    if (error) {
-      console.error(error);
-      process.exit(1);
-    }
-    if (++this.totalDone === this.total) {
+  private _totalDone: number;
+
+  set totalDone(value: number) {
+    this._totalDone = value;
+    if (value === this.total) {
       process.exit(0);
     }
-  };
+  }
+  get totalDone(): number {
+    return this._totalDone;
+  }
 
   constructor(config: DBConfig) {
     this.config = config;
     this.total = Object.keys(config).reduce((acc: number, key: string) => acc + config[key], 0);
-    this.totalDone = 0;
+    this._totalDone = 0;
 
     ref.activities.set({});
     ref.employes.set({});
   }
 
   writeUsersData(type: EmployeeType, total: number) {
-    Array.from({ length: total }).forEach((j, i) =>
-      ref.employes.push().set(
-        {
-          type,
-          email: `employee${i}@crm`,
-          password: `crm${i}`,
-        },
-        this.done
-      )
-    );
+    Array.from({ length: total }).forEach(async (j, i) => {
+      await ref.employes.push().set({
+        type,
+        email: `employee${i}@crm`,
+        password: `crm${i}`,
+      });
+      this.totalDone++;
+    });
   }
 
   writeActivities(total: number) {
     const volunteersIds = getEmployeesIds(EmployeeType.Volunteer);
     const operatorsIds = getEmployeesIds(EmployeeType.Operator);
-    Array.from({ length: total }).forEach((j, i) =>
-      ref.activities.push().set(
-        {
-          type: randomEnumValue(ActivityType),
-          description: `Activity description ${i}`,
-          address: `Activity address ${i}`,
-          estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
-          operatorId: operatorsIds[Math.floor(Math.random() * (operatorsIds.length - 1))],
-          assignee: volunteersIds[Math.floor(Math.random() * (volunteersIds.length - 1))],
-          status: randomEnumValue(ActivityStatus),
-          history: [],
-        },
-        this.done
-      )
-    );
+    Array.from({ length: total }).forEach(async (j, i) => {
+      await ref.activities.push().set({
+        type: randomEnumValue(ActivityType),
+        description: `Activity description ${i}`,
+        address: `Activity address ${i}`,
+        estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
+        operatorId: operatorsIds[Math.floor(Math.random() * (operatorsIds.length - 1))],
+        assignee: volunteersIds[Math.floor(Math.random() * (volunteersIds.length - 1))],
+        status: randomEnumValue(ActivityStatus),
+        history: [],
+      });
+      this.totalDone++;
+    });
   }
 
   generateData() {
