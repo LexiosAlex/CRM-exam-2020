@@ -10,7 +10,7 @@ import {
 import { DB_RESET_CONFIG } from './config';
 import { ref } from './connection';
 
-function randomEnumValue<T>(anEnum: T): T[keyof T] {
+function getRandomEnumValue<T>(anEnum: T): T[keyof T] {
   const enumValues = (Object.keys(anEnum)
     .map((n) => Number.parseInt(n))
     .filter((n) => !Number.isNaN(n)) as unknown) as T[keyof T][];
@@ -19,82 +19,89 @@ function randomEnumValue<T>(anEnum: T): T[keyof T] {
   return randomEnumValue;
 }
 
-const getEmployeesIds = (employeeType: EmployeeType): EmployeeId[] => {
-  const employeesIds: EmployeeId[] = [];
-  ref.employes
-    .orderByChild('type')
-    .equalTo(employeeType)
-    .on('child_added', (snapshot) => {
-      snapshot.key != null && employeesIds.push(snapshot.key);
-      // Не уверен по поводу данного решения, но тс пишет, что потенцеальное значение null
-    });
-
-  return employeesIds;
-};
+function getRandomArrayValue(array: any[]) {
+  return array[Math.floor(Math.random() * (array.length - 1))];
+}
 
 type DBConfig = { [key: string]: number };
 
+type MappedEnum<T extends PropertyKey> = {
+  [key in T]: string[];
+};
+
 class DB {
   readonly config: DBConfig;
-  readonly total: number;
-
-  private _totalDone: number;
-
-  set totalDone(value: number) {
-    this._totalDone = value;
-    if (value === this.total) {
-      process.exit(0);
-    }
-  }
-  get totalDone(): number {
-    return this._totalDone;
-  }
+  private ids: MappedEnum<EmployeeType>;
 
   constructor(config: DBConfig) {
     this.config = config;
-    this.total = Object.keys(config).reduce((acc: number, key: string) => acc + config[key], 0);
-    this._totalDone = 0;
-
+    this.ids = {
+      [EmployeeType.Admin]: [],
+      [EmployeeType.Operator]: [],
+      [EmployeeType.Volunteer]: [],
+    };
     ref.activities.set({});
     ref.employes.set({});
   }
 
-  writeUsersData(type: EmployeeType, total: number) {
-    Array.from({ length: total }).forEach(async (j, i) => {
-      await ref.employes.push().set({
-        type,
-        email: `employee${i}@crm`,
-        password: `crm${i}`,
-      });
-      this.totalDone++;
-    });
+  writeUsersData(type: EmployeeType, total: number): Promise<any> {
+    return new Promise((resolve, reject) =>
+      Array.from({ length: total }).forEach(async (j, i) => {
+        const result = ref.employes.push();
+        try {
+          await result.set({
+            type,
+            email: `employee${i}@crm`,
+            password: `crm${i}`,
+          });
+        } catch (e) {
+          reject(e);
+        }
+        this.ids[type].push(result.key as string);
+        if (i + 1 === total) {
+          resolve();
+        }
+      })
+    );
   }
 
-  writeActivities(total: number) {
-    const volunteersIds = getEmployeesIds(EmployeeType.Volunteer);
-    const operatorsIds = getEmployeesIds(EmployeeType.Operator);
-    Array.from({ length: total }).forEach(async (j, i) => {
-      await ref.activities.push().set({
-        type: randomEnumValue(ActivityType),
-        description: `Activity description ${i}`,
-        address: `Activity address ${i}`,
-        estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
-        operatorId: operatorsIds[Math.floor(Math.random() * (operatorsIds.length - 1))],
-        assignee: volunteersIds[Math.floor(Math.random() * (volunteersIds.length - 1))],
-        status: randomEnumValue(ActivityStatus),
-        history: [],
-      });
-      this.totalDone++;
-    });
+  writeActivities(total: number): Promise<any> {
+    return new Promise((resolve, reject) =>
+      Array.from({ length: total }).forEach(async (j, i) => {
+        try {
+          await ref.activities.push().set({
+            type: getRandomEnumValue(ActivityType),
+            description: `Activity description ${i}`,
+            address: `Activity address ${i}`,
+            estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
+            operatorId: getRandomArrayValue(this.ids[EmployeeType.Operator]),
+            assignee: getRandomArrayValue(this.ids[EmployeeType.Volunteer]),
+            status: getRandomEnumValue(ActivityStatus),
+            history: [],
+          });
+        } catch (e) {
+          reject(e);
+        }
+        if (i + 1 === total) {
+          resolve();
+        }
+      })
+    );
   }
 
-  generateData() {
-    this.writeUsersData(EmployeeType.Operator, this.config.OPERATORS);
-    this.writeUsersData(EmployeeType.Volunteer, this.config.VOLUNTEERS);
-    this.writeActivities(this.config.ACTIVITIES);
+  generateData(): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.writeUsersData(EmployeeType.Operator, this.config.OPERATORS))
+      .then(() => this.writeUsersData(EmployeeType.Volunteer, this.config.VOLUNTEERS))
+      .then(() => this.writeActivities(this.config.ACTIVITIES));
   }
 }
 
 const db = new DB(DB_RESET_CONFIG);
 
-db.generateData();
+db.generateData()
+  .then(() => process.exit(0))
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
