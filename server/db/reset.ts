@@ -90,10 +90,10 @@ class DB {
   }
 
   generateData(): Promise<any> {
-    return Promise.resolve()
-      .then(() => this.writeUsersData(EmployeeType.Operator, this.config.OPERATORS))
-      .then(() => this.writeUsersData(EmployeeType.Volunteer, this.config.VOLUNTEERS))
-      .then(() => this.writeActivities(this.config.ACTIVITIES));
+    return Promise.all([
+      this.writeUsersData(EmployeeType.Operator, this.config.OPERATORS),
+      this.writeUsersData(EmployeeType.Volunteer, this.config.VOLUNTEERS),
+    ]).then(() => this.writeActivities(this.config.ACTIVITIES));
   }
 }
 
