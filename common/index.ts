@@ -1,11 +1,11 @@
-enum ActivityType {
-  Delivery = 0,
+export enum ActivityType {
+  Other = 0,
+  Delivery,
   Shopping,
   HomeCare,
-  Other,
 }
 
-enum ActivityStatus {
+export enum ActivityStatus {
   ReadyForAssignment = 0,
   Assigned,
   InProgress,
@@ -14,35 +14,35 @@ enum ActivityStatus {
   Archived,
 }
 
-enum EmployeeType {
+export enum EmployeeType {
   Admin = 0,
   Operator,
   Volunteer,
 }
 
 type Id = string;
-type EmployeeId = Id;
+export type EmployeeId = Id;
 
 interface IActivityHistory {
-  id: Id;
+  id?: Id;
   time: number;
   status: ActivityType;
 }
 
 export interface IActivity {
-  id: Id;
+  id?: Id;
   type: ActivityType;
   description: string;
   address: string;
   estimation: number;
-  operatorId: EmployeeId; // who created
-  assignee: string; // who is assignee
+  operatorId?: EmployeeId; // who created
+  assignee?: string; // who is assignee
   status: ActivityStatus;
   history: IActivityHistory[];
 }
 
-interface IEmployee {
-  id: EmployeeId;
+export interface IEmployee {
+  id?: EmployeeId;
   type: EmployeeType;
   email: string;
   password: string;
