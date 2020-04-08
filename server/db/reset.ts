@@ -7,7 +7,8 @@ import {
   IEmployee,
 } from 'common/index';
 
-import { activitiesRef, DB_RESET_CONFIG, employeeRef } from './config';
+import { DB_RESET_CONFIG } from './config';
+import { ref } from './connection';
 
 function randomEnum<T>(anEnum: T): T[keyof T] {
   const enumValues = (Object.keys(anEnum)
@@ -20,7 +21,7 @@ function randomEnum<T>(anEnum: T): T[keyof T] {
 
 const getEmployeesIds = (employeeType: EmployeeType): EmployeeId[] => {
   const employeesIds: EmployeeId[] = [];
-  employeeRef
+  ref.employes
     .orderByChild('type')
     .equalTo(employeeType)
     .on('child_added', (snapshot) => {
@@ -86,13 +87,13 @@ class DB {
     this.total = Object.keys(config).reduce((acc: number, key: string) => acc + config[key], 0);
     this.totalDone = 0;
 
-    activitiesRef.set({});
-    employeeRef.set({});
+    ref.activities.set({});
+    ref.employes.set({});
   }
 
   writeUsersData(type: EmployeeType, total: number) {
     generateEmployee(type, total).map((employee) =>
-      employeeRef.push().set(
+      ref.employes.push().set(
         {
           type: employee.type,
           email: employee.email,
@@ -105,7 +106,7 @@ class DB {
 
   writeActivities(total: number) {
     generateActivities(total).map((activity) =>
-      activitiesRef.push().set(
+      ref.activities.push().set(
         {
           type: activity.type,
           description: activity.description,

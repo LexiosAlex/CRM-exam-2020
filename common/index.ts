@@ -1,8 +1,8 @@
 export enum ActivityType {
-  Delivery = 0,
+  Other = 0,
+  Delivery,
   Shopping,
   HomeCare,
-  Other,
 }
 
 export enum ActivityStatus {
