@@ -10,7 +10,7 @@ import {
 import { DB_RESET_CONFIG } from './config';
 import { ref } from './connection';
 
-function randomEnum<T>(anEnum: T): T[keyof T] {
+function randomEnumValue<T>(anEnum: T): T[keyof T] {
   const enumValues = (Object.keys(anEnum)
     .map((n) => Number.parseInt(n))
     .filter((n) => !Number.isNaN(n)) as unknown) as T[keyof T][];
@@ -30,39 +30,6 @@ const getEmployeesIds = (employeeType: EmployeeType): EmployeeId[] => {
     });
 
   return employeesIds;
-};
-
-const generateEmployee = (type: EmployeeType, count: number): IEmployee[] => {
-  const employeeList: IEmployee[] = [];
-  for (let i = 0; i < count; i++) {
-    employeeList.push({
-      type: type,
-      email: `employee${i}@crm`,
-      password: `crm${i}`,
-    });
-  }
-  return employeeList;
-};
-
-const generateActivities = (count: number): IActivity[] => {
-  const activitiesList: IActivity[] = [];
-  const volunteersIds = getEmployeesIds(EmployeeType.Volunteer);
-  const operatorsIds = getEmployeesIds(EmployeeType.Operator);
-
-  for (let i = 0; i < count; i++) {
-    const activity = {
-      type: randomEnum(ActivityType),
-      description: `Activity description ${i}`,
-      address: `Activity address ${i}`,
-      estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
-      operatorId: operatorsIds[Math.floor(Math.random() * (operatorsIds.length - 1))],
-      assignee: volunteersIds[Math.floor(Math.random() * (volunteersIds.length - 1))],
-      status: randomEnum(ActivityStatus),
-      history: [],
-    };
-    activitiesList.push(activity);
-  }
-  return activitiesList;
 };
 
 type DBConfig = { [key: string]: number };
@@ -92,12 +59,12 @@ class DB {
   }
 
   writeUsersData(type: EmployeeType, total: number) {
-    generateEmployee(type, total).map((employee) =>
+    Array.from({ length: total }).forEach((j, i) =>
       ref.employes.push().set(
         {
-          type: employee.type,
-          email: employee.email,
-          password: employee.password,
+          type,
+          email: `employee${i}@crm`,
+          password: `crm${i}`,
         },
         this.done
       )
@@ -105,17 +72,19 @@ class DB {
   }
 
   writeActivities(total: number) {
-    generateActivities(total).map((activity) =>
+    const volunteersIds = getEmployeesIds(EmployeeType.Volunteer);
+    const operatorsIds = getEmployeesIds(EmployeeType.Operator);
+    Array.from({ length: total }).forEach((j, i) =>
       ref.activities.push().set(
         {
-          type: activity.type,
-          description: activity.description,
-          address: activity.address,
-          estimation: activity.estimation,
-          operatorId: activity.operatorId,
-          assignee: activity.assignee,
-          status: activity.status,
-          history: activity.history,
+          type: randomEnumValue(ActivityType),
+          description: `Activity description ${i}`,
+          address: `Activity address ${i}`,
+          estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
+          operatorId: operatorsIds[Math.floor(Math.random() * (operatorsIds.length - 1))],
+          assignee: volunteersIds[Math.floor(Math.random() * (volunteersIds.length - 1))],
+          status: randomEnumValue(ActivityStatus),
+          history: [],
         },
         this.done
       )
