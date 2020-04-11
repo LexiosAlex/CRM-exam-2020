@@ -1,6 +1,18 @@
 const path = require('path');
+const dotenv = require('dotenv');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
+const _env = dotenv.config({ path: path.resolve(__dirname, '../.env') });
+const env = _env.parsed;
+if (_env.error instanceof Error) {
+  throw _env.error;
+}
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
 
 module.exports = {
   resolve: {
@@ -79,5 +91,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
+    new webpack.DefinePlugin(envKeys),
   ],
 };
