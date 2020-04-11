@@ -16,11 +16,10 @@
     "noEmit": true,
     "jsx": "react",
     "noImplicitAny": false,
-    "baseUrl": ".",
-    "plugins": [ { "name": "css-module-types" } ],
+    "baseUrl": "./",
+    "plugins": [{ "name": "css-module-types" }],
     "paths": {
       "common/*": ["../common/*"]
     }
-  },
-  "include": ["src", "custom.ts"]
+  }
 }

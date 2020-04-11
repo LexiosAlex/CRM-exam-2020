@@ -1,9 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx', '.css', '.scss', '.sass'],
+    plugins: [new TsconfigPathsPlugin({})],
   },
   devServer: {
     contentBase: path.join(__dirname, 'build'),
