@@ -43,22 +43,11 @@ module.exports = {
         ],
       },
       {
-        test: /\.(scss|sass)$/,
-        exclude: /\.module\.(scss|sass)$/,
+        test: /\.scss$/,
         use: [
           { loader: 'style-loader' },
           { loader: 'css-modules-typescript-loader' },
-          { loader: 'css-loader' },
-          { loader: 'sass-loader' },
-        ],
-        sideEffects: true,
-      },
-      {
-        test: /\.module\.(scss|sass)$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-modules-typescript-loader' },
-          { loader: 'css-loader', options: { modules: true, namedExport: true } },
+          { loader: 'css-loader', options: { modules: true } },
           { loader: 'sass-loader' },
         ],
       },
