@@ -17,6 +17,7 @@
     "jsx": "react",
     "noImplicitAny": false,
     "baseUrl": ".",
+    "plugins": [ { "name": "css-module-types" } ],
     "paths": {
       "common/*": ["../common/*"]
     }

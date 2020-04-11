@@ -3,12 +3,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx', '.css', '.scss', '.sass'],
   },
   devServer: {
     contentBase: path.join(__dirname, 'build'),
     compress: true,
     port: 3000,
+    historyApiFallback: true,
   },
   entry: path.resolve(__dirname, 'src', 'index.tsx'),
   output: {
@@ -29,7 +30,37 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+        include: path.join(__dirname, 'src'),
+        use: [
+          'style-loader',
+          {
+            loader: 'typings-for-css-modules-loader',
+            options: {
+              modules: true,
+              namedExport: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(scss|sass)$/,
+        exclude: /\.module\.(scss|sass)$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-modules-typescript-loader' },
+          { loader: 'css-loader' },
+          { loader: 'sass-loader' },
+        ],
+        sideEffects: true,
+      },
+      {
+        test: /\.module\.(scss|sass)$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-modules-typescript-loader' },
+          { loader: 'css-loader', options: { modules: true, namedExport: true } },
+          { loader: 'sass-loader' },
+        ],
       },
       {
         test: /\.(png|svg|jpg|gif)$/i,
