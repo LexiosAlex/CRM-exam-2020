@@ -21,5 +21,6 @@
     "paths": {
       "common/*": ["../common/*"]
     }
-  }
+  },
+  "include": ["src"]
 }
