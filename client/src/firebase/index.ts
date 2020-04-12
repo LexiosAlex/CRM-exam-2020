@@ -1,12 +1,12 @@
 import app from 'firebase/app';
+require('firebase/auth');
 
+//TODO: Понять, можно ли экстендить этот класс от класса firebase
 class Firebase {
   auth: app.auth.Auth;
 
   constructor(config: Object) {
     app.initializeApp(config);
-    // todo: fix auth, remove log
-    console.log(config);
     this.auth = app.auth();
   }
 

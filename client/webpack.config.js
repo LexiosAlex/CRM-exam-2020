@@ -25,6 +25,7 @@ module.exports = {
     port: 3000,
     historyApiFallback: true,
   },
+  devtool: 'source-map',
   entry: path.resolve(__dirname, 'src', 'index.tsx'),
   output: {
     path: path.resolve(__dirname, 'build'),

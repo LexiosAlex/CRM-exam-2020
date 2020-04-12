@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Redirect, withRouter } from 'react-router';
 import * as navPaths from '../../utils/router';
+import { useFirebase } from 'react-redux-firebase';
+import styles from './index.scss';
 
 // const formValid = state => {
 //   const { formErrors, ...rest } = state;
@@ -22,6 +24,11 @@ import * as navPaths from '../../utils/router';
 //   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 // );
 
+interface User {
+  email: string;
+  password: string;
+}
+
 enum FormInputType {
   email,
   password,
@@ -30,6 +37,7 @@ enum FormInputType {
 const SignIn: React.FC = (props) => {
   const [emailValue, setEmail] = useState<string>('');
   const [passwordValue, setPassword] = useState<string>('');
+  const firebase = useFirebase();
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>, inputType: FormInputType) => {
     switch (inputType) {
@@ -46,7 +54,11 @@ const SignIn: React.FC = (props) => {
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(event);
+    const credentials: User = {
+      email: emailValue,
+      password: passwordValue,
+    };
+    firebase.login(credentials);
   };
 
   // handleSubmit = e => {
@@ -89,11 +101,11 @@ const SignIn: React.FC = (props) => {
   // }
 
   return (
-    <div className="sign-in-container">
-      <div className="sing-in__form-wrapper">
+    <div className={styles.container}>
+      <div className={styles.wrapper}>
         <form onSubmit={submitForm} noValidate>
-          <h2 className="sign-in__header">Sign In</h2>
-          <div className="sign-in__input-wrapper">
+          <h2 className={styles.header}>Sign In</h2>
+          <div className={styles.inputWrapper}>
             <label htmlFor="email">Email</label>
             <input
               // className={formErrors.email.length > 0 ? 'inputError' : null}
@@ -108,7 +120,7 @@ const SignIn: React.FC = (props) => {
             {/*  <span className="errorMessage">{formErrors.email}</span>*/}
             {/*)}*/}
           </div>
-          <div className="sign-in__input-wrapper">
+          <div className={styles.inputWrapper}>
             <label htmlFor="password">Password</label>
             <input
               // className={formErrors.password.length > 0 ? 'inputError' : null}
@@ -123,13 +135,11 @@ const SignIn: React.FC = (props) => {
             {/*  <span className="errorMessage">{formErrors.password}</span>*/}
             {/*)}*/}
           </div>
-          <div className="createAccount">
+          <div className={styles.actionsWrapper}>
             <button type="submit" className="btn-primary">
               Sign In
             </button>
             <Link to={navPaths.SIGN_UP}>Dont have account? create one</Link>
-          </div>
-          <div>
             <Link to={navPaths.PASSWORD_FORGET}>Forgot password</Link>
           </div>
         </form>
