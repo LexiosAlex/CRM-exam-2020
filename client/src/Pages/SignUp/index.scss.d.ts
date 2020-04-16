@@ -3,6 +3,7 @@
 interface CssExports {
   actionsWrapper: string;
   container: string;
+  errorMsg: string;
   header: string;
   inputWrapper: string;
   wrapper: string;

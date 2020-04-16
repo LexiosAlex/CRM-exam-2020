@@ -1,8 +1,7 @@
-import AuthRouter from './index';
 import { connect } from 'react-redux';
 import { AppState } from '../../reducers/rootReducer';
 
-const enhance = connect((state: AppState) => {
+export default connect((state: AppState) => {
   const { firebase } = state;
   const { auth, profile } = firebase;
   return {
@@ -10,5 +9,3 @@ const enhance = connect((state: AppState) => {
     profile,
   };
 });
-
-export default enhance(AuthRouter);

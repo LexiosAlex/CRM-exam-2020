@@ -20,7 +20,6 @@ const AppRouter: React.FC = () => {
             <Route component={Account} path={navPath.ACCOUNT} exact />
             <Route component={Admin} path={navPath.ADMIN} exact />
             <Route component={Home} path={navPath.HOME} exact />
-            <Route component={PwForget} path={navPath.PASSWORD_FORGET} exact />
           </Switch>
         </div>
       </div>
