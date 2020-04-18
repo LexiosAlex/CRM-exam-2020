@@ -9,7 +9,6 @@ const ForgetPassword: React.FC = () => {
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(event);
   };
 
   return (
