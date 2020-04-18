@@ -5,7 +5,6 @@ import * as navPaths from '../../utils/router';
 import { useFirebase } from 'react-redux-firebase';
 import styles from './index.scss';
 import WithAuth from '../../Hocs/WithAuth';
-import Loading from '../../components/Loading';
 
 interface User {
   email: string;
@@ -18,10 +17,13 @@ enum FormInputType {
 }
 
 const SignIn: React.FC = (props: any) => {
-  const { auth } = props;
+  const { authError } = props;
   const [emailValue, setEmail] = useState<string>('');
   const [passwordValue, setPassword] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const [isSendingData, setSendingData] = useState<boolean>(false);
+  //TODO: made it with observables, asyncReducer
+
   const firebase = useFirebase();
 
   const onChange: { [key in FormInputType]: Function } = {
@@ -31,60 +33,60 @@ const SignIn: React.FC = (props: any) => {
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setErrorMessage(null);
+    setSendingData(true);
     const credentials: User = {
       email: emailValue,
       password: passwordValue,
     };
-    firebase.login(credentials).catch((error) => {
-      setErrorMessage(error.message);
+    firebase.login(credentials).finally(() => {
+      setSendingData(false);
     });
   };
 
   return (
-    <>
-      {!auth.isLoaded ? (
-        <Loading />
-      ) : (
-        <div className={styles.container}>
-          <div className={styles.wrapper}>
-            <form onSubmit={submitForm} noValidate>
-              <h2 className={styles.header}>Sign In</h2>
-              {errorMessage ? <p className={styles.errorMsg}>{errorMessage}</p> : null}
-              <div className={styles.inputWrapper}>
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  placeholder="example@mail.com"
-                  name="email"
-                  formNoValidate
-                  onChange={(event) => onChange[FormInputType.email](event.target.value)}
-                  value={emailValue}
-                />
-              </div>
-              <div className={styles.inputWrapper}>
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  placeholder="password"
-                  name="password"
-                  formNoValidate
-                  onChange={(event) => onChange[FormInputType.password](event.target.value)}
-                  value={passwordValue}
-                />
-              </div>
-              <div className={styles.actionsWrapper}>
-                <button type="submit" className="btn-primary">
-                  Sign In
-                </button>
-                <Link to={navPaths.SIGN_UP}>Dont have account? create one</Link>
-                <Link to={navPaths.PASSWORD_FORGET}>Forgot password</Link>
-              </div>
-            </form>
+    <div className={styles.container}>
+      <div className={styles.wrapper}>
+        <form onSubmit={submitForm} noValidate>
+          <h2 className={styles.header}>Sign In</h2>
+          {authError ? <p className={styles.errorMsg}>{authError.message}</p> : null}
+          <div className={styles.inputWrapper}>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              placeholder="example@mail.com"
+              name="email"
+              formNoValidate
+              onChange={(event) => onChange[FormInputType.email](event.target.value)}
+              value={emailValue}
+            />
           </div>
-        </div>
-      )}
-    </>
+          <div className={styles.inputWrapper}>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              placeholder="password"
+              name="password"
+              formNoValidate
+              onChange={(event) => onChange[FormInputType.password](event.target.value)}
+              value={passwordValue}
+            />
+          </div>
+          <div className={styles.actionsWrapper}>
+            <button
+              disabled={isSendingData}
+              type="submit"
+              className={`${isSendingData ? styles.btnSpinner : styles.btnActive} ${
+                styles.btnPrimary
+              }`}
+            >
+              <span>Sign In</span>
+            </button>
+            <Link to={navPaths.SIGN_UP}>Dont have account? create one</Link>
+            <Link to={navPaths.PASSWORD_FORGET}>Forgot password</Link>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 

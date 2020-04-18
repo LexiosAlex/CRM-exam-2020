@@ -2,6 +2,9 @@
 // Please do not change this file!
 interface CssExports {
   actionsWrapper: string;
+  btnActive: string;
+  btnPrimary: string;
+  btnSpinner: string;
   container: string;
   errorMsg: string;
   header: string;

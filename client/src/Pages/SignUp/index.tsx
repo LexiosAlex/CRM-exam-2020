@@ -5,8 +5,6 @@ import { useFirebase } from 'react-redux-firebase';
 import * as navPaths from '../../utils/router';
 import styles from './index.scss';
 import WithAuth from '../../Hocs/WithAuth';
-import { Simulate } from 'react-dom/test-utils';
-import error = Simulate.error;
 
 interface NewUser {
   email: string;
@@ -20,11 +18,16 @@ enum FormInputType {
   name,
 }
 
-const SignUp: React.FC = (props) => {
+const SignUp: React.FC = (props: any) => {
+  const { authError } = props;
+
   const [emailValue, setEmail] = useState<string>('');
   const [passwordValue, setPassword] = useState<string>('');
   const [nameValue, setName] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const [isSendingData, setSendingData] = useState<boolean>(false);
+  //TODO: made it with observables, asyncReducer
+
   const firebase = useFirebase();
 
   const onChange: { [key in FormInputType]: Function } = {
@@ -35,15 +38,15 @@ const SignUp: React.FC = (props) => {
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setErrorMessage(null);
+    setSendingData(true);
     const newUser: NewUser = {
       email: emailValue,
       password: passwordValue,
       name: nameValue,
     };
 
-    firebase.createUser(newUser, { name: nameValue, email: emailValue }).catch((error) => {
-      setErrorMessage(error.message);
+    firebase.createUser(newUser, { name: nameValue, email: emailValue }).finally(() => {
+      setSendingData(true);
     });
   };
 
@@ -52,7 +55,7 @@ const SignUp: React.FC = (props) => {
       <div className={styles.wrapper}>
         <form onSubmit={submitForm} noValidate>
           <h2 className={styles.header}>Sign Up</h2>
-          {errorMessage ? <p className={styles.errorMsg}>{errorMessage}</p> : null}
+          {authError ? <p className={styles.errorMsg}>{authError.message}</p> : null}
           <div className={styles.inputWrapper}>
             <label htmlFor="name">name</label>
             <input
@@ -87,8 +90,14 @@ const SignUp: React.FC = (props) => {
             />
           </div>
           <div className={styles.actionsWrapper}>
-            <button type="submit" className="btn-primary">
-              Sign In
+            <button
+              disabled={isSendingData}
+              type="submit"
+              className={`${isSendingData ? styles.btnSpinner : styles.btnActive} ${
+                styles.btnPrimary
+              }`}
+            >
+              <span>Sign Up</span>
             </button>
             <Link to={navPaths.SIGN_IN}>Already registered</Link>
             <Link to={navPaths.PASSWORD_FORGET}>Forgot password</Link>

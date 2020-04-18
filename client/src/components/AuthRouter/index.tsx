@@ -6,9 +6,13 @@ import SignUp from '../../Pages/SignUp';
 import AppRouter from '../AppRouter';
 import WithAuth from '../../Hocs/WithAuth';
 import PwForget from '../../Pages/PasswordForget';
+import Loading from '../Loading';
 
 const AuthRouter: React.FC = (props: any) => {
   const { auth } = props;
+  if (!auth.isLoaded) {
+    return <Loading />;
+  }
 
   return (
     <BrowserRouter>
