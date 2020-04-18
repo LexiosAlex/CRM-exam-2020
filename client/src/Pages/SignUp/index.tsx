@@ -5,11 +5,13 @@ import { useFirebase } from 'react-redux-firebase';
 import * as navPaths from '../../utils/router';
 import styles from './index.scss';
 import WithAuth from '../../Hocs/WithAuth';
+import { EmployeeType } from 'common/index';
 
-interface NewUser {
+interface IUser {
   email: string;
   password: string;
   name: string;
+  type: EmployeeType;
 }
 
 enum FormInputType {
@@ -39,15 +41,15 @@ const SignUp: React.FC = (props: any) => {
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSendingData(true);
-    const newUser: NewUser = {
+    const user: IUser = {
       email: emailValue,
       password: passwordValue,
       name: nameValue,
+      type: EmployeeType.Volunteer,
     };
-
-    firebase.createUser(newUser, { name: nameValue, email: emailValue }).finally(() => {
-      setSendingData(true);
-    });
+    firebase
+      .createUser(user, { name: user.name, email: user.email, type: user.type })
+      .finally(() => setSendingData(false));
   };
 
   return (
