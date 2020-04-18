@@ -1,0 +1,54 @@
+.sideNav__List {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sideNav {
+  padding-left: 10px;
+}
+
+.sidebar {
+  padding-top: 80px;
+  position: sticky;
+  left: 0;
+  top: 0;
+  background-color: #f5f5f6;
+  height: 100vh;
+}
+
+.sideNav__linkTitle {
+  margin: 0 20px 0 20px;
+  padding: 13px 0 13px 15px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  width: 200px;
+}
+
+.sideNav__link {
+  margin: 3px 0 2px 0;
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+  color: #959ba4;
+  cursor: pointer;
+  &.active {
+    color: #323232;
+    .mainNav__linkTitle {
+      background-color: #ffdd2d;
+    }
+    .sidebarIcon {
+      color: #ffdd2d;
+    }
+  }
+  &:hover,
+  &:focus {
+    color: #323232;
+    .mainNav__linkTitle {
+      background-color: #dcdcdc;
+    }
+    .sidebarIcon {
+      color: #323232;
+    }
+  }
+}

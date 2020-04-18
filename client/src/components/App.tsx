@@ -1,7 +1,12 @@
 import React from 'react';
+import Router from './AuthRouter';
 
 const App: React.FC = () => {
-  return <div style={{ color: 'red' }}>App</div>;
+  return (
+    <div>
+      <Router />
+    </div>
+  );
 };
 
 export default App;
