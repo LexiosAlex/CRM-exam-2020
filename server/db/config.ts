@@ -8,7 +8,8 @@ export const REFS = {
 };
 
 export const DB_RESET_CONFIG = {
-  OPERATORS: 2,
-  VOLUNTEERS: 5,
-  ACTIVITIES: 10,
+  ADMINS: 1,
+  OPERATORS: 1,
+  VOLUNTEERS: 1,
+  ACTIVITIES: 3,
 };
