@@ -13,7 +13,7 @@ const reduxDevTools = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
 import './index.scss';
 
 const rrfConfig = {
-  userProfile: 'employes',
+  userProfile: 'employees',
 };
 
 firebase.initializeApp(firebaseConfig);

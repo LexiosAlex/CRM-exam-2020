@@ -33,7 +33,7 @@ admin.initializeApp({
 });
 
 const deleteAllActivities = () => admin.database().ref(REFS.ACTIVITIES).set({});
-const deleteAllEmployees = () => admin.database().ref(REFS.EMPLOYES).set({});
+const deleteAllEmployees = () => admin.database().ref(REFS.EMPLOYEES).set({});
 
 const deleteAllUsers = (pageToken?: string): Promise<any> =>
   admin
@@ -49,14 +49,23 @@ const deleteAllUsers = (pageToken?: string): Promise<any> =>
       ).then(() => (token ? deleteAllUsers(token) : true));
     });
 
-const getUserNameToken = (type: EmployeeType): string => {
+const getUserEmail = (type: EmployeeType, number: number): string => {
   switch (type) {
     case EmployeeType.Admin:
-      return 'a';
+      return `a${number}@crm.crm`;
     case EmployeeType.Operator:
-      return 'o';
+      return `o${number}@crm.crm`;
   }
-  return 'v';
+  return `v${number}@crm.crm`;
+};
+const getUserName = (type: EmployeeType, number: number): string => {
+  switch (type) {
+    case EmployeeType.Admin:
+      return 'admin' + number;
+    case EmployeeType.Operator:
+      return 'operator' + +number;
+  }
+  return 'volunteer' + number;
 };
 
 const createUserAndEmployee = async (user: admin.auth.CreateRequest, type: EmployeeType) => {
@@ -65,19 +74,18 @@ const createUserAndEmployee = async (user: admin.auth.CreateRequest, type: Emplo
   await admin.auth().setCustomUserClaims(uid, { type });
   return await admin
     .database()
-    .ref(`${REFS.EMPLOYES}/${uid}`)
+    .ref(`${REFS.EMPLOYEES}/${uid}`)
     .set({ email: user.email, name: user.displayName, type });
 };
 
 const createUsersByType = (type: EmployeeType, total: number): Promise<any> =>
   Promise.all(
     Array.from({ length: total }).map((j, i) => {
-      const nameToken = getUserNameToken(type);
       const user: admin.auth.CreateRequest = {
-        email: `${nameToken}${i}@crm.crm`,
+        email: getUserEmail(type, i),
         emailVerified: true,
         password: `password${i}`,
-        displayName: `${nameToken}${i}`,
+        displayName: getUserName(type, i),
         disabled: false,
       };
       console.log('Creating user', user.email);
