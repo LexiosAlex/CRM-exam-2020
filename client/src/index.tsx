@@ -9,17 +9,11 @@ import rootReducer from './reducers/rootReducer';
 import firebase from 'firebase';
 import 'firebase/auth';
 const reduxDevTools = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
-import { EmployeeType } from 'common/index';
+
 import './index.scss';
 
 const rrfConfig = {
   userProfile: 'employees',
-  enableClaims: true,
-  profileFactory: (userData, profileData) => {
-    const { providerData, ...profile } = profileData;
-    const customProfile = { ...profile, type: EmployeeType.Volunteer };
-    return customProfile;
-  },
 };
 
 firebase.initializeApp(firebaseConfig);
