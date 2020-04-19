@@ -7,13 +7,6 @@ import styles from './index.scss';
 import WithAuth from '../../Hocs/WithAuth';
 import { EmployeeType } from 'common/index';
 
-interface IUser {
-  email: string;
-  password: string;
-  name: string;
-  type: EmployeeType;
-}
-
 enum FormInputType {
   email,
   password,
@@ -23,9 +16,9 @@ enum FormInputType {
 const SignUp: React.FC = (props: any) => {
   const { authError } = props;
 
-  const [emailValue, setEmail] = useState<string>('');
-  const [passwordValue, setPassword] = useState<string>('');
-  const [nameValue, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>('');
 
   const [isSendingData, setSendingData] = useState<boolean>(false);
   //TODO: made it with observables, asyncReducer
@@ -41,15 +34,7 @@ const SignUp: React.FC = (props: any) => {
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSendingData(true);
-    const user: IUser = {
-      email: emailValue,
-      password: passwordValue,
-      name: nameValue,
-      type: EmployeeType.Volunteer,
-    };
-    firebase
-      .createUser(user, { name: user.name, email: user.email, type: user.type })
-      .finally(() => setSendingData(false));
+    firebase.createUser({ email, password }, { name }).finally(() => setSendingData(false));
   };
 
   return (
@@ -66,7 +51,7 @@ const SignUp: React.FC = (props: any) => {
               name="name"
               formNoValidate
               onChange={(event) => onChange[FormInputType.name](event.target.value)}
-              value={nameValue}
+              value={name}
             />
           </div>
           <div className={styles.inputWrapper}>
@@ -77,7 +62,7 @@ const SignUp: React.FC = (props: any) => {
               name="email"
               formNoValidate
               onChange={(event) => onChange[FormInputType.email](event.target.value)}
-              value={emailValue}
+              value={email}
             />
           </div>
           <div className={styles.inputWrapper}>
@@ -88,7 +73,7 @@ const SignUp: React.FC = (props: any) => {
               name="password"
               formNoValidate
               onChange={(event) => onChange[FormInputType.password](event.target.value)}
-              value={passwordValue}
+              value={password}
             />
           </div>
           <div className={styles.actionsWrapper}>
