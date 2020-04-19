@@ -56,7 +56,7 @@ const SignIn: React.FC = (props: any) => {
               placeholder="example@mail.com"
               name="email"
               formNoValidate
-              onChange={(event) => onChange[FormInputType.email](event.target.value)}
+              onChange={event => onChange[FormInputType.email](event.target.value)}
               value={emailValue}
             />
           </div>
@@ -67,7 +67,7 @@ const SignIn: React.FC = (props: any) => {
               placeholder="password"
               name="password"
               formNoValidate
-              onChange={(event) => onChange[FormInputType.password](event.target.value)}
+              onChange={event => onChange[FormInputType.password](event.target.value)}
               value={passwordValue}
             />
           </div>
