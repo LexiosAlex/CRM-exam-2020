@@ -6,15 +6,13 @@ import styles from './index.scss';
 
 interface ITaskCardProps {
   title: string;
-  description: string;
 }
 
-const TaskCard: React.FC<ITaskCardProps> = ({ title, description }) => {
+const TaskCard: React.FC<ITaskCardProps> = ({ title}) => {
   return (
     <Card className={styles.cardContainer}>
-      <CardContent>
-        <h4>{title}</h4>
-        <Typography gutterBottom={true}>{description}</Typography>
+      <CardContent classes={{root: styles.cardContent }}>
+        <Typography gutterBottom={true}>{title}</Typography>
       </CardContent>
     </Card>
   );

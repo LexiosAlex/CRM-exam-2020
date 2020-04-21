@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import { useFirebase } from 'react-redux-firebase';
-import { REFS } from '../../utils/refs';
 import TaskList from '../../components/TaskList';
 import { connect } from 'react-redux';
 import { AppState } from '../../reducers/rootReducer';
@@ -13,14 +11,14 @@ interface ITasksProps {
 
 const Tasks: React.FC<ITasksProps> = ({ taskLists }) => {
   return (
-    <>
+    <div className={styles.workSpace}>
       <h2>Task-lists</h2>
       <div className={styles.tasksContainer}>
         {taskLists.map((list, index) => (
           <TaskList key={index} title={list.title} cards={list.cards} />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

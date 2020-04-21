@@ -2,7 +2,13 @@
 // Please do not change this file!
 interface CssExports {
   'addButtonContainer': string;
-  'container': string;
+  'btnActive': string;
+  'btnPrimary': string;
+  'btnSpinner': string;
+  'closeButton': string;
+  'dialog': string;
+  'inputWrapper': string;
+  'root': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
