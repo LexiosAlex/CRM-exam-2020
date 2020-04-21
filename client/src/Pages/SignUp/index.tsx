@@ -5,7 +5,6 @@ import { useFirebase } from 'react-redux-firebase';
 import * as navPaths from '../../utils/router';
 import styles from './index.scss';
 import WithAuth from '../../Hocs/WithAuth';
-import { EmployeeType } from 'common/index';
 
 enum FormInputType {
   email,
@@ -50,7 +49,7 @@ const SignUp: React.FC = (props: any) => {
               placeholder="Your name"
               name="name"
               formNoValidate
-              onChange={(event) => onChange[FormInputType.name](event.target.value)}
+              onChange={event => onChange[FormInputType.name](event.target.value)}
               value={name}
             />
           </div>
@@ -61,7 +60,7 @@ const SignUp: React.FC = (props: any) => {
               placeholder="example@mail.com"
               name="email"
               formNoValidate
-              onChange={(event) => onChange[FormInputType.email](event.target.value)}
+              onChange={event => onChange[FormInputType.email](event.target.value)}
               value={email}
             />
           </div>
@@ -72,7 +71,7 @@ const SignUp: React.FC = (props: any) => {
               placeholder="password"
               name="password"
               formNoValidate
-              onChange={(event) => onChange[FormInputType.password](event.target.value)}
+              onChange={event => onChange[FormInputType.password](event.target.value)}
               value={password}
             />
           </div>
