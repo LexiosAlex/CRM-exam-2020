@@ -1,29 +1,19 @@
+import * as admin from 'firebase-admin';
+
 import '../env';
+import { ActivityStatus, ActivityType, EmployeeType } from 'common/index';
+import { firebaseConfig, DB_RESET_CONFIG, REFS } from './config';
 
-import {
-  ActivityStatus,
-  ActivityType,
-  EmployeeId,
-  EmployeeType,
-  IActivity,
-  IEmployee,
-} from 'common/index';
-
-import { DB_RESET_CONFIG } from './config';
-import { ref } from './connection';
-
-function getRandomEnumValue<T>(anEnum: T): T[keyof T] {
+const getRandomEnumValue = <T>(anEnum: T): T[keyof T] => {
   const enumValues = (Object.keys(anEnum)
     .map((n) => Number.parseInt(n))
     .filter((n) => !Number.isNaN(n)) as unknown) as T[keyof T][];
   const randomIndex = Math.floor(Math.random() * enumValues.length);
   const randomEnumValue = enumValues[randomIndex];
   return randomEnumValue;
-}
+};
 
-function getRandomArrayValue(array: any[]) {
-  return array[Math.floor(Math.random() * (array.length - 1))];
-}
+const getRandomArrayValue = (array: any[]) => array[Math.floor(Math.random() * (array.length - 1))];
 
 type DBConfig = { [key: string]: number };
 
@@ -31,79 +21,119 @@ type MappedEnum<T extends PropertyKey> = {
   [key in T]: string[];
 };
 
-class DB {
-  readonly config: DBConfig;
-  private ids: MappedEnum<EmployeeType>;
+const ids: MappedEnum<EmployeeType> = {
+  [EmployeeType.Admin]: [],
+  [EmployeeType.Operator]: [],
+  [EmployeeType.Volunteer]: [],
+};
 
-  constructor(config: DBConfig) {
-    this.config = config;
-    this.ids = {
-      [EmployeeType.Admin]: [],
-      [EmployeeType.Operator]: [],
-      [EmployeeType.Volunteer]: [],
-    };
-    ref.activities.set({});
-    ref.employes.set({});
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  databaseURL: firebaseConfig.databaseURL,
+});
+
+const deleteAllActivities = () => admin.database().ref(REFS.ACTIVITIES).set({});
+const deleteAllEmployees = () => admin.database().ref(REFS.EMPLOYEES).set({});
+
+const deleteAllUsers = (pageToken?: string): Promise<any> =>
+  admin
+    .auth()
+    .listUsers(100, pageToken)
+    .then(({ pageToken: token, users }) => {
+      console.log(`Removing of ${users.length} users`);
+      return Promise.all(
+        users.map(({ uid }) => {
+          console.log('Removing user', uid);
+          return admin.auth().deleteUser(uid);
+        })
+      ).then(() => (token ? deleteAllUsers(token) : true));
+    });
+
+const getUserEmail = (type: EmployeeType, number: number): string => {
+  switch (type) {
+    case EmployeeType.Admin:
+      return `a${number}@crm.crm`;
+    case EmployeeType.Operator:
+      return `o${number}@crm.crm`;
   }
-
-  writeUsersData(type: EmployeeType, total: number): Promise<any> {
-    return new Promise((resolve, reject) =>
-      Array.from({ length: total }).forEach(async (j, i) => {
-        const result = ref.employes.push();
-        try {
-          await result.set({
-            type,
-            email: `employee${i}@crm`,
-            password: `crm${i}`,
-          });
-        } catch (e) {
-          reject(e);
-        }
-        this.ids[type].push(result.key as string);
-        if (i + 1 === total) {
-          resolve();
-        }
-      })
-    );
+  return `v${number}@crm.crm`;
+};
+const getUserName = (type: EmployeeType, number: number): string => {
+  switch (type) {
+    case EmployeeType.Admin:
+      return 'admin' + number;
+    case EmployeeType.Operator:
+      return 'operator' + +number;
   }
+  return 'volunteer' + number;
+};
 
-  writeActivities(total: number): Promise<any> {
-    return new Promise((resolve, reject) =>
-      Array.from({ length: total }).forEach(async (j, i) => {
-        try {
-          await ref.activities.push().set({
-            type: getRandomEnumValue(ActivityType),
-            description: `Activity description ${i}`,
-            address: `Activity address ${i}`,
-            estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
-            operatorId: getRandomArrayValue(this.ids[EmployeeType.Operator]),
-            assignee: getRandomArrayValue(this.ids[EmployeeType.Volunteer]),
-            status: getRandomEnumValue(ActivityStatus),
-            history: [],
-          });
-        } catch (e) {
-          reject(e);
-        }
-        if (i + 1 === total) {
-          resolve();
-        }
-      })
-    );
-  }
+const createUserAndEmployee = async (user: admin.auth.CreateRequest, type: EmployeeType) => {
+  const { uid } = await admin.auth().createUser(user);
+  ids[type].push(uid);
+  await admin.auth().setCustomUserClaims(uid, { type });
+  return await admin
+    .database()
+    .ref(`${REFS.EMPLOYEES}/${uid}`)
+    .set({ email: user.email, name: user.displayName, type });
+};
 
-  generateData(): Promise<any> {
-    return Promise.all([
-      this.writeUsersData(EmployeeType.Operator, this.config.OPERATORS),
-      this.writeUsersData(EmployeeType.Volunteer, this.config.VOLUNTEERS),
-    ]).then(() => this.writeActivities(this.config.ACTIVITIES));
-  }
-}
+const createUsersByType = (type: EmployeeType, total: number): Promise<any> =>
+  Promise.all(
+    Array.from({ length: total }).map((j, i) => {
+      const user: admin.auth.CreateRequest = {
+        email: getUserEmail(type, i),
+        emailVerified: true,
+        password: `password${i}`,
+        displayName: getUserName(type, i),
+        disabled: false,
+      };
+      console.log('Creating user', user.email);
+      return createUserAndEmployee(user, type);
+    })
+  );
 
-const db = new DB(DB_RESET_CONFIG);
+const createUsers = () =>
+  Promise.all([
+    createUsersByType(EmployeeType.Admin, DB_RESET_CONFIG.ADMINS),
+    createUsersByType(EmployeeType.Operator, DB_RESET_CONFIG.OPERATORS),
+    createUsersByType(EmployeeType.Volunteer, DB_RESET_CONFIG.VOLUNTEERS),
+  ]);
 
-db.generateData()
-  .then(() => process.exit(0))
-  .catch((e) => {
-    console.error(e);
+const createActivities = () => {
+  console.log(`Creating of ${DB_RESET_CONFIG.ACTIVITIES} activities`);
+  return Promise.all(
+    Array.from({ length: DB_RESET_CONFIG.ACTIVITIES }).map(async (j, i) => {
+      await admin
+        .database()
+        .ref(`${REFS.ACTIVITIES}`)
+        .push()
+        .set({
+          type: getRandomEnumValue(ActivityType),
+          description: `Activity description ${i}`,
+          address: `Activity address ${i}`,
+          estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
+          operator: getRandomArrayValue(ids[EmployeeType.Operator]),
+          assignee: getRandomArrayValue(ids[EmployeeType.Volunteer]),
+          status: getRandomEnumValue(ActivityStatus),
+          history: [],
+        });
+    })
+  );
+};
+
+const run = async () => {
+  try {
+    await deleteAllActivities();
+    await deleteAllEmployees();
+    await deleteAllUsers();
+    await createUsers();
+    await createActivities();
+    process.exit(0);
+  } catch (e) {
+    console.log(e);
     process.exit(1);
-  });
+  }
+};
+
+run();

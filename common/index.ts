@@ -35,8 +35,8 @@ export interface IActivity {
   description: string;
   address: string;
   estimation: number;
-  operatorId?: EmployeeId; // who created
-  assignee?: string; // who is assignee
+  operator?: EmployeeId; // who is curator (operator id)
+  assignee?: EmployeeId; // who is assignee (volunteer id)
   status: ActivityStatus;
   history: IActivityHistory[];
 }

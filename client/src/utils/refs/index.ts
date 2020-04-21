@@ -1,4 +1,4 @@
 export const REFS = {
-  EMPLOYES: 'employes',
+  EMPLOYEES: 'employees',
   ACTIVITIES: 'activities',
 };
