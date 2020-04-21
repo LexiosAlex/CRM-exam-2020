@@ -9,8 +9,8 @@ import PwForget from '../../Pages/PasswordForget';
 import Loading from '../Loading';
 
 const AuthRouter: React.FC = (props: any) => {
-  const { auth } = props;
-  if (!auth.isLoaded) {
+  const { auth, profile } = props;
+  if (!auth.isLoaded || !profile.isLoaded) {
     return <Loading />;
   }
 
