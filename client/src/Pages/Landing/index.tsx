@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useFirebase } from 'react-redux-firebase';
 import WithAuth from '../../Hocs/WithAuth';
 import { REFS } from '../../utils/refs';
+import TaskList from "../../components/TaskList";
 
 const getQuery = (firebase, type, uid) => {
   const ActivitiesRef = firebase.ref(REFS.ACTIVITIES);
@@ -43,7 +44,11 @@ const Landing: React.FC = (props: any) => {
     );
   }, []);
 
-  return <div className="container">Landing</div>;
+
+
+  return <div className="container">
+
+  </div>;
 };
 
 export default WithAuth(Landing);

@@ -1,0 +1,90 @@
+.root {
+  margin: 0;
+  padding: 2rem;
+}
+
+.closeButton {
+  position: absolute !important;
+  right: 1rem;
+  top: 1rem;
+  color: #323232;
+}
+
+.dialog {
+  max-width: none;
+  width: 768px;
+}
+
+.addButtonContainer {
+  display: flex;
+  align-items: center;
+  color: #323232;
+  cursor: pointer;
+  border-radius: 3px;
+  height: 36px;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.inputWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+
+  label {
+    letter-spacing: 3px;
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    padding: 10px 10px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #cfcfcf;
+  }
+}
+
+.btnPrimary {
+  width: 100%;
+  display: inline-block;
+  text-decoration: none;
+  letter-spacing: 3px;
+  color: #323232;
+  background: #ffdd2d;
+  min-height: 15px;
+  padding: 0.4rem 0.9rem;
+  border: 3px solid #ffdd2d;
+  text-transform: uppercase;
+}
+
+.btnActive {
+  cursor: pointer;
+  transition: all 0.3s linear;
+  &:hover {
+    background: transparent;
+  }
+}
+
+.btnSpinner {
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-image: url('../../../media/icons/BtnSpinner.svg');
+  background-size: 25px 25px;
+  height: 33px;
+  background-color: #ffe55e;
+  border-color: #ffe55e;
+  cursor: not-allowed;
+
+  span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    clip: rect(0 0 0 0);
+  }
+}

@@ -1,0 +1,40 @@
+.textAreaContainer {
+  padding: 1rem 2rem;
+  overflow: auto;
+  min-height: 80px;
+  max-width: 236px;
+}
+
+.textArea {
+  resize: none;
+  width: 100%;
+  outline: none;
+  border: none;
+}
+
+.addButton {
+  width: 140px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  line-height: 1rem;
+  display: block;
+  text-decoration: none;
+  letter-spacing: 3px;
+  color: #323232;
+  background: #ffdd2d;
+  height: 35px;
+  border-radius: 3px;
+  border: 3px solid #ffdd2d;
+  text-transform: uppercase;
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.buttonsContainer {
+  padding-top: 2rem;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
