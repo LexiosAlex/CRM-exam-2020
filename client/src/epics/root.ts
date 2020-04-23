@@ -1,6 +1,6 @@
 import { combineEpics, Epic, ofType, StateObservable } from 'redux-observable';
 import firebase from 'firebase/app';
-import { mergeMap, map } from 'rxjs/operators';
+import { mergeMap, map, mergeAll } from 'rxjs/operators';
 import { Observable, from } from 'rxjs';
 
 import { Action } from 'typesafe-actions';
@@ -26,18 +26,22 @@ const getQuery = ({
   }
 };
 
-const fetchDataFulfilled = (activities) => ({ type: 'FETCH_ACTIVITIES', payload: activities });
+const fetchDataFulfilled = activities => ({ type: 'FETCH_ACTIVITIES', payload: activities });
 
 const fetchActivities: Epic<Action<string>, Action<any>, AppState> = (action$, state$) =>
   action$.pipe(
     ofType(`${firebasePrefix}/SET_PROFILE`),
     map(() =>
-      getQuery(state$.value.firebase).on('value', (snap) => {
-        const data = snap.val();
-        console.log('received: ', data);
-        return fetchDataFulfilled(data);
-        // return from(snap.val()).pipe(map((activities) => fetchDataFulfilled(activities)));
+      Observable.create(observer => {
+        getQuery(state$.value.firebase).on('value', snap => {
+          const data = snap.val();
+          console.log('received: ', data);
+          observer.next(fetchDataFulfilled(data));
+          observer.complete();
+          // return from(snap.val()).pipe(map((activities) => fetchDataFulfilled(activities)));
+        });
       })
-    )
+    ),
+    mergeAll()
   );
 export default combineEpics(fetchActivities);
