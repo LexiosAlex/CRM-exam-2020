@@ -65,6 +65,8 @@
     "react-redux": "^7.2.0",
     "react-redux-firebase": "^3.3.0",
     "react-router-dom": "^5.1.2",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "rxjs": "^6.5.5",
+    "typesafe-actions": "^5.1.0"
   }
 }

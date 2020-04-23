@@ -3,14 +3,21 @@ import ReactDOM from 'react-dom';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import App from './components/App';
 import { firebaseConfig } from 'common/firebase.config';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { createEpicMiddleware } from 'redux-observable';
 import { Provider } from 'react-redux';
 import rootReducer from './reducers/rootReducer';
+import { compose } from 'redux';
 import firebase from 'firebase';
+import rootEpic from './epics/root';
 import 'firebase/auth';
-const reduxDevTools = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
 
 import './index.scss';
+
+const reduxDevTools = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+const composeEnhancers = reduxDevTools || compose;
+
+const epicMiddleware = createEpicMiddleware();
 
 const rrfConfig = {
   userProfile: 'employees',
@@ -19,13 +26,19 @@ const rrfConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const initialState = {};
-const store = createStore(rootReducer, initialState, reduxDevTools && reduxDevTools());
+const store = createStore(
+  rootReducer,
+  initialState,
+  composeEnhancers(applyMiddleware(epicMiddleware))
+);
 
 const rrfProps = {
   firebase,
   config: rrfConfig,
   dispatch: store.dispatch,
 };
+
+epicMiddleware.run(rootEpic);
 
 ReactDOM.render(
   <Provider store={store}>
