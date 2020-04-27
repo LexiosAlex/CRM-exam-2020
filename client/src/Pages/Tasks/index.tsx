@@ -32,10 +32,6 @@ const Tasks: React.FC<ITasksProps> = ({ taskLists, loaded, pending }) => {
 };
 
 export default connect((state: AppState) => {
-  console.log(state);
-  console.log({  taskLists: state.taskLists.taskListsState,
-    ...state.taskLists.fetchActivitiesAsyncState,});
-
   return {
   taskLists: state.taskLists.taskListsState,
   ...state.taskLists.fetchActivitiesAsyncState,
