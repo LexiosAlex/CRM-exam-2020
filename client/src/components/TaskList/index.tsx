@@ -1,31 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styles from './index.scss';
 import TaskCard from '../TaskCard';
 import AddIcon from '@material-ui/icons/Add';
 import TextForm from './TextForm';
-import { useFirebase } from 'react-redux-firebase';
-import { REFS } from '../../utils/refs';
 import WithAuth from '../../Hocs/WithAuth';
 import {ICard} from '../../interfaces/TaskLists'
 
 interface TaskListInterface {
   title: string;
   cards: ICard[];
-  profile: {uid};
 }
 
-const TaskList: React.FC<TaskListInterface> = ({ title, cards , profile}) => {
-  const firebase = useFirebase();
-  useEffect(() => {
-    profile.uid ? firebase
-      .ref(`${REFS.ACTIVITIES}/`).orderByChild('assignee').equalTo(profile.uid)
-      .on('value', snap => {
-        console.log(snap.val());
-      }) : null;
-  }, []);
 
+const TaskList: React.FC<TaskListInterface> = ({ title, cards}) => {
   const [isFormOpen, setOpenFormState] = useState<boolean>(false);
-
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
