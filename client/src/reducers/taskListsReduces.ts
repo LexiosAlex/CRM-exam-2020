@@ -1,41 +1,31 @@
-import {IList} from "../interfaces/TaskLists";
+import { IList } from '../interfaces/TaskLists';
+import {
+  GET_ACTIVITIES_DONE,
+  GET_ACTIVITIES_FAIL,
+  GET_ACTIVITIES_PENDING,
+} from '../interfaces/actions/activities';
+import mapActivities from './Helpers/mapActivities';
+import { combineReducers } from 'redux';
+import { createAsyncStateReducer } from './Helpers/asyncReducer';
 
-const initialState: IList[] = [{
-  title: 'Ready for assign',
-  cards: [
-    {
-      id: 'string1',
-      title: 'task 1',
-      description: 'some random text 1',
-    },
-    {
-      id: 'string2',
-      title: 'task 2',
-      description: 'some random text agdsgasdg sag 2',
-    },
-  ],
-},
-  {
-    title: 'assigned',
-    cards: [
-      {
-        id: 'string1',
-        title: 'task 1',
-        description: 'some random text 1',
-      },
-      {
-        id: 'string2',
-        title: 'task 2',
-        description: 'some random text agdsgasdg sag 2',
-      },
-    ],
-  }];
+const initialState: IList[] = [];
 
 const taskListsReducer = (state: IList[] = initialState, action) => {
   switch (action.type) {
+    case GET_ACTIVITIES_DONE: {
+      const { payload } = action;
+      return mapActivities(payload);
+    }
     default:
       return state;
   }
 };
 
-export default taskListsReducer;
+export default combineReducers({
+  taskListsState: taskListsReducer,
+  fetchActivitiesAsyncState: createAsyncStateReducer(
+    GET_ACTIVITIES_PENDING,
+    GET_ACTIVITIES_DONE,
+    GET_ACTIVITIES_FAIL
+  ),
+});
