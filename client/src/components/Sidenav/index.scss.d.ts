@@ -2,13 +2,19 @@
 // Please do not change this file!
 interface CssExports {
   'active': string;
+  'drawer': string;
+  'drawerClose': string;
+  'drawerOpen': string;
+  'hide': string;
   'mainNav__linkTitle': string;
+  'root': string;
   'sideNav': string;
   'sideNav__List': string;
   'sideNav__link': string;
   'sideNav__linkTitle': string;
   'sidebar': string;
   'sidebarIcon': string;
+  'toolbar': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
