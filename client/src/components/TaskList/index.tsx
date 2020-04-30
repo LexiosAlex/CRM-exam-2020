@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
+import AddIcon from '@material-ui/icons/Add';
+
+import { IActivity, ActivityStatus } from 'common/index';
 import styles from './index.scss';
 import TaskCard from '../TaskCard';
-import AddIcon from '@material-ui/icons/Add';
 import TextForm from './TextForm';
-import WithAuth from '../../Hocs/WithAuth';
-import {ICard} from '../../interfaces/TaskLists'
+import { TITLE_STATUS_MAP } from '../../utils/activities';
 
 interface TaskListInterface {
-  title: string;
-  cards: ICard[];
+  status: string;
+  tasks: IActivity[];
 }
 
-
-const TaskList: React.FC<TaskListInterface> = ({ title, cards}) => {
+const TaskList: React.FC<TaskListInterface> = ({ status, tasks }) => {
   const [isFormOpen, setOpenFormState] = useState<boolean>(false);
   return (
     <div className={styles.container}>
-      <h2>{title}</h2>
-      {cards.map(card => (
-        <TaskCard key={card.id} title={card.title} />
+      <h2>{TITLE_STATUS_MAP[status]}</h2>
+      {tasks.map((task) => (
+        <TaskCard key={task.id} title={task.title} />
       ))}
       {isFormOpen ? (
         <TextForm
@@ -36,4 +36,4 @@ const TaskList: React.FC<TaskListInterface> = ({ title, cards}) => {
   );
 };
 
-export default WithAuth(TaskList);
+export default TaskList;
