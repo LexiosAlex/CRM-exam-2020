@@ -8,11 +8,13 @@ import Admin from '../../Pages/Admin';
 import Home from '../../Pages/Home';
 import PwForget from '../../Pages/PasswordForget';
 import styles from './index.scss';
-import Tasks from "../../Pages/Tasks";
+import Tasks from '../../Pages/Tasks';
+import AppHeader from '../Header';
 
 const AppRouter: React.FC = () => {
   return (
     <BrowserRouter>
+      <AppHeader />
       <div className={styles.layoutContainer}>
         <SideNav />
         <div>
