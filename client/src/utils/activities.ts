@@ -1,6 +1,6 @@
-import { ActivityStatus, IActivity, EmployeeType } from 'common/index';
+import { ActivityStatus, EmployeeType, IActivity } from 'common/index';
 
-const VOLUNTEER_ACTIVITY_STATUSES = [
+export const VOLUNTEER_ACTIVITY_STATUSES = [
   ActivityStatus.Assigned,
   ActivityStatus.InProgress,
   ActivityStatus.Canceled,

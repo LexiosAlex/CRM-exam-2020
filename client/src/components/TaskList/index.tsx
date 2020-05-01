@@ -17,9 +17,11 @@ const TaskList: React.FC<TaskListInterface> = ({ status, tasks }) => {
   return (
     <div className={styles.container}>
       <h2>{TITLE_STATUS_MAP[status]}</h2>
-      {tasks.map((task) => (
-        <TaskCard key={task.id} title={task.title} />
-      ))}
+      {tasks.length < 1 ? (
+        <p>There is no cards created yet!</p>
+      ) : (
+        tasks.map(task => <TaskCard key={task.id} title={task.title} />)
+      )}
       {isFormOpen ? (
         <TextForm
           onClose={() => {

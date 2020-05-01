@@ -24,7 +24,7 @@ export const createAsyncStateReducer = (
       return { ...state, loaded: true, pending: false, error: false };
     }
     case failedAction: {
-      return { ...state, pending: false, error: true };
+      return { ...state, pending: false, error: action.payload };
     }
     case resetAction: {
       return initialState;
