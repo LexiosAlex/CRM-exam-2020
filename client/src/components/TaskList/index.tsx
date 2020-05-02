@@ -6,6 +6,7 @@ import styles from './index.scss';
 import TaskCard from '../TaskCard';
 import TextForm from './TextForm';
 import { TITLE_STATUS_MAP } from '../../utils/activities';
+import CustomizedDialog from './Editor';
 
 interface TaskListInterface {
   status: string;
@@ -34,6 +35,7 @@ const TaskList: React.FC<TaskListInterface> = ({ status, tasks }) => {
           <p>create a new task</p>
         </div>
       )}
+      {/*<CustomizedDialog />*/}
     </div>
   );
 };

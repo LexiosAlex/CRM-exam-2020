@@ -6,7 +6,8 @@ export enum ActivityType {
 }
 
 export enum ActivityStatus {
-  ReadyForAssignment = 0,
+  New = 0,
+  ReadyForAssignment,
   Assigned,
   InProgress,
   Canceled,

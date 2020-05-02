@@ -88,3 +88,30 @@
     clip: rect(0 0 0 0);
   }
 }
+
+.contentContainer {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.formHeader {
+  display: flex;
+  flex-direction: row;
+}
+
+.formActivityInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.activityStatus,
+.activityAddress,
+.formUserInfo,
+.activityStatus {
+  display: flex;
+  flex-direction: column;
+}
+
+.textArea {
+  color: #323232;
+}
