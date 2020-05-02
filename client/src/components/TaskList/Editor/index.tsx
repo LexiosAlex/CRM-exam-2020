@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -8,79 +9,102 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import AddIcon from '@material-ui/icons/Add';
+import Card from '@material-ui/core/Card';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
+
 import styles from './index.scss';
 
+const CustomizedDialog: React.FC = (props) => {
+  const top100Films = [
+    { title: 'The Shawshank Redemption', year: 1994 },
+    { title: 'The Godfather', year: 1972 },
+    { title: 'The Godfather: Part II', year: 1974 },
+    { title: 'The Dark Knight', year: 2008 },
+    { title: '12 Angry Men', year: 1957 },
+    { title: "Schindler's List", year: 1993 },
+  ];
 
-enum FormInputType {
-  title,
-  description,
-}
+  const isSendingData = false;
 
-const DialogTitle = props => {
-  const { children, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={styles.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={styles.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-};
-
-export default function CustomizedDialogs() {
-  const [open, setOpen] = React.useState(false);
-  const [titleValue, setTitle] = useState<string>('');
-  const [descriptionValue, setDescription] = useState<string>('');
-
-  const onChange: { [key in FormInputType]: Function } = {
-    [FormInputType.title]: setTitle,
-    [FormInputType.description]: setDescription,
-  };
-  const [isSendingData, setSendingData] = useState<boolean>(false);
-
-  const handleClickOpen = () => {
-    console.log('open');
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const onClose = () => {};
 
   return (
-    <div className={styles.addButtonContainer}>
-      <button onClick={handleClickOpen}>
-        <AddIcon >add</AddIcon>
-        <p>create a new task</p>
-      </button>
-      <Dialog maxWidth="md" onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-        <form>
-          <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-            Add new card
-          </DialogTitle>
-          <MuiDialogContent dividers>
-            <div className={styles.inputWrapper}>
-              <label htmlFor="title">Task Title</label>
-              <input
-                type="text"
-                placeholder="Awesome task title"
-                name="title"
-                formNoValidate
-                onChange={event => onChange[FormInputType.title](event.target.value)}
-                value={titleValue}
+    <>
+      <Dialog maxWidth="md" onClose={onClose} aria-labelledby="customized-dialog-title" open={true}>
+        <form noValidate>
+          <header className={styles.formHeader}>
+            <div>
+              <h4>Edit activity</h4>
+            </div>
+            <IconButton aria-label="close" className={styles.closeButton} onClick={onClose}>
+              <CloseIcon />
+            </IconButton>
+          </header>
+          <MuiDialogContent dividers className={styles.contentContainer}>
+            <div className={styles.formActivityInfo}>
+              <div className={styles.activityStatus}>
+                <label htmlFor="activityType">Type</label>
+                <NativeSelect id="activityType" value={10} input={<select />}>
+                  <option aria-label="None" value="" />
+                  <option value={10}>Ten</option>
+                  <option value={20}>Twenty</option>
+                  <option value={30}>Thirty</option>
+                </NativeSelect>
+              </div>
+              <div className={styles.activityAddress}>
+                <label htmlFor="activityAddress">Address</label>
+                <input id="activityAddress" type="text" value="" />
+              </div>
+              <div>
+                <h5>Description</h5>
+                <TextareaAutosize
+                  className={styles.textArea}
+                  placeholder="Enter title for this card"
+                  onBlur={onClose}
+                  // onChange={onChangeInputVal}
+                  // value={textInputValue}
+                />
+              </div>
+            </div>
+            <div className={styles.formUserInfo}>
+              <div className={styles.activityStatus}>
+                <label htmlFor="activityStatus">Status</label>
+                <NativeSelect id="activityStatus" value={10} input={<select />}>
+                  <option aria-label="None" value="" />
+                  <option value={10}>inProgress</option>
+                  <option value={20}>Done</option>
+                  <option value={30}>Ready for assign</option>
+                </NativeSelect>
+              </div>
+            </div>
+            <div>
+              <label htmlFor="activityEstimation">Estimation in hours</label>
+              <input id="activityEstimation" type="number" />
+            </div>
+            <div>
+              <h5>Assigned</h5>
+              <Autocomplete
+                id="combo-box-demo"
+                options={top100Films}
+                getOptionLabel={(option) => option.title}
+                style={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Combo box" variant="outlined" />
+                )}
               />
             </div>
-            <div className={styles.inputWrapper}>
-              <label htmlFor="description">Description</label>
-              <TextareaAutosize
-                placeholder="description"
-                name="description"
-                aria-label="minimum height"
-                rowsMin={3}
-                onChange={event => onChange[FormInputType.description](event.target.value)}
-                value={descriptionValue}
+            <div>
+              <h5>Operator</h5>
+              <Autocomplete
+                id="combo-box-demo"
+                options={top100Films}
+                getOptionLabel={(option) => option.title}
+                style={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Combo box" variant="outlined" />
+                )}
               />
             </div>
           </MuiDialogContent>
@@ -95,9 +119,12 @@ export default function CustomizedDialogs() {
             >
               <span>Save changes</span>
             </button>
+            <button disabled={isSendingData}>cancel</button>
           </MuiDialogActions>
         </form>
       </Dialog>
-    </div>
+    </>
   );
-}
+};
+
+export default CustomizedDialog;
