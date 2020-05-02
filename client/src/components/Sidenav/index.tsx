@@ -10,21 +10,21 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import ViewColumnIcon from '@material-ui/icons/ViewColumn';
-import { Link } from 'react-router-dom';
+import ViewColumnIcon from "@material-ui/icons/ViewColumn"
+import { Link } from 'react-router-dom'
 
-import styles from './index.scss';
-import * as navPaths from '../../utils/router';
+import styles from './index.scss'
+import * as navPaths from '../../utils/router'
 
 const Sidebar: React.FC = () => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
-    setOpen(true)
+    setOpen(true);
   };
 
   const handleDrawerClose = () => {
-    setOpen(false)
+    setOpen(false);
   };
 
   return (
