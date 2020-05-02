@@ -112,7 +112,6 @@ const createActivities = () => {
           type: getRandomEnumValue(ActivityType),
           description: `Activity description ${i}`,
           address: `Activity address ${i}`,
-          title: `task-${i}`,
           estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
           operator: getRandomArrayValue(ids[EmployeeType.Operator]),
           assignee: getRandomArrayValue(ids[EmployeeType.Volunteer]),

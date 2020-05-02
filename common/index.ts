@@ -32,7 +32,6 @@ interface IActivityHistory {
 export interface IActivity {
   id?: Id;
   type: ActivityType;
-  title: string,
   description: string;
   address: string;
   estimation: number;
