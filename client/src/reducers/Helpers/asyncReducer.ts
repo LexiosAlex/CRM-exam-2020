@@ -1,13 +1,13 @@
 interface AsyncReducer {
   loaded: boolean;
   pending: boolean;
-  error: boolean;
+  error: string;
 }
 
 const initialState = {
   loaded: false,
   pending: false,
-  error: false,
+  error: '',
 };
 
 export const createAsyncStateReducer = (
@@ -17,20 +17,19 @@ export const createAsyncStateReducer = (
   resetAction = 'ASYNC_STATE/RESET'
 ) => (state: AsyncReducer = initialState, action): AsyncReducer => {
   switch (action.type) {
-    case requestedAction: {
+    case requestedAction:
       return { ...state, pending: true };
-    }
-    case succeedAction: {
-      return { ...state, loaded: true, pending: false, error: false };
-    }
-    case failedAction: {
+
+    case succeedAction:
+      return { ...initialState, loaded: true };
+
+    case failedAction:
       return { ...state, pending: false, error: action.payload };
-    }
+
     case resetAction: {
       return initialState;
     }
-    default: {
+    default:
       return state;
-    }
   }
 };

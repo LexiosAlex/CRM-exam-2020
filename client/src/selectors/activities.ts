@@ -11,28 +11,6 @@ import {
 
 const getActivities = (state: IAppState): IActivitiesState => state.activities;
 
-const getInitialLists = (type: EmployeeType, activities: IActivity[]) => {
-  switch (type) {
-    case EmployeeType.Admin:
-      return VOLUNTEER_ACTIVITY_STATUSES.map(aStatus => {
-        return { status: aStatus, list: [] };
-      });
-    case EmployeeType.Operator:
-      return VOLUNTEER_ACTIVITY_STATUSES.map(aStatus => {
-        return { status: aStatus, list: [] };
-      });
-    case EmployeeType.Volunteer:
-      return VOLUNTEER_ACTIVITY_STATUSES.map(aStatus => {
-        return {
-          status: aStatus,
-          list: activities ? activities.filter(activity => activity.status === aStatus) : [],
-        };
-      });
-    default:
-      return []
-  }
-};
-
 const getHeap = createSelector([getActivities], activities => activities.heap);
 
 const isEmpty = createSelector([getActivities], activities => !Object.keys(activities.heap).length);
@@ -48,11 +26,26 @@ const getFilteredHeap = createSelector([userSelectors.getEmployeeType, getHeap],
 );
 
 const getLists = createSelector([userSelectors.getEmployeeType, getFilteredHeap], (type, heap) =>
-  getInitialLists(
-    type,
-    Object.entries(heap).map(([key, value]) => {
-      return { ...value, id: key };
-    })
+  Object.entries(heap).reduce(
+    (
+      acc: {
+        [key in ActivityStatus]: IActivity[];
+      },
+      [id, activity]
+    ) => ({
+      ...acc,
+      [activity.status]: [...(acc[activity.status] || []), { ...activity, id }],
+    }),
+    Object.values(ActivityStatus).reduce(
+      (acc, value) => ({
+        ...acc,
+        ...(typeof value === 'number' &&
+        isActivityVisible(type, { status: value as any } as IActivity)
+          ? { [value]: [] }
+          : {}),
+      }),
+      {} as any
+    )
   )
 );
 

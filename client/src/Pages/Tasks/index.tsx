@@ -9,16 +9,14 @@ import Loading from '../../components/Loading';
 import selectors from '../../selectors';
 import Error from '../../components/Error';
 
-
 interface ITasksProps {
-  lists: { status: string; list: IActivity[] }[];
-  loaded: boolean
+  lists: { [key in ActivityStatus]: IActivity[] };
+  loaded: boolean;
   pending: boolean;
-  error: boolean;
-  noData: boolean | null;
+  error: string;
 }
 
-const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error, noData }) => {
+const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error}) => {
   if (pending) {
     return <Loading />;
   }
@@ -30,8 +28,8 @@ const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error, noData })
     <div className={styles.workSpace}>
       <h2>Tasks</h2>
       <div className={styles.tasksContainer}>
-        {lists.map(({status, list}, index) => (
-          <TaskList key={index} status={status} tasks={list}/>
+        {Object.entries(lists).map(([status, list], index) => (
+          <TaskList key={index} status={status} tasks={list} />
         ))}
       </div>
     </div>
@@ -41,5 +39,4 @@ const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error, noData })
 export default connect((state: AppState) => ({
   lists: selectors.activities.getLists(state),
   ...state.activities.fetchAsync,
-  noData: selectors.activities.isEmpty(state),
 }))(Tasks);

@@ -8,12 +8,10 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
-import { useFirebase } from 'react-redux-firebase';
-import {Link} from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 import styles from './index.scss';
 import * as navPaths from '../../utils/router';
@@ -38,20 +36,26 @@ const Sidebar: React.FC = () => {
         <List className={`${styles.list} ${open ? styles.drawerOpen : styles.drawerClose}`}>
           <ListItem button>
             <Link className={styles.link} to={navPaths.HOME}>
-            <ListItemIcon><DashboardIcon/></ListItemIcon>
-              <ListItemText className={`${!open ? styles.hide : ''}`} primary={'Dashboard'}/>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText className={`${!open ? styles.hide : ''}`} primary={'Dashboard'} />
             </Link>
           </ListItem>
           <ListItem button>
             <Link className={styles.link} to={navPaths.HOME}>
-              <ListItemIcon><GroupIcon/></ListItemIcon>
-              <ListItemText className={`${!open ? styles.hide : ''}`} primary={'Users'}/>
+              <ListItemIcon>
+                <GroupIcon />
+              </ListItemIcon>
+              <ListItemText className={`${!open ? styles.hide : ''}`} primary={'Users'} />
             </Link>
           </ListItem>
           <ListItem button>
             <Link className={styles.link} to={navPaths.LANDING}>
-              <ListItemIcon><ViewColumnIcon/></ListItemIcon>
-              <ListItemText className={`${!open ? styles.hide : ''}`} primary={'Task Lists'}/>
+              <ListItemIcon>
+                <ViewColumnIcon />
+              </ListItemIcon>
+              <ListItemText className={`${!open ? styles.hide : ''}`} primary={'Task Lists'} />
             </Link>
           </ListItem>
         </List>

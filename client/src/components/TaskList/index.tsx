@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 
-import { IActivity, ActivityStatus } from 'common/index';
+import { IActivity } from 'common/index';
 import styles from './index.scss';
 import TaskCard from '../TaskCard';
 import TextForm from './TextForm';
@@ -17,10 +17,10 @@ const TaskList: React.FC<TaskListInterface> = ({ status, tasks }) => {
   return (
     <div className={styles.container}>
       <h2>{TITLE_STATUS_MAP[status]}</h2>
-      {tasks.length < 1 ? (
-        <p>There is no cards created yet!</p>
+      {tasks.length ? (
+        tasks.map((task) => <TaskCard key={task.id} type={task.type} address={task.address} />)
       ) : (
-        tasks.map(task => <TaskCard key={task.id} title={task.title} />)
+        <p>There are no cards available new!</p>
       )}
       {isFormOpen ? (
         <TextForm

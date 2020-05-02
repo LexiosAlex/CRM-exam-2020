@@ -4,7 +4,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useFirebase } from 'react-redux-firebase';
 
 import WithAuth from '../../Hocs/WithAuth';
-import { EmployeeType } from 'common/index';
+import { TITLE_USER_TYPE_MAP } from '../../utils/users';
 
 import styles from './index.scss';
 import logo from '../../media/logo/spiral.svg';
@@ -12,19 +12,6 @@ import logo from '../../media/logo/spiral.svg';
 const AppHeader: React.FC = (props: any) => {
   const { email, name, type } = props.profile;
   const firebase = useFirebase();
-
-  const getUserType = (type: EmployeeType): string => {
-    switch (type) {
-      case EmployeeType.Admin:
-        return 'Admin';
-      case EmployeeType.Operator:
-        return 'Operator';
-      case EmployeeType.Volunteer:
-        return 'Volunteer';
-      default:
-        return '';
-    }
-  };
 
   const logOutHandler = () => firebase.logout();
 
@@ -38,7 +25,7 @@ const AppHeader: React.FC = (props: any) => {
         <div className={styles.userInfo}>
           <p className={styles.userName}>{`Name: ${name}`}</p>
           <div className={styles.userInfoContainer}>
-            <p>{`Role: ${getUserType(type)}`}</p>
+            <p>{`Role: ${TITLE_USER_TYPE_MAP[type]}`}</p>
             <p>{`Email: ${email}`}</p>
           </div>
         </div>

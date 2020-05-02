@@ -4,11 +4,11 @@ import styles from './index.scss';
 
 interface ErrorProps {
   className?: string;
-  errorCode?: boolean;
+  errorCode?: string;
   errorMessage: string;
 }
 
-const Error: React.FC<ErrorProps> = ({ className = '', errorCode = false, errorMessage }) => {
+const Error: React.FC<ErrorProps> = ({ className = '', errorCode = '', errorMessage }) => {
   return (
     <div className={`${styles.errorContainer} ${className}`}>
       <p className={styles.errorMsg}>{errorMessage}</p>
