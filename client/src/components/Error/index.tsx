@@ -12,7 +12,7 @@ const Error: React.FC<ErrorProps> = ({ className = '', errorCode = '', errorMess
   return (
     <div className={`${styles.errorContainer} ${className}`}>
       <p className={styles.errorMsg}>{errorMessage}</p>
-      {errorCode ? <p>{`Error code: ${errorCode}`}</p> : null}
+      {errorCode && <p>{`Error code: ${errorCode}`}</p>}
     </div>
   );
 };
