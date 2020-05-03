@@ -29,8 +29,7 @@ interface IActivityHistory {
   status: ActivityType;
 }
 
-export interface IActivity {
-  id?: Id;
+export interface IRawActivity {
   type: ActivityType;
   description: string;
   address: string;
@@ -39,6 +38,10 @@ export interface IActivity {
   assignee?: EmployeeId; // who is assignee (volunteer id)
   status: ActivityStatus;
   history: IActivityHistory[];
+}
+
+export interface IActivity extends IRawActivity {
+  id?: Id;
 }
 
 export interface IEmployee {

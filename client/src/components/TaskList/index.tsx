@@ -1,37 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import AddIcon from '@material-ui/icons/Add';
+
+import { IActivity } from 'common/index';
 import styles from './index.scss';
 import TaskCard from '../TaskCard';
-import AddIcon from '@material-ui/icons/Add';
 import TextForm from './TextForm';
-import { useFirebase } from 'react-redux-firebase';
-import { REFS } from '../../utils/refs';
-import WithAuth from '../../Hocs/WithAuth';
-import {ICard} from '../../interfaces/TaskLists'
+import { TITLE_STATUS_MAP } from '../../utils/activities';
 
 interface TaskListInterface {
-  title: string;
-  cards: ICard[];
-  profile: {uid};
+  status: string;
+  tasks: IActivity[];
 }
 
-const TaskList: React.FC<TaskListInterface> = ({ title, cards , profile}) => {
-  const firebase = useFirebase();
-  useEffect(() => {
-    profile.uid ? firebase
-      .ref(`${REFS.ACTIVITIES}/`).orderByChild('assignee').equalTo(profile.uid)
-      .on('value', snap => {
-        console.log(snap.val());
-      }) : null;
-  }, []);
-
+const TaskList: React.FC<TaskListInterface> = ({ status, tasks }) => {
   const [isFormOpen, setOpenFormState] = useState<boolean>(false);
-
   return (
     <div className={styles.container}>
-      <h2>{title}</h2>
-      {cards.map(card => (
-        <TaskCard key={card.id} title={card.title} />
-      ))}
+      <h2>{TITLE_STATUS_MAP[status]}</h2>
+      {tasks.length ? (
+        tasks.map((task) => <TaskCard key={task.id} type={task.type} address={task.address} />)
+      ) : (
+        <p>There are no cards available new!</p>
+      )}
       {isFormOpen ? (
         <TextForm
           onClose={() => {
@@ -48,4 +38,4 @@ const TaskList: React.FC<TaskListInterface> = ({ title, cards , profile}) => {
   );
 };
 
-export default WithAuth(TaskList);
+export default TaskList;

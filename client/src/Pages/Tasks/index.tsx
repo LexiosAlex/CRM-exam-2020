@@ -1,21 +1,35 @@
-import React, { useEffect } from 'react';
-import TaskList from '../../components/TaskList';
+import React from 'react';
 import { connect } from 'react-redux';
+
+import { ActivityStatus, IActivity } from 'common/index';
+import TaskList from '../../components/TaskList';
 import { AppState } from '../../reducers/rootReducer';
-import { IList } from '../../interfaces/TaskLists';
 import styles from './index.scss';
+import Loading from '../../components/Loading';
+import selectors from '../../selectors';
+import Error from '../../components/Error';
 
 interface ITasksProps {
-  taskLists: IList[];
+  lists: { [key in ActivityStatus]: IActivity[] };
+  loaded: boolean;
+  pending: boolean;
+  error: string;
 }
 
-const Tasks: React.FC<ITasksProps> = ({ taskLists }) => {
+const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error}) => {
+  if (pending) {
+    return <Loading />;
+  }
+  if (error) {
+    return <Error errorMessage={'An error occupied while loading component'} errorCode={error} />;
+  }
+
   return (
     <div className={styles.workSpace}>
-      <h2>Task-lists</h2>
+      <h2>Tasks</h2>
       <div className={styles.tasksContainer}>
-        {taskLists.map((list, index) => (
-          <TaskList key={index} title={list.title} cards={list.cards} />
+        {Object.entries(lists).map(([status, list], index) => (
+          <TaskList key={index} status={status} tasks={list} />
         ))}
       </div>
     </div>
@@ -23,5 +37,6 @@ const Tasks: React.FC<ITasksProps> = ({ taskLists }) => {
 };
 
 export default connect((state: AppState) => ({
-  taskLists: state.taskLists,
+  lists: selectors.activities.getLists(state),
+  ...state.activities.fetchAsync,
 }))(Tasks);
