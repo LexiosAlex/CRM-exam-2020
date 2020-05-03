@@ -35,7 +35,7 @@ const TaskList: React.FC<TaskListInterface> = ({ status, tasks }) => {
           <p>create a new task</p>
         </div>
       )}
-      {/*<CustomizedDialog />*/}
+      <CustomizedDialog />
     </div>
   );
 };

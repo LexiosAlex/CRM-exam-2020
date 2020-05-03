@@ -1,8 +1,3 @@
-.root {
-  margin: 0;
-  padding: 2rem;
-}
-
 .closeButton {
   position: absolute !important;
   right: 1rem;
@@ -12,7 +7,10 @@
 
 .dialog {
   max-width: none;
-  width: 768px;
+}
+
+.dialogForm {
+  min-width: 900px;
 }
 
 .addButtonContainer {
@@ -47,7 +45,7 @@
 }
 
 .btnPrimary {
-  width: 100%;
+  width: 350px;
   display: inline-block;
   text-decoration: none;
   letter-spacing: 3px;
@@ -90,28 +88,105 @@
 }
 
 .contentContainer {
+  padding: 1.25rem 2rem !important;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto 300px;
+  grid-column-gap: 3rem;
+  label,
+  h5 {
+    font-weight: 700;
+    margin: 0;
+    font-size: 1rem;
+    padding: 1rem 0;
+  }
 }
 
 .formHeader {
+  padding: 0 2rem;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  transition: all 0.3s linear;
+  h4 {
+    margin: 0;
+    padding: 2rem 0;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 700;
+  }
+}
+
+.formInput {
+  padding: 10px 10px;
+  min-height: 19px;
+}
+
+.formSelect {
+  select {
+    padding: 10px 24px 10px 10px !important;
+    height: 19px;
+  }
+}
+
+.formInput,
+.formSelect,
+.textArea {
+  border-radius: 5px;
+  color: #323232;
+  border: 1px solid rgba(0, 0, 0, 0.5) !important;
+  &:hover,
+  &:focus {
+    border-color: #ffdd2d !important;
+  }
+  &:active {
+    border-color: #ffe55e !important;
+  }
 }
 
 .formActivityInfo {
+  display: flex;
+  flex-direction: column;
+  .textArea {
+    width: 100%;
+    min-height: 300px;
+    outline: none;
+    resize: none;
+  }
+}
+
+.formUserInfo {
   display: flex;
   flex-direction: column;
 }
 
 .activityStatus,
 .activityAddress,
-.formUserInfo,
-.activityStatus {
+.activityStatus,
+.estimation {
   display: flex;
   flex-direction: column;
 }
 
-.textArea {
+.formActionsContainer {
+  padding: 1rem 2rem;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.btnCancel {
+  display: inline-block;
+  text-decoration: none;
+  letter-spacing: 3px;
   color: #323232;
+  background: #cfcfcf;
+  min-height: 15px;
+  padding: 0.4rem 0.9rem;
+  border: 3px solid #555555;
+  text-transform: uppercase;
+}
+
+.btnDisabled {
+  cursor: not-allowed;
 }

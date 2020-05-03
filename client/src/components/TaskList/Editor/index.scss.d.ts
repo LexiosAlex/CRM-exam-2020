@@ -5,16 +5,22 @@ interface CssExports {
   activityStatus: string;
   addButtonContainer: string;
   btnActive: string;
+  btnCancel: string;
+  btnDisabled: string;
   btnPrimary: string;
   btnSpinner: string;
   closeButton: string;
   contentContainer: string;
   dialog: string;
+  dialogForm: string;
+  estimation: string;
+  formActionsContainer: string;
   formActivityInfo: string;
   formHeader: string;
+  formInput: string;
+  formSelect: string;
   formUserInfo: string;
   inputWrapper: string;
-  root: string;
   textArea: string;
 }
 export const cssExports: CssExports;

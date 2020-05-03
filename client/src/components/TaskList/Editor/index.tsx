@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 
 import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import AddIcon from '@material-ui/icons/Add';
-import Card from '@material-ui/core/Card';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import InputBase from '@material-ui/core/InputBase';
 
 import styles from './index.scss';
 
@@ -32,8 +29,8 @@ const CustomizedDialog: React.FC = (props) => {
 
   return (
     <>
-      <Dialog maxWidth="md" onClose={onClose} aria-labelledby="customized-dialog-title" open={true}>
-        <form noValidate>
+      <Dialog maxWidth="lg" onClose={onClose} aria-labelledby="customized-dialog-title" open={true}>
+        <form noValidate className={styles.dialogForm}>
           <header className={styles.formHeader}>
             <div>
               <h4>Edit activity</h4>
@@ -46,7 +43,11 @@ const CustomizedDialog: React.FC = (props) => {
             <div className={styles.formActivityInfo}>
               <div className={styles.activityStatus}>
                 <label htmlFor="activityType">Type</label>
-                <NativeSelect id="activityType" value={10} input={<select />}>
+                <NativeSelect
+                  id="activityType"
+                  value={10}
+                  input={<InputBase className={styles.formSelect} />}
+                >
                   <option aria-label="None" value="" />
                   <option value={10}>Ten</option>
                   <option value={20}>Twenty</option>
@@ -55,13 +56,12 @@ const CustomizedDialog: React.FC = (props) => {
               </div>
               <div className={styles.activityAddress}>
                 <label htmlFor="activityAddress">Address</label>
-                <input id="activityAddress" type="text" value="" />
+                <input className={styles.formInput} id="activityAddress" type="text" value="" />
               </div>
               <div>
                 <h5>Description</h5>
                 <TextareaAutosize
                   className={styles.textArea}
-                  placeholder="Enter title for this card"
                   onBlur={onClose}
                   // onChange={onChangeInputVal}
                   // value={textInputValue}
@@ -71,55 +71,68 @@ const CustomizedDialog: React.FC = (props) => {
             <div className={styles.formUserInfo}>
               <div className={styles.activityStatus}>
                 <label htmlFor="activityStatus">Status</label>
-                <NativeSelect id="activityStatus" value={10} input={<select />}>
+                <NativeSelect
+                  id="activityStatus"
+                  value={10}
+                  input={<InputBase className={styles.formSelect} />}
+                >
                   <option aria-label="None" value="" />
                   <option value={10}>inProgress</option>
                   <option value={20}>Done</option>
                   <option value={30}>Ready for assign</option>
                 </NativeSelect>
               </div>
-            </div>
-            <div>
-              <label htmlFor="activityEstimation">Estimation in hours</label>
-              <input id="activityEstimation" type="number" />
-            </div>
-            <div>
-              <h5>Assigned</h5>
-              <Autocomplete
-                id="combo-box-demo"
-                options={top100Films}
-                getOptionLabel={(option) => option.title}
-                style={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Combo box" variant="outlined" />
-                )}
-              />
-            </div>
-            <div>
-              <h5>Operator</h5>
-              <Autocomplete
-                id="combo-box-demo"
-                options={top100Films}
-                getOptionLabel={(option) => option.title}
-                style={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Combo box" variant="outlined" />
-                )}
-              />
+              <div className={styles.estimation}>
+                <label htmlFor="activityEstimation">Estimation in hours</label>
+                <input className={styles.formInput} id="activityEstimation" type="number" />
+              </div>
+              <div>
+                <h5>Assigned</h5>
+                <Autocomplete
+                  id="combo-box-demo"
+                  options={top100Films}
+                  getOptionLabel={(option) => option.title}
+                  style={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField {...params} variant="outlined" className={styles.formInput} />
+                  )}
+                />
+              </div>
+              <div>
+                <h5>Operator</h5>
+                <Autocomplete
+                  id="combo-box-demo"
+                  options={top100Films}
+                  getOptionLabel={(option) => option.title}
+                  style={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField {...params} variant="outlined" className={styles.formInput} />
+                  )}
+                />
+              </div>
             </div>
           </MuiDialogContent>
           <MuiDialogActions>
-            <button
-              autoFocus
-              disabled={isSendingData}
-              type="submit"
-              className={`${isSendingData ? styles.btnSpinner : styles.btnActive} ${
-                styles.btnPrimary
-              }`}
-            >
-              <span>Save changes</span>
-            </button>
-            <button disabled={isSendingData}>cancel</button>
+            <div className={styles.formActionsContainer}>
+              <button
+                autoFocus
+                disabled={isSendingData}
+                type="submit"
+                className={`${isSendingData ? styles.btnSpinner : styles.btnActive} ${
+                  styles.btnPrimary
+                }`}
+              >
+                <span>Save changes</span>
+              </button>
+              <button
+                className={`${isSendingData ? styles.btnDisabled : styles.btnActive} ${
+                  styles.btnCancel
+                }`}
+                disabled={isSendingData}
+              >
+                cancel
+              </button>
+            </div>
           </MuiDialogActions>
         </form>
       </Dialog>
