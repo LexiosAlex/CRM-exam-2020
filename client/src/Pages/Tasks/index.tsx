@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import { ActivityStatus, IActivity } from 'common/index';
 import TaskList from '../../components/TaskList';
 import { AppState } from '../../reducers/rootReducer';
-import styles from './index.scss';
 import Loading from '../../components/Loading';
 import selectors from '../../selectors';
 import Error from '../../components/Error';
 import CustomizedDialog from '../../components/Editor';
+
+import styles from './index.scss';
 
 interface ITasksProps {
   lists: { [key in ActivityStatus]: IActivity[] };
@@ -25,10 +27,13 @@ const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error }) => {
     return <Error errorMessage={'An error occupied while loading component'} errorCode={error} />;
   }
 
+  const onDragEnd = () => {
+    console.log('dragEnd');
+  };
   const [isDialogOpen, setDialogOpen] = useState<boolean>(false);
 
   return (
-    <>
+    <DragDropContext onDragEnd={onDragEnd}>
       <div className={styles.workSpace}>
         <h2>Tasks</h2>
         <div className={styles.tasksContainer}>
@@ -43,7 +48,7 @@ const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error }) => {
         </div>
       </div>
       <CustomizedDialog open={isDialogOpen} onClose={() => setDialogOpen(false)} />
-    </>
+    </DragDropContext>
   );
 };
 

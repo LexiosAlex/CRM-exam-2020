@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
+import { Droppable } from 'react-beautiful-dnd';
 
 import { IActivity } from 'common/index';
 import styles from './index.scss';
@@ -15,16 +16,28 @@ interface TaskListInterface {
 
 const TaskList: React.FC<TaskListInterface> = ({ status, tasks, openDialog }) => {
   return (
-    <div className={styles.container}>
-      <h2>{TITLE_STATUS_MAP[status]}</h2>
-      {tasks.length ? (
-        tasks.map((task) => (
-          <TaskCard key={task.id} type={task.type} address={task.address} openDialog={openDialog} />
-        ))
-      ) : (
-        <p>There are no cards available new!</p>
+    <Droppable droppableId={status}>
+      {(provided) => (
+        <div {...provided.droppableProps} ref={provided.innerRef} className={styles.container}>
+          <h2>{TITLE_STATUS_MAP[status]}</h2>
+          {tasks.length ? (
+            tasks.map((task, index) => (
+              <TaskCard
+                key={task.id}
+                type={task.type}
+                address={task.address}
+                id={task.id}
+                index={index}
+                openDialog={openDialog}
+              />
+            ))
+          ) : (
+            <p>There are no cards available new!</p>
+          )}
+          {provided.placeholder}
+        </div>
       )}
-    </div>
+    </Droppable>
   );
 };
 
