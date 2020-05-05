@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import { ActivityStatus, IActivity } from 'common/index';
@@ -8,6 +8,7 @@ import styles from './index.scss';
 import Loading from '../../components/Loading';
 import selectors from '../../selectors';
 import Error from '../../components/Error';
+import CustomizedDialog from '../../components/Editor';
 
 interface ITasksProps {
   lists: { [key in ActivityStatus]: IActivity[] };
@@ -16,7 +17,7 @@ interface ITasksProps {
   error: string;
 }
 
-const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error}) => {
+const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error }) => {
   if (pending) {
     return <Loading />;
   }
@@ -24,15 +25,25 @@ const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error}) => {
     return <Error errorMessage={'An error occupied while loading component'} errorCode={error} />;
   }
 
+  const [isDialogOpen, setDialogOpen] = useState<boolean>(false);
+
   return (
-    <div className={styles.workSpace}>
-      <h2>Tasks</h2>
-      <div className={styles.tasksContainer}>
-        {Object.entries(lists).map(([status, list], index) => (
-          <TaskList key={index} status={status} tasks={list} />
-        ))}
+    <>
+      <div className={styles.workSpace}>
+        <h2>Tasks</h2>
+        <div className={styles.tasksContainer}>
+          {Object.entries(lists).map(([status, list], index) => (
+            <TaskList
+              key={index}
+              status={status}
+              tasks={list}
+              openDialog={() => setDialogOpen(true)}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+      <CustomizedDialog open={isDialogOpen} onClose={() => setDialogOpen(false)} />
+    </>
   );
 };
 
