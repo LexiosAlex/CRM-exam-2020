@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext } from 'react-beautiful-dnd';
 
-import { ActivityStatus, IActivity } from 'common/index';
+import { ActivityLists } from '../../interfaces/common';
 import TaskList from '../../components/TaskList';
 import { AppState } from '../../reducers/rootReducer';
 import Loading from '../../components/Loading';
@@ -13,7 +13,7 @@ import CustomizedDialog from '../../components/Editor';
 import styles from './index.scss';
 
 interface ITasksProps {
-  lists: { [key in ActivityStatus]: IActivity[] };
+  lists: ActivityLists;
   loaded: boolean;
   pending: boolean;
   error: string;

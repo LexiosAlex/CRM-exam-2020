@@ -1,9 +1,10 @@
 import { createSelector } from 'reselect';
 
 import userSelectors from './user';
-import { ActivityStatus, EmployeeType, IActivity } from 'common/index';
+import { ActivityStatus, IActivity } from 'common/index';
 import { IAppState, IActivitiesState } from 'src/reducers/rootReducer';
 import { checkStatus, TITLE_STATUS_MAP, VOLUNTEER_ACTIVITY_STATUSES } from 'src/utils/activities';
+import { ActivityLists } from 'src/interfaces/common';
 
 const getActivities = (state: IAppState): IActivitiesState => state.activities;
 
@@ -26,7 +27,7 @@ const getFilteredHeap = createSelector([userSelectors.getEmployeeType, getHeap],
 
 const getLists = createSelector([userSelectors.getEmployeeType, getFilteredHeap], (type, heap) =>
   Object.entries(heap).reduce(
-    (acc: { [key in ActivityStatus]: IActivity[] }, [id, activity]) => ({
+    (acc: ActivityLists, [id, activity]) => ({
       ...acc,
       [activity.status]: [...acc[activity.status], { ...activity, id }],
     }),
