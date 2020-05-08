@@ -12,16 +12,9 @@ interface TaskListInterface {
   tasks: IActivity[];
   canDrop: boolean;
   isDragging: boolean;
-  openDialog: Function;
 }
 
-const TaskList: React.FC<TaskListInterface> = ({
-  status,
-  tasks,
-  canDrop,
-  openDialog,
-  isDragging,
-}) => {
+const TaskList: React.FC<TaskListInterface> = ({ status, tasks, canDrop, isDragging }) => {
   return (
     <div
       className={`${styles.container} ${
@@ -40,11 +33,10 @@ const TaskList: React.FC<TaskListInterface> = ({
                   address={task.address}
                   id={task.id}
                   index={index}
-                  openDialog={openDialog}
                 />
               ))
             ) : (
-              <p>There are no cards available new!</p>
+              <p>There are no cards available</p>
             )}
             {provided.placeholder}
           </div>

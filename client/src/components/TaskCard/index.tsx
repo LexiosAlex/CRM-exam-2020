@@ -14,10 +14,9 @@ interface ITaskCardProps {
   index: number;
   type: ActivityType;
   address: string;
-  openDialog: Function;
 }
 
-const TaskCard: React.FC<ITaskCardProps> = ({ type, address, id, index, openDialog }) => {
+const TaskCard: React.FC<ITaskCardProps> = ({ type, address, id, index }) => {
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (

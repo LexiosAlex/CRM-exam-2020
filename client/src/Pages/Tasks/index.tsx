@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 
 import { ActivityStatus, EmployeeType, IActivity } from 'common/index';
 import { getAllowedStatuses } from 'common/activityWorkflow';
@@ -31,24 +31,19 @@ const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error, userType,
     return <Error errorMessage={'An error occupied while loading component'} errorCode={error} />;
   }
 
-  // const [dropPermittedLists, setDropPermissions] = useState<ActivityStatus[]>([]);
-  //У меня проблемы с типами, я не могу с getDropPermissions вернуть именно так, чтобы ts понимал, что я возвращаю массив enum values
-  const [dropPermittedLists, setDropPermissions] = useState<any>([]);
+  const [allowedStatuses, setAllowedStatuses] = useState<ActivityStatus[]>([]);
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [isDialogOpen, setDialogOpen] = useState<boolean>(false);
 
-  const onDragEnd = (props) => {
-    const { destination, draggableId } = props;
+  const onDragEnd = ({ destination, draggableId }: DropResult) => {
     if (destination) {
       dragEnd(draggableId, parseInt(destination.droppableId), 10);
     }
     setIsDragging(false);
   };
 
-  const onDragStart = (props) => {
-    const { droppableId } = props.source;
+  const onDragStart = ({ source: { droppableId } }: DragStart) => {
     setIsDragging(true);
-    setDropPermissions(getAllowedStatuses(userType, parseInt(droppableId, 10)));
+    setAllowedStatuses(getAllowedStatuses(userType, parseInt(droppableId, 10)));
   };
 
   const onDragUpdate = (props) => {
@@ -66,15 +61,13 @@ const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error, userType,
                 key={index}
                 status={status}
                 tasks={list}
-                canDrop={dropPermittedLists.includes(parseInt(status))}
+                canDrop={allowedStatuses.includes(parseInt(status))}
                 isDragging={isDragging}
-                openDialog={() => setDialogOpen(true)}
               />
             ))}
           </div>
         </div>
       </DragDropContext>
-      {/*<CustomizedDialog open={isDialogOpen} onClose={() => setDialogOpen(false)} />*/}
     </>
   );
 };
