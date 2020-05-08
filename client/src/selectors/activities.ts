@@ -38,7 +38,14 @@ const getLists = createSelector(
     )
 );
 
+const getStatusState = createSelector([getActivities], (activities) => activities.status);
+
+const getIsDragging = createSelector([getStatusState], (statusState) => statusState.dragging);
+const getAllowedStatuses = createSelector([getStatusState], (statusState) => statusState.allowed);
+
 export default {
   getLists,
   isEmpty,
+  getIsDragging,
+  getAllowedStatuses,
 };

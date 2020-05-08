@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 
@@ -10,7 +10,7 @@ import { AppState } from '../../reducers/rootReducer';
 import Loading from '../../components/Loading';
 import selectors from '../../selectors';
 import Error from '../../components/Error';
-import { dragEnd } from '../../actions/activities';
+import { dragStart, dragCancel, dragEnd } from '../../actions/activities';
 
 import styles from './index.scss';
 
@@ -20,10 +20,25 @@ interface ITasksProps {
   pending: boolean;
   error: string;
   userType: EmployeeType;
+  isDragging: boolean;
+  allowedStatuses: ActivityStatus[];
+  dragStart: Function;
+  dragCancel: Function;
   dragEnd: Function;
 }
 
-const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error, userType, dragEnd }) => {
+const Tasks: React.FC<ITasksProps> = ({
+  lists,
+  loaded,
+  pending,
+  error,
+  userType,
+  isDragging,
+  allowedStatuses,
+  dragStart,
+  dragCancel,
+  dragEnd,
+}) => {
   if (pending) {
     return <Loading />;
   }
@@ -31,19 +46,16 @@ const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error, userType,
     return <Error errorMessage={'An error occupied while loading component'} errorCode={error} />;
   }
 
-  const [allowedStatuses, setAllowedStatuses] = useState<ActivityStatus[]>([]);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-
   const onDragEnd = ({ destination, draggableId }: DropResult) => {
     if (destination) {
-      dragEnd(draggableId, parseInt(destination.droppableId), 10);
+      dragEnd(draggableId, parseInt(destination.droppableId, 10));
+    } else {
+      dragCancel(draggableId);
     }
-    setIsDragging(false);
   };
 
   const onDragStart = ({ source: { droppableId } }: DragStart) => {
-    setIsDragging(true);
-    setAllowedStatuses(getAllowedStatuses(userType, parseInt(droppableId, 10)));
+    dragStart(userType, parseInt(droppableId, 10));
   };
 
   const onDragUpdate = (props) => {
@@ -77,8 +89,12 @@ export default connect(
     lists: selectors.activities.getLists(state),
     ...state.activities.fetchAsync,
     userType: state.firebase.profile.type,
+    isDragging: selectors.activities.getIsDragging(state),
+    allowedStatuses: selectors.activities.getAllowedStatuses(state),
   }),
   (dispatch) => ({
+    dragStart: (type: EmployeeType, status: ActivityStatus) => dispatch(dragStart(type, status)),
+    dragCancel: (id: string) => dispatch(dragCancel(id)),
     dragEnd: (id: string, status: ActivityStatus) => dispatch(dragEnd(id, status)),
   })
 )(Tasks);

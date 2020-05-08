@@ -10,8 +10,14 @@ const rootReducer = combineReducers({
   formReducer,
 });
 
+export interface IActivitiesStatusState {
+  dragging: boolean;
+  allowed: IActivity[];
+}
+
 export interface IActivitiesState {
   heap: { [key: string]: IActivity };
+  status: IActivitiesStatusState;
   fetchAsync: Object;
 }
 
