@@ -1,6 +1,6 @@
-import { ActivityStatus, EmployeeType, IActivity, ActivityType } from 'common/index';
+import { ActivityStatus, EmployeeType, ActivityType } from 'common/index';
 
-export const VOLUNTEER_ACTIVITY_STATUSES = [
+const VOLUNTEER_ACTIVITY_STATUSES: ActivityStatus[] = [
   ActivityStatus.ReadyForAssignment,
   ActivityStatus.Assigned,
   ActivityStatus.InProgress,
@@ -8,16 +8,21 @@ export const VOLUNTEER_ACTIVITY_STATUSES = [
   ActivityStatus.Done,
 ];
 
-export const OPERATOR_ACTIVITY_STATUSES = [
+const OPERATOR_ACTIVITY_STATUSES: ActivityStatus[] = [
   ActivityStatus.New,
   ...VOLUNTEER_ACTIVITY_STATUSES,
   ActivityStatus.Archived,
 ];
 
-export const checkStatus = (type: EmployeeType, status: ActivityStatus) =>
-  (type === EmployeeType.Admin && OPERATOR_ACTIVITY_STATUSES.indexOf(status) >= 0) ||
-  (type === EmployeeType.Operator && OPERATOR_ACTIVITY_STATUSES.indexOf(status) >= 0) ||
-  (type === EmployeeType.Volunteer && VOLUNTEER_ACTIVITY_STATUSES.indexOf(status) >= 0);
+const ADMIN_ACTIVITY_STATUSES: ActivityStatus[] = Object.keys(ActivityStatus)
+  .filter((key) => isNaN(Number(key)))
+  .map((key) => ActivityStatus[key]);
+
+export const ALLOWED_STATUSES: { [key in EmployeeType]: ActivityStatus[] } = {
+  [EmployeeType.Volunteer]: VOLUNTEER_ACTIVITY_STATUSES,
+  [EmployeeType.Operator]: OPERATOR_ACTIVITY_STATUSES,
+  [EmployeeType.Admin]: ADMIN_ACTIVITY_STATUSES,
+};
 
 export const TITLE_STATUS_MAP = {
   [ActivityStatus.New]: 'Recently added',
