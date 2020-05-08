@@ -15,7 +15,7 @@ const isEmpty = createSelector(
 );
 
 const getFilteredHeap = createSelector(
-  [userSelectors.getAllowedStatuses, getHeap],
+  [userSelectors.getVisibleStatuses, getHeap],
   (statusList, heap) =>
     Object.entries(heap).reduce(
       (acc: { [key: string]: IActivity }, [key, activity]) => ({
@@ -27,7 +27,7 @@ const getFilteredHeap = createSelector(
 );
 
 const getLists = createSelector(
-  [userSelectors.getAllowedStatuses, getFilteredHeap],
+  [userSelectors.getVisibleStatuses, getFilteredHeap],
   (statusList, heap) =>
     Object.entries(heap).reduce(
       (acc: ActivityLists, [id, activity]) => ({

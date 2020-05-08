@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import { ActivityStatus, EmployeeType } from 'common/index';
 import { IAppState, IActivitiesState } from 'src/reducers/rootReducer';
-import { ALLOWED_STATUSES } from 'src/utils/activities';
+import { VISIBLE_STATUSES } from 'src/utils/activities';
 
 const getProfile = (state: IAppState) => state.firebase.profile;
 
@@ -13,10 +13,10 @@ const getEmployeeType = createSelector(
 
 const getAllowedStatuses = createSelector(
   [getEmployeeType],
-  (type: EmployeeType) => ALLOWED_STATUSES[type]
+  (type: EmployeeType) => VISIBLE_STATUSES[type]
 );
 
 export default {
   getEmployeeType,
-  getAllowedStatuses,
+  getVisibleStatuses: getAllowedStatuses,
 };

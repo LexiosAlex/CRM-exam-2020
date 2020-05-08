@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import { ActivityStatus, EmployeeType, IActivity } from 'common/index';
-import { getDropPermissions } from 'common/helpers';
+import { getAllowedStatuses } from 'common/activityWorkflow';
 import { ActivityLists } from '../../interfaces/common';
 import TaskList from '../../components/TaskList';
 import { AppState } from '../../reducers/rootReducer';
@@ -48,11 +48,11 @@ const Tasks: React.FC<ITasksProps> = ({ lists, loaded, pending, error, userType,
   const onDragStart = (props) => {
     const { droppableId } = props.source;
     setIsDragging(true);
-    setDropPermissions(getDropPermissions(userType, parseInt(droppableId)));
+    setDropPermissions(getAllowedStatuses(userType, parseInt(droppableId, 10)));
   };
 
   const onDragUpdate = (props) => {
-    console.log(props);
+    // console.log(props);
   };
 
   return (

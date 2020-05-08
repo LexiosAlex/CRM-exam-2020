@@ -18,7 +18,7 @@ const ADMIN_ACTIVITY_STATUSES: ActivityStatus[] = Object.keys(ActivityStatus)
   .filter((key) => isNaN(Number(key)))
   .map((key) => ActivityStatus[key]);
 
-export const ALLOWED_STATUSES: { [key in EmployeeType]: ActivityStatus[] } = {
+export const VISIBLE_STATUSES: { [key in EmployeeType]: ActivityStatus[] } = {
   [EmployeeType.Volunteer]: VOLUNTEER_ACTIVITY_STATUSES,
   [EmployeeType.Operator]: OPERATOR_ACTIVITY_STATUSES,
   [EmployeeType.Admin]: ADMIN_ACTIVITY_STATUSES,
