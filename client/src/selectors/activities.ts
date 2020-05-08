@@ -2,8 +2,8 @@ import { createSelector } from 'reselect';
 
 import userSelectors from './user';
 import { ActivityStatus, EmployeeType, IActivity } from 'common/index';
-import { IAppState, IActivitiesState } from 'src/reducers/rootReducer';
-import { checkStatus, TITLE_STATUS_MAP, VOLUNTEER_ACTIVITY_STATUSES } from 'src/utils/activities';
+import { IActivitiesState, IAppState } from 'src/reducers/rootReducer';
+import { checkStatus } from 'src/utils/activities';
 
 const getActivities = (state: IAppState): IActivitiesState => state.activities;
 

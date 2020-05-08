@@ -42,7 +42,7 @@ export interface IRawActivity {
 }
 
 export interface IActivity extends IRawActivity {
-  id?: Id;
+  id: Id;
 }
 
 export interface IEmployee {
