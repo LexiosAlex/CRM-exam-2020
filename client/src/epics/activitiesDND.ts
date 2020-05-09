@@ -6,11 +6,11 @@ import { ActionsObservable } from 'redux-observable';
 
 import {
   DRAG_ACTIVITY_DONE,
-  DRAG_REQUEST_PENDING,
-  DRAG_REQUEST_FAIL,
-  DRAG_REQUEST_DONE,
+  CHANGE_STATUS_REQUEST_PENDING,
+  CHANGE_STATUS_REQUEST_FAIL,
+  CHANGE_STATUS_REQUEST_DONE,
   dragActivitiesActions,
-  dragRequestActions,
+  changeRequestActions,
   DRAG_ACTIVITY_CANCEL,
 } from '../interfaces/actions/activities';
 import { showNotification } from '../actions/notifier';
@@ -24,9 +24,15 @@ const updateActivityStatus = (payload): Promise<firebase.database.DataSnapshot> 
   return activityRef.update({ status });
 };
 
-const dragRequested = (payload): dragRequestActions => ({ type: DRAG_REQUEST_PENDING, payload });
-const dragDone = (id): dragRequestActions => ({ type: DRAG_REQUEST_DONE, payload: id });
-const dragFailed = (error): dragRequestActions => ({ type: DRAG_REQUEST_FAIL, payload: error });
+const dragRequested = (payload): changeRequestActions => ({
+  type: CHANGE_STATUS_REQUEST_PENDING,
+  payload,
+});
+const dragDone = (id): changeRequestActions => ({ type: CHANGE_STATUS_REQUEST_DONE, payload: id });
+const dragFailed = (error): changeRequestActions => ({
+  type: CHANGE_STATUS_REQUEST_FAIL,
+  payload: error,
+});
 const dragCancel = (): dragActivitiesActions => ({ type: DRAG_ACTIVITY_CANCEL });
 const enqueueNotification = (notification: INotification) => showNotification(notification);
 
@@ -36,9 +42,9 @@ const localActivityDragDone = (action$: ActionsObservable<dragActivitiesActions>
     map((action) => dragRequested(action.payload))
   );
 
-const requestActivitiesDrag = (action$: ActionsObservable<dragRequestActions>) =>
+const requestActivitiesDrag = (action$: ActionsObservable<changeRequestActions>) =>
   action$.pipe(
-    filter(isOfType(DRAG_REQUEST_PENDING)),
+    filter(isOfType(CHANGE_STATUS_REQUEST_PENDING)),
     switchMap((action) =>
       updateActivityStatus(action.payload)
         .then((data) => dragDone(data))
@@ -46,9 +52,9 @@ const requestActivitiesDrag = (action$: ActionsObservable<dragRequestActions>) =
     )
   );
 
-const setNotification = (action$: ActionsObservable<dragRequestActions>) =>
+const setNotification = (action$: ActionsObservable<changeRequestActions>) =>
   action$.pipe(
-    filter(isOfType(DRAG_REQUEST_FAIL)),
+    filter(isOfType(CHANGE_STATUS_REQUEST_FAIL)),
     mergeMap((action) =>
       of(
         enqueueNotification({

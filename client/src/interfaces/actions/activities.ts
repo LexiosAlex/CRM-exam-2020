@@ -9,9 +9,9 @@ export const DRAG_ACTIVITY_START: string = `${prefix}/DRAG_ACTIVITY_START`;
 export const DRAG_ACTIVITY_CANCEL: string = `${prefix}/DRAG_ACTIVITY_CANCEL`;
 export const DRAG_ACTIVITY_DONE: string = `${prefix}/DRAG_ACTIVITY_DONE`;
 
-export const DRAG_REQUEST_PENDING: string = `${prefix}/DRAG_REQUEST_PENDING`;
-export const DRAG_REQUEST_FAIL: string = `${prefix}/DRAG_REQUEST_FAIL`;
-export const DRAG_REQUEST_DONE: string = `${prefix}/DRAG_REQUEST_DONE`;
+export const CHANGE_STATUS_REQUEST_PENDING: string = `${prefix}/CHANGE_STATUS_REQUEST_PENDING`;
+export const CHANGE_STATUS_REQUEST_FAIL: string = `${prefix}/CHANGE_STATUS_REQUEST_FAIL`;
+export const CHANGE_STATUS_REQUEST_DONE: string = `${prefix}/CHANGE_STATUS_REQUEST_DONE`;
 
 export interface getActivitiesDone {
   type: typeof GET_ACTIVITIES_DONE;
@@ -42,22 +42,22 @@ export interface dragActivityDone {
   payload: { id: string; status: ActivityStatus };
 }
 
-export interface dragRequestPending {
-  type: typeof DRAG_REQUEST_PENDING;
+export interface changeRequestPending {
+  type: typeof CHANGE_STATUS_REQUEST_PENDING;
   payload: { id: string; status: ActivityStatus };
 }
 
-export interface dragRequestFail {
-  type: typeof DRAG_REQUEST_FAIL;
+export interface changeRequestFail {
+  type: typeof CHANGE_STATUS_REQUEST_FAIL;
   payload: string;
 }
 
-export interface dragRequestDone {
-  type: typeof DRAG_REQUEST_DONE;
+export interface changeRequestDone {
+  type: typeof CHANGE_STATUS_REQUEST_DONE;
   payload: string;
 }
 
-export type dragRequestActions = dragRequestPending | dragRequestFail | dragRequestDone;
+export type changeRequestActions = changeRequestPending | changeRequestFail | changeRequestDone;
 
 export type dragActivitiesActions = dragActivityStart | dragActivityCancel | dragActivityDone;
 
