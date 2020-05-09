@@ -7,6 +7,9 @@ import {
   DRAG_ACTIVITY_START,
   DRAG_ACTIVITY_CANCEL,
   DRAG_ACTIVITY_DONE,
+  DRAG_REQUEST_PENDING,
+  DRAG_REQUEST_FAIL,
+  DRAG_REQUEST_DONE,
 } from '../interfaces/actions/activities';
 import { createAsyncStateReducer } from './Helpers/asyncReducer';
 import { IActivity } from 'common/index';
@@ -47,6 +50,12 @@ const statusReducer = (state = initialStatusState, { type, payload }) => {
   }
 };
 
+const dragAsyncReducer = createAsyncStateReducer(
+  DRAG_REQUEST_PENDING,
+  DRAG_REQUEST_FAIL,
+  DRAG_REQUEST_DONE
+);
+
 const fetchAsyncReducer = createAsyncStateReducer(
   GET_ACTIVITIES_PENDING,
   GET_ACTIVITIES_DONE,
@@ -57,4 +66,5 @@ export default combineReducers({
   heap: heapReducer,
   status: statusReducer,
   fetchAsync: fetchAsyncReducer,
+  dragAsync: dragAsyncReducer,
 });

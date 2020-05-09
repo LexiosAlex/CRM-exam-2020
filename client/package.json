@@ -63,6 +63,7 @@
     "@material-ui/lab": "^4.0.0-alpha.51",
     "final-form": "^4.19.1",
     "firebase": "^7.14.0",
+    "notistack": "^0.9.11",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.1",
