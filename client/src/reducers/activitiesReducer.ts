@@ -43,8 +43,7 @@ const statusReducer = (state = initialStatusState, { type, payload }) => {
     case DRAG_ACTIVITY_CANCEL:
       return initialStatusState;
     case DRAG_ACTIVITY_DONE:
-      console.log(payload.status);
-      return initialStatusState;
+      return { ...initialStatusState, id: payload.id };
     default:
       return state;
   }

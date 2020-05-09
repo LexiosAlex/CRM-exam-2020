@@ -20,10 +20,9 @@ export const showNotification = (notification: INotification) => {
 };
 
 export const closeNotification = (key: SnackbarKey) => {
-  console.log(key);
   return {
     type: CLOSE_NOTIFICATION,
-    dismissAll: !key, // dismiss all if no key has been defined
+    dismissAll: !key,
     key,
   };
 };
