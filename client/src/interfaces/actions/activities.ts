@@ -1,5 +1,5 @@
 import { ActivityStatus, EmployeeType, IRawActivity } from 'common/index';
-const prefix = 'ACTIVITIES';
+const prefix: string = 'ACTIVITIES';
 
 export const GET_ACTIVITIES_PENDING: string = `${prefix}/GET_ACTIVITIES_PENDING`;
 export const GET_ACTIVITIES_FAIL: string = `${prefix}/GET_ACTIVITIES_FAIL`;

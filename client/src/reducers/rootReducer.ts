@@ -3,10 +3,12 @@ import { combineReducers } from 'redux';
 import activitiesReducer from './activitiesReducer';
 import { IActivity } from 'common/index';
 import { reducer as formReducer } from 'redux-form';
+import notificationsReducer from './notifications';
 
 const rootReducer = combineReducers({
   firebase: firebaseReducer,
   activities: activitiesReducer,
+  notifications: notificationsReducer,
   formReducer,
 });
 
@@ -24,6 +26,7 @@ export interface IActivitiesState {
 export interface IAppState {
   firebase: FirebaseReducer.Reducer;
   activities: IActivitiesState;
+  notifications: any[];
   formReducer: any;
 }
 
