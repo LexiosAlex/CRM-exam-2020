@@ -49,7 +49,7 @@ const statusReducer = (state = initialStatusState, { type, payload }) => {
   }
 };
 
-const dragAsyncReducer = createAsyncStateReducer(
+const changeStatusAsyncReducer = createAsyncStateReducer(
   CHANGE_STATUS_REQUEST_PENDING,
   CHANGE_STATUS_REQUEST_FAIL,
   CHANGE_STATUS_REQUEST_DONE
@@ -65,5 +65,5 @@ export default combineReducers({
   heap: heapReducer,
   status: statusReducer,
   fetchAsync: fetchAsyncReducer,
-  dragAsync: dragAsyncReducer,
+  statusAsync: changeStatusAsyncReducer,
 });

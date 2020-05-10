@@ -1,5 +1,5 @@
 import { ActivityStatus, EmployeeType } from './index';
-import { VISIBLE_STATUSES } from 'src/utils/activities';
+import { VISIBLE_STATUSES } from './constants';
 
 const checkVolunteerTransition = (start: ActivityStatus, end: ActivityStatus): boolean => {
   switch (start) {

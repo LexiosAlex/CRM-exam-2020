@@ -1,6 +1,6 @@
 import { combineEpics } from 'redux-observable';
 
 import activities from './activities';
-import activitiesDND from './activity';
+import activity from './activity';
 
-export default combineEpics(...activities, ...activitiesDND);
+export default combineEpics(...activities, ...activity);
