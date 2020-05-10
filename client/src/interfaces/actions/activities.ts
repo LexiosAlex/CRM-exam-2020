@@ -34,7 +34,7 @@ export interface dragActivityStart {
 
 export interface dragActivityCancel {
   type: typeof DRAG_ACTIVITY_CANCEL;
-  payload?: { id: string };
+  payload: { id: string };
 }
 
 export interface dragActivityDone {

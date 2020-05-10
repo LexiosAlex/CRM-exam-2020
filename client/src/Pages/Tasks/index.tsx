@@ -10,7 +10,7 @@ import { AppState } from '../../reducers/rootReducer';
 import Loading from '../../components/Loading';
 import selectors from '../../selectors';
 import Error from '../../components/Error';
-import { dragStart, dragCancel, dragEnd } from '../../actions/activities';
+import { dragStart, dragCancel, dragEnd } from '../../actions/activity';
 
 import styles from './index.scss';
 
