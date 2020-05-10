@@ -1,0 +1,89 @@
+[debug] [2020-05-10T14:35:25.442Z] ----------------------------------------------------------------------
+[debug] [2020-05-10T14:35:25.444Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Lexio\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2020-05-10T14:35:25.445Z] CLI Version:   8.1.1
+[debug] [2020-05-10T14:35:25.445Z] Platform:      win32
+[debug] [2020-05-10T14:35:25.445Z] Node Version:  v12.16.1
+[debug] [2020-05-10T14:35:25.446Z] Time:          Sun May 10 2020 17:35:25 GMT+0300 (GMT+03:00)
+[debug] [2020-05-10T14:35:25.446Z] ----------------------------------------------------------------------
+[debug] [2020-05-10T14:35:25.446Z] 
+[debug] [2020-05-10T14:35:25.452Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-05-10T14:35:25.453Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\Lexio\Documents\gitProjects\crm-exam2020
+
+Before we get started, keep in mind:
+
+  * You are initializing in an existing Firebase project directory
+
+[debug] [2020-05-10T14:41:33.359Z] ----------------------------------------------------------------------
+[debug] [2020-05-10T14:41:33.361Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Lexio\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2020-05-10T14:41:33.361Z] CLI Version:   8.1.1
+[debug] [2020-05-10T14:41:33.361Z] Platform:      win32
+[debug] [2020-05-10T14:41:33.361Z] Node Version:  v12.16.1
+[debug] [2020-05-10T14:41:33.362Z] Time:          Sun May 10 2020 17:41:33 GMT+0300 (GMT+03:00)
+[debug] [2020-05-10T14:41:33.362Z] ----------------------------------------------------------------------
+[debug] [2020-05-10T14:41:33.362Z] 
+[debug] [2020-05-10T14:41:33.368Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-05-10T14:41:33.369Z] > authorizing via signed-in user
+[info] i  emulators: Starting emulators: functions
+[debug] [2020-05-10T14:41:35.394Z] [hub] writing locator at C:\Users\Lexio\AppData\Local\Temp\hub-crm-exam2020.json
+[info] +  hub: emulator hub started at http://localhost:4400
+[warn] !  Your requested "node" version "8" doesn't match your global version "12"
+[info] +  functions: functions emulator started at http://localhost:5001
+[info] i  functions: Watching "C:\Users\Lexio\Documents\gitProjects\crm-exam2020\functions" for Cloud Functions...
+[debug] [2020-05-10T14:41:37.443Z] [worker-pool] addWorker(~diagnostic~) 
+[debug] [2020-05-10T14:41:37.443Z] [worker-pool] Adding worker with key ~diagnostic~, total=1 
+[debug] [2020-05-10T14:41:37.443Z] [worker-pool] submitWork(triggerId=) 
+[debug] [2020-05-10T14:41:37.444Z] [worker-~diagnostic~-a323a843-d50b-4285-a00d-83446fc15481]: Assigning socketPath: \\?\pipe\C:\Users\Lexio\Documents\gitProjects\crm-exam2020\functions\27216 
+[debug] [2020-05-10T14:41:37.444Z] [worker-~diagnostic~-a323a843-d50b-4285-a00d-83446fc15481]: BUSY 
+[debug] [2020-05-10T14:41:37.810Z] [runtime-status] [27216] Functions runtime initialized. {"cwd":"C:\\Users\\Lexio\\Documents\\gitProjects\\crm-exam2020\\functions","node_version":"12.16.1"} 
+[debug] [2020-05-10T14:41:37.811Z] [runtime-status] [27216] Disabled runtime features: undefined 
+[debug] [2020-05-10T14:41:37.817Z] [runtime-status] [27216] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.10.0","resolution":"C:\\Users\\Lexio\\Documents\\gitProjects\\crm-exam2020\\functions\\node_modules\\firebase-admin\\lib\\index.js"} 
+[debug] [2020-05-10T14:41:37.819Z] [runtime-status] [27216] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.6.0","resolution":"C:\\Users\\Lexio\\Documents\\gitProjects\\crm-exam2020\\functions\\node_modules\\firebase-functions\\lib\\index.js"} 
+[debug] [2020-05-10T14:41:37.820Z] [runtime-status] [27216] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] 
+[debug] [2020-05-10T14:41:37.860Z] [runtime-status] [27216] Checked functions.config() {"config":{}} 
+[debug] [2020-05-10T14:41:37.861Z] [runtime-status] [27216] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.6.0","resolution":"C:\\Users\\Lexio\\Documents\\gitProjects\\crm-exam2020\\functions\\node_modules\\firebase-functions\\lib\\index.js"} 
+[debug] [2020-05-10T14:41:37.862Z] [runtime-status] [27216] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.10.0","resolution":"C:\\Users\\Lexio\\Documents\\gitProjects\\crm-exam2020\\functions\\node_modules\\firebase-admin\\lib\\index.js"} 
+[debug] [2020-05-10T14:41:37.863Z] [runtime-status] [27216] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.6.0","resolution":"C:\\Users\\Lexio\\Documents\\gitProjects\\crm-exam2020\\functions\\node_modules\\firebase-functions\\lib\\index.js"} 
+[debug] [2020-05-10T14:41:37.863Z] [runtime-status] [27216] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"8.10.0","resolution":"C:\\Users\\Lexio\\Documents\\gitProjects\\crm-exam2020\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} 
+[debug] [2020-05-10T14:41:37.866Z] [runtime-status] [27216] initializeApp(DEFAULT) {"databaseURL":"https://crm-exam2020.firebaseio.com","storageBucket":"crm-exam2020.appspot.com","projectId":"crm-exam2020"} 
+[debug] [2020-05-10T14:41:37.868Z] Unsupported trigger: {"eventTrigger":{"resource":"projects/crm-exam2020","eventType":"providers/firebase.auth/eventTypes/user.create","service":"firebaseauth.googleapis.com"},"name":"processSignUp","entryPoint":"processSignUp"} 
+[info] i  functions[processSignUp]: function ignored because the auth emulator does not exist or is not running.
+[info] i  functions[processChangeActivityStatus]: function ignored because the database emulator does not exist or is not running.
+[info] +  emulators: All emulators started, it is now safe to connect.
+[debug] [2020-05-10T14:41:37.871Z] [worker-~diagnostic~-a323a843-d50b-4285-a00d-83446fc15481]: IDLE 
+[debug] [2020-05-10T14:41:59.034Z] [worker-~diagnostic~-a323a843-d50b-4285-a00d-83446fc15481]: exited 
+[debug] [2020-05-10T14:41:59.034Z] [worker-~diagnostic~-a323a843-d50b-4285-a00d-83446fc15481]: FINISHED 
+[debug] [2020-05-10T14:46:08.329Z] ----------------------------------------------------------------------
+[debug] [2020-05-10T14:46:08.331Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Lexio\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2020-05-10T14:46:08.331Z] CLI Version:   8.1.1
+[debug] [2020-05-10T14:46:08.331Z] Platform:      win32
+[debug] [2020-05-10T14:46:08.331Z] Node Version:  v12.16.1
+[debug] [2020-05-10T14:46:08.332Z] Time:          Sun May 10 2020 17:46:08 GMT+0300 (GMT+03:00)
+[debug] [2020-05-10T14:46:08.333Z] ----------------------------------------------------------------------
+[debug] [2020-05-10T14:46:08.333Z] 
+[debug] [2020-05-10T14:46:08.339Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-05-10T14:46:08.339Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\Lexio\Documents\gitProjects\crm-exam2020
+
+Before we get started, keep in mind:
+
+  * You are initializing in an existing Firebase project directory
+

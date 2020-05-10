@@ -1,5 +1,4 @@
 import { switchMap, filter, map, mergeMap } from 'rxjs/operators';
-import { of } from 'rxjs';
 import firebase from 'firebase/app';
 import { isOfType } from 'typesafe-actions';
 import { ActionsObservable } from 'redux-observable';

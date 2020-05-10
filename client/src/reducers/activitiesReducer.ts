@@ -22,6 +22,9 @@ const heapReducer = (state = initialHeapState, { type, payload }) => {
   switch (type) {
     case GET_ACTIVITIES_DONE:
       return payload;
+    case DRAG_ACTIVITY_DONE:
+      const { id, status } = payload;
+      return { ...state, [id]: { ...state[id], status } };
     default:
       return state;
   }
