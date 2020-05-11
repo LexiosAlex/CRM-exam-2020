@@ -20,7 +20,6 @@ const SignUp: React.FC = (props: any) => {
   const [name, setName] = useState<string>('');
 
   const [isSendingData, setSendingData] = useState<boolean>(false);
-  //TODO: made it with observables, asyncReducer
 
   const firebase = useFirebase();
 
@@ -49,7 +48,7 @@ const SignUp: React.FC = (props: any) => {
               placeholder="Your name"
               name="name"
               formNoValidate
-              onChange={event => onChange[FormInputType.name](event.target.value)}
+              onChange={(event) => onChange[FormInputType.name](event.target.value)}
               value={name}
             />
           </div>
@@ -60,7 +59,7 @@ const SignUp: React.FC = (props: any) => {
               placeholder="example@mail.com"
               name="email"
               formNoValidate
-              onChange={event => onChange[FormInputType.email](event.target.value)}
+              onChange={(event) => onChange[FormInputType.email](event.target.value)}
               value={email}
             />
           </div>
@@ -71,7 +70,7 @@ const SignUp: React.FC = (props: any) => {
               placeholder="password"
               name="password"
               formNoValidate
-              onChange={event => onChange[FormInputType.password](event.target.value)}
+              onChange={(event) => onChange[FormInputType.password](event.target.value)}
               value={password}
             />
           </div>
