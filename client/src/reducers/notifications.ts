@@ -3,9 +3,10 @@ import {
   CLOSE_NOTIFICATION,
   SHOW_NOTIFICATION,
 } from '../interfaces/actions/notifier';
+import { INotificationsState } from '../interfaces/state';
 
-const defaultState = {
-  notifications: [],
+const defaultState: INotificationsState = {
+  list: [],
 };
 
 export default (state = defaultState, action) => {
@@ -13,8 +14,8 @@ export default (state = defaultState, action) => {
     case SHOW_NOTIFICATION:
       return {
         ...state,
-        notifications: [
-          ...state.notifications,
+        list: [
+          ...state.list,
           {
             key: action.key,
             ...action.notification,
@@ -25,19 +26,15 @@ export default (state = defaultState, action) => {
     case CLOSE_NOTIFICATION:
       return {
         ...state,
-        notifications: state.notifications.map((notification: any) =>
-          action.dismissAll || notification.key === action.key
-            ? { ...notification, dismissed: true }
-            : { ...notification }
+        list: state.list.map((item) =>
+          action.dismissAll || item.key === action.key ? { ...item, dismissed: true } : item
         ),
       };
 
     case REMOVE_NOTIFICATION:
       return {
         ...state,
-        notifications: state.notifications.filter(
-          (notification: any) => notification.key !== action.key
-        ),
+        list: state.list.filter((item) => item.key !== action.key),
       };
 
     default:

@@ -12,11 +12,10 @@ import {
   CHANGE_STATUS_REQUEST_DONE,
 } from '../interfaces/actions/activities';
 import { createAsyncStateReducer } from './Helpers/asyncReducer';
-import { IActivity } from 'common/index';
-import { getAllowedStatuses } from 'common/activityWorkflow';
-import { IActivitiesStatusState } from './rootReducer';
+import { IActivity, getAllowedStatuses } from 'common/index';
+import { IActivitiesHeapState, IActivitiesStatusState } from '../interfaces/state';
 
-const initialHeapState: { [key: string]: IActivity } = {};
+const initialHeapState: IActivitiesHeapState = {};
 
 const heapReducer = (state = initialHeapState, { type, payload }) => {
   switch (type) {

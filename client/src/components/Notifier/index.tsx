@@ -11,7 +11,7 @@ let displayed: SnackbarKey[] = [];
 const Notifier = () => {
   const dispatch = useDispatch();
   const notifications: INotification[] = useSelector(
-    (store: AppState) => store.notifications.notifications || []
+    (store: AppState) => store.notifications.list || []
   );
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -30,7 +30,9 @@ const Notifier = () => {
         return;
       }
 
-      if (key && displayed.includes(key)) return;
+      if (key && displayed.includes(key)) {
+        return;
+      }
 
       enqueueSnackbar(message, {
         key,

@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import userSelectors from './user';
 import { IActivity } from 'common/index';
-import { IAppState, IActivitiesState } from 'src/reducers/rootReducer';
+import { IAppState, IActivitiesState } from '../interfaces/state';
 import { ActivityLists } from 'src/interfaces/common';
 
 const getActivities = (state: IAppState): IActivitiesState => state.activities;
