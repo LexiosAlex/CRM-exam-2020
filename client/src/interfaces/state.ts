@@ -1,6 +1,6 @@
 import { FirebaseReducer } from 'react-redux-firebase';
 
-import { IActivity } from 'common/index';
+import { IActivity, ActivityStatus } from 'common/index';
 import { INotification } from './common';
 
 export interface IActivitiesHeapState {
@@ -10,6 +10,9 @@ export interface IActivitiesHeapState {
 export interface IActivitiesStatusState {
   dragging: boolean;
   allowed: IActivity[];
+  id: string;
+  from: ActivityStatus;
+  to: ActivityStatus;
 }
 
 export interface IActivitiesState {

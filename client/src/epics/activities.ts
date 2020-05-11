@@ -47,7 +47,7 @@ const fetchActivities: Epic<Action<string>, Action<any>, AppState> = (action$, s
     switchMap(() =>
       getQuery(state$.value.firebase)
         .then((data) => fetchDataFulfilled(data.val() || {}))
-        .catch((error) => fetchDataFailed(error.code))
+        .catch((error) => fetchDataFailed({ error: error.code }))
     )
   );
 

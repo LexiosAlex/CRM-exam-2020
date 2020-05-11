@@ -49,12 +49,12 @@ export interface changeRequestPending {
 
 export interface changeRequestFail {
   type: typeof CHANGE_STATUS_REQUEST_FAIL;
-  payload: string;
+  payload: { error: string; id: string; status: ActivityStatus };
 }
 
 export interface changeRequestDone {
   type: typeof CHANGE_STATUS_REQUEST_DONE;
-  payload: string;
+  payload: any;
 }
 
 export type changeRequestActions = changeRequestPending | changeRequestFail | changeRequestDone;

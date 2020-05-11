@@ -12,7 +12,7 @@ import {
   CHANGE_STATUS_REQUEST_DONE,
 } from '../interfaces/actions/activities';
 import { createAsyncStateReducer } from './Helpers/asyncReducer';
-import { IActivity, getAllowedStatuses } from 'common/index';
+import { IActivity, getAllowedStatuses, ActivityStatus } from 'common/index';
 import { IActivitiesHeapState, IActivitiesStatusState } from '../interfaces/state';
 
 const initialHeapState: IActivitiesHeapState = {};
@@ -22,6 +22,7 @@ const heapReducer = (state = initialHeapState, { type, payload }) => {
     case GET_ACTIVITIES_DONE:
       return payload;
     case DRAG_ACTIVITY_DONE:
+    case CHANGE_STATUS_REQUEST_FAIL:
       const { id, status } = payload;
       return { ...state, [id]: { ...state[id], status } };
     default:
@@ -29,9 +30,12 @@ const heapReducer = (state = initialHeapState, { type, payload }) => {
   }
 };
 
-const initialStatusState: IActivitiesStatusState = {
+const initialStatusState = {
   dragging: false,
   allowed: [],
+  id: void 0,
+  from: void 0,
+  to: void 0,
 };
 
 const statusReducer = (state = initialStatusState, { type, payload }) => {
@@ -40,12 +44,13 @@ const statusReducer = (state = initialStatusState, { type, payload }) => {
       return {
         ...state,
         dragging: true,
+        from: payload.status,
         allowed: getAllowedStatuses(payload.type, payload.status),
       };
+    case DRAG_ACTIVITY_DONE:
+      return { ...state, dragging: false, allowed: [], id: payload.id, to: payload.status };
     case DRAG_ACTIVITY_CANCEL:
       return initialStatusState;
-    case DRAG_ACTIVITY_DONE:
-      return { ...initialStatusState, id: payload.id };
     default:
       return state;
   }
@@ -53,8 +58,8 @@ const statusReducer = (state = initialStatusState, { type, payload }) => {
 
 const changeStatusAsyncReducer = createAsyncStateReducer(
   CHANGE_STATUS_REQUEST_PENDING,
-  CHANGE_STATUS_REQUEST_FAIL,
-  CHANGE_STATUS_REQUEST_DONE
+  CHANGE_STATUS_REQUEST_DONE,
+  CHANGE_STATUS_REQUEST_FAIL
 );
 
 const fetchAsyncReducer = createAsyncStateReducer(
