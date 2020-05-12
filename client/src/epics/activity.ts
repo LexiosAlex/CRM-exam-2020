@@ -14,7 +14,7 @@ import {
 import { REFS } from '../utils/refs';
 import { notify } from './notification';
 import { ActivityStatus } from 'common/index';
-import { IAppState } from 'src/interfaces/state';
+import { IAppState } from '../interfaces/state';
 
 const updateActivityStatus = (payload): Promise<firebase.database.DataSnapshot> => {
   const { id, status } = payload;

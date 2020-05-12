@@ -35,9 +35,9 @@ const OPERATOR_ACTIVITY_STATUSES: ActivityStatus[] = [
   ActivityStatus.Archived,
 ];
 
-const ADMIN_ACTIVITY_STATUSES: ActivityStatus[] = Object.keys(ActivityStatus)
-  .filter((key) => isNaN(Number(key)))
-  .map((key) => ActivityStatus[key]);
+const ADMIN_ACTIVITY_STATUSES: ActivityStatus[] = Object.entries(ActivityStatus)
+  .filter(([key, value]) => isNaN(Number(key)))
+  .map(([key, value]) => value as ActivityStatus);
 
 export const VISIBLE_STATUSES: { [key in EmployeeType]: ActivityStatus[] } = {
   [EmployeeType.Volunteer]: VOLUNTEER_ACTIVITY_STATUSES,
