@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 import { switchMap, map } from 'rxjs/operators';
 import { Action } from 'typesafe-actions';
 
-import { EmployeeType } from 'common/index';
+import { ActivityStatus, EmployeeType } from 'common/index';
 import { AppState } from '../reducers/rootReducer';
 import { REFS } from '../utils/refs';
 import {
@@ -14,18 +14,50 @@ import {
 
 const firebasePrefix: string = '@@reactReduxFirebase';
 
-const getQuery = ({
+const getQuery = async ({
   profile: { type },
   auth: { uid },
 }): Promise<firebase.database.DataSnapshot> => {
   const ActivitiesRef = firebase.database().ref(REFS.ACTIVITIES);
+  let byAvailabilityValues: any = '';
+  let byAssignee: any = '';
+
   switch (type) {
     case EmployeeType.Admin:
-      return ActivitiesRef.once('value');
+      await ActivitiesRef.once('value')
+        .then((data) => {
+          byAvailabilityValues = data.val();
+        })
+        .catch((error) => Promise.reject(error));
+      return byAvailabilityValues;
+
     case EmployeeType.Operator:
-      return ActivitiesRef.orderByChild('operator').equalTo(uid).once('value');
+      ActivitiesRef.orderByChild('operator')
+        .equalTo(uid)
+        .once('value')
+        .then((data) => {
+          byAssignee = data.val();
+        })
+        .catch((error) => Promise.reject(error));
+      return byAssignee;
+
     case EmployeeType.Volunteer:
-      return ActivitiesRef.orderByChild('assignee').equalTo(uid).once('value');
+      await ActivitiesRef.orderByChild('assignee')
+        .equalTo(uid)
+        .once('value')
+        .then((data) => {
+          byAssignee = data.val();
+        })
+        .catch((error) => Promise.reject(error));
+      await ActivitiesRef.orderByChild('status')
+        .equalTo(ActivityStatus.ReadyForAssignment)
+        .once('value')
+        .then((data) => {
+          byAvailabilityValues = data.val();
+        })
+        .catch((error) => Promise.reject(error));
+      return Promise.resolve({ ...byAvailabilityValues, ...byAssignee });
+
     default:
       return Promise.reject({ code: 'Bad Employee type' });
   }
@@ -46,7 +78,7 @@ const fetchActivities: Epic<Action<string>, Action<any>, AppState> = (action$, s
     ofType(`${firebasePrefix}/SET_PROFILE`),
     switchMap(() =>
       getQuery(state$.value.firebase)
-        .then((data) => fetchDataFulfilled(data.val() || {}))
+        .then((data) => fetchDataFulfilled(data))
         .catch((error) => fetchDataFailed({ error: error.code }))
     )
   );

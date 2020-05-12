@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 
+import NetworkDetector from '../NetworkDetector';
 import SideNav from '../Sidenav';
 import Notifier from '../Notifier';
 import * as navPath from '../../utils/router';
@@ -18,6 +19,7 @@ import styles from './index.scss';
 const AppRouter: React.FC = () => {
   return (
     <SnackbarProvider>
+      <NetworkDetector />
       <Notifier />
       <BrowserRouter>
         <AppHeader />
