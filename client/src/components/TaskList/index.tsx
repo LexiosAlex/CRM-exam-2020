@@ -6,6 +6,7 @@ import { IActivity } from 'common/index';
 import styles from './index.scss';
 import TaskCard from '../TaskCard';
 import { TITLE_STATUS_MAP } from '../../utils/activities';
+import { IconButton } from '@material-ui/core';
 
 interface TaskListInterface {
   status: string;
@@ -21,7 +22,12 @@ const TaskList: React.FC<TaskListInterface> = ({ status, tasks, canDrop, isDragg
         isDragging && (!canDrop ? styles.dropDisabled : styles.dropEnabled)
       }`}
     >
-      <h2>{TITLE_STATUS_MAP[status]}</h2>
+      <div className={styles.addNewCardContainer}>
+        <h2>{TITLE_STATUS_MAP[status]}</h2>
+        {TITLE_STATUS_MAP[status] === TITLE_STATUS_MAP[1] ? (
+          <button className={styles.addButton}>Add card</button>
+        ) : null}
+      </div>
       <Droppable droppableId={status} isDropDisabled={!canDrop}>
         {(provided) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
