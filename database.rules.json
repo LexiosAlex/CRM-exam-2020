@@ -3,7 +3,7 @@
     "activities": {
       ".read": "auth.uid != null && (auth.token.type === 0 || (auth.token.type === 1 && query.orderByChild === 'operator' && query.equalTo === auth.uid) || (auth.token.type === 2 && query.orderByChild === 'assignee' && query.equalTo === auth.uid) || (auth.token.type === 2 && query.orderByChild === 'status' && query.equalTo === 1))",
       "$activity": {
-        ".write": "auth.uid != null && (auth.token.type === 0 || (auth.token.type === 1 && data.child('operator').val() === auth.uid) || (auth.token.type === 2 && data.child('assignee').val() === auth.uid))",
+        ".write": "auth.uid != null && (auth.token.type === 0 || (auth.token.type === 1 && data.child('operator').val() === auth.uid) || (auth.token.type === 2 && (data.child('assignee').val() === auth.uid || data.child('status').val() === 1)))",
         "status": {
           ".validate": "auth.token.type === 0 || auth.token.type === 1 || (auth.token.type === 2 && ((data.val() === 1 && newData.val() === 2) || (data.val() === 2 && (newData.val() === 1 || newData.val() === 3)) || (data.val() === 3 && (newData.val() === 4 || newData.val() === 5))))"
         }
