@@ -1,39 +1,47 @@
 import React, { useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
+import { Droppable } from 'react-beautiful-dnd';
 
 import { IActivity } from 'common/index';
 import styles from './index.scss';
 import TaskCard from '../TaskCard';
-import TextForm from './TextForm';
 import { TITLE_STATUS_MAP } from '../../utils/activities';
 
 interface TaskListInterface {
   status: string;
   tasks: IActivity[];
+  canDrop: boolean;
+  isDragging: boolean;
 }
 
-const TaskList: React.FC<TaskListInterface> = ({ status, tasks }) => {
-  const [isFormOpen, setOpenFormState] = useState<boolean>(false);
+const TaskList: React.FC<TaskListInterface> = ({ status, tasks, canDrop, isDragging }) => {
   return (
-    <div className={styles.container}>
+    <div
+      className={`${styles.container} ${
+        isDragging && (!canDrop ? styles.dropDisabled : styles.dropEnabled)
+      }`}
+    >
       <h2>{TITLE_STATUS_MAP[status]}</h2>
-      {tasks.length ? (
-        tasks.map((task) => <TaskCard key={task.id} type={task.type} address={task.address} />)
-      ) : (
-        <p>There are no cards available new!</p>
-      )}
-      {isFormOpen ? (
-        <TextForm
-          onClose={() => {
-            setOpenFormState(false);
-          }}
-        />
-      ) : (
-        <div className={styles.addButtonContainer} onClick={() => setOpenFormState(true)}>
-          <AddIcon>add</AddIcon>
-          <p>create a new task</p>
-        </div>
-      )}
+      <Droppable droppableId={status} isDropDisabled={!canDrop}>
+        {(provided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            {tasks.length ? (
+              tasks.map((task, index) => (
+                <TaskCard
+                  key={task.id}
+                  type={task.type}
+                  address={task.address}
+                  id={task.id}
+                  index={index}
+                />
+              ))
+            ) : (
+              <p>There are no cards available</p>
+            )}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </div>
   );
 };

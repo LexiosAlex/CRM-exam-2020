@@ -15,8 +15,8 @@ export const createAsyncStateReducer = (
   succeedAction,
   failedAction,
   resetAction = 'ASYNC_STATE/RESET'
-) => (state: AsyncReducer = initialState, action): AsyncReducer => {
-  switch (action.type) {
+) => (state: AsyncReducer = initialState, { type, payload }): AsyncReducer => {
+  switch (type) {
     case requestedAction:
       return { ...state, pending: true };
 
@@ -24,7 +24,7 @@ export const createAsyncStateReducer = (
       return { ...initialState, loaded: true };
 
     case failedAction:
-      return { ...state, pending: false, error: action.payload };
+      return { ...state, pending: false, error: payload.error };
 
     case resetAction: {
       return initialState;

@@ -1,21 +1,7 @@
-import { ActivityStatus, EmployeeType, IActivity, ActivityType } from 'common/index';
-
-export const VOLUNTEER_ACTIVITY_STATUSES = [
-  ActivityStatus.ReadyForAssignment,
-  ActivityStatus.Assigned,
-  ActivityStatus.InProgress,
-  ActivityStatus.Canceled,
-  ActivityStatus.Done,
-];
-
-export const OPERATOR_ACTIVITY_STATUSES = [...VOLUNTEER_ACTIVITY_STATUSES, ActivityStatus.Archived];
-
-export const checkStatus = (type: EmployeeType, status: ActivityStatus) =>
-  type === EmployeeType.Admin ||
-  (type === EmployeeType.Operator && OPERATOR_ACTIVITY_STATUSES.indexOf(status) >= 0) ||
-  (type === EmployeeType.Volunteer && VOLUNTEER_ACTIVITY_STATUSES.indexOf(status) >= 0);
+import { ActivityStatus, ActivityType } from 'common/index';
 
 export const TITLE_STATUS_MAP = {
+  [ActivityStatus.New]: 'Recently added',
   [ActivityStatus.ReadyForAssignment]: 'Backlog',
   [ActivityStatus.Assigned]: 'Assigned',
   [ActivityStatus.InProgress]: 'In Progress',

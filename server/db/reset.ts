@@ -104,6 +104,12 @@ const createActivities = () => {
   console.log(`Creating of ${DB_RESET_CONFIG.ACTIVITIES} activities`);
   return Promise.all(
     Array.from({ length: DB_RESET_CONFIG.ACTIVITIES }).map(async (j, i) => {
+      const status = // let the first Activity to be unassigned
+        i === 0 ? ActivityStatus.ReadyForAssignment : getRandomEnumValue(ActivityStatus);
+      const assignee = // first two statuses mean no assignee
+        status !== ActivityStatus.ReadyForAssignment && status !== ActivityStatus.New
+          ? getRandomArrayValue(ids[EmployeeType.Volunteer])
+          : null;
       await admin
         .database()
         .ref(`${REFS.ACTIVITIES}`)
@@ -114,8 +120,8 @@ const createActivities = () => {
           address: `Activity address ${i}`,
           estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
           operator: getRandomArrayValue(ids[EmployeeType.Operator]),
-          assignee: getRandomArrayValue(ids[EmployeeType.Volunteer]),
-          status: getRandomEnumValue(ActivityStatus),
+          status,
+          assignee,
           history: [],
         });
     })
