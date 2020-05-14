@@ -16,16 +16,10 @@ import { notify } from './notification';
 import { ActivityStatus } from 'common/index';
 import { IAppState } from '../interfaces/state';
 
-const updateActivityStatus = (payload) => {
+const updateActivityStatus = (payload): Promise<firebase.database.DataSnapshot> => {
   const { id, status } = payload;
-  return firebase
-    .functions()
-    .httpsCallable('changeActivityStatus')({ id, status })
-    .then(({ data: { error } }) => {
-      if (error) {
-        throw error;
-      }
-    });
+  const activityRef = firebase.database().ref(REFS.ACTIVITIES).child(id);
+  return activityRef.update({ status });
 };
 
 const changeStatusStart = (payload): changeRequestActions => ({
@@ -62,9 +56,9 @@ const changeStatusAsync = (
     withLatestFrom(state$),
     switchMap(([action, state]) =>
       updateActivityStatus(action.payload)
-        .then(() => changeStatusDone())
+        .then((data) => changeStatusDone())
         .catch((error) =>
-          changeStatusFail(error, state.activities.status.id, state.activities.status.from)
+          changeStatusFail(error.code, state.activities.status.id, state.activities.status.from)
         )
     )
   );
