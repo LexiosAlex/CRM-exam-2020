@@ -13,21 +13,16 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import InputBase from '@material-ui/core/InputBase';
 
-import { IActivity } from 'common/types';
 import selectors from '../../selectors';
 
 import styles from './index.scss';
 import { FormType } from './common';
 import { IAppState } from '../../interfaces/state';
 import Loading from '../Loading';
-import { ActivityStatus, ActivityType } from 'common/index';
+import { IActivity, ActivityStatus, ActivityType, IUser } from 'common/index';
+import { FirebaseReducer } from 'react-redux-firebase';
 
-interface IUserOption {
-  name: string;
-  id: string;
-}
-
-const top100Films: IUserOption[] = [
+const top100Films: IUser[] = [
   { name: 'The Shawshank Redemption', id: '1994' },
   { name: 'The Godfather', id: '1972' },
   { name: 'The Godfather: Part II', id: '1974' },
@@ -49,7 +44,7 @@ const renderAutoComplete = (params) => {
   return (
     <Autocomplete
       options={top100Films}
-      getOptionLabel={(option: IUserOption) => option.name}
+      getOptionLabel={(option: IUser) => option.name}
       // defaultValue={customValue ? customValue : null}
       value={customValue}
       onChange={(e, value) => input.onChange(value)}
@@ -128,29 +123,37 @@ const renderTextArea = (params) => {
 };
 
 interface FormValues {
-  assigned: null;
-  operator: null;
-  activityStatus: '';
-  activityType: '';
-  activityAddress: '';
-  activityEstimation: 0;
+  assigned: IUser;
+  operator: IUser;
+  activityStatus: ActivityStatus;
+  activityType: ActivityType;
+  activityAddress: string;
+  activityEstimation: number;
 }
 
 interface StateProps {
   formState: any;
+  authProfile: FirebaseReducer.AuthState;
 }
 
 interface ActivityFormProps extends StateProps {
-  dialogType: number;
+  dialogType: FormType;
   open: boolean;
-  onClose: Function;
+  onClose: () => void;
   activity?: IActivity;
 }
 
-const Editor: React.FC<ActivityFormProps & InjectedFormProps<{}, ActivityFormProps>> = (
-  props: any
-) => {
-  const { dialogType, onClose, open, initialize, initialValues, formState, authProfile } = props;
+interface EditorProps extends ActivityFormProps, InjectedFormProps<FormValues, any> {}
+
+const Editor: React.FC<EditorProps> = ({
+  dialogType,
+  onClose,
+  open,
+  initialize,
+  initialValues,
+  formState,
+  authProfile,
+}) => {
   const inNew = dialogType === FormType.newForm;
 
   const isLoading = true;
@@ -162,11 +165,11 @@ const Editor: React.FC<ActivityFormProps & InjectedFormProps<{}, ActivityFormPro
     inNew &&
       initialize({
         ...initialValues,
-        operator: { name: displayName, id: uid },
+        operator: { name: displayName as string, id: uid },
         activityStatus: ActivityStatus.New,
       });
   }, []);
-  console.log(props);
+
   return (
     <>
       <Dialog maxWidth="lg" onClose={onClose} aria-labelledby="customized-dialog-title" open={open}>
@@ -252,7 +255,7 @@ const Editor: React.FC<ActivityFormProps & InjectedFormProps<{}, ActivityFormPro
                     />
                   </div>
                   <div>
-                    <h5>Assigned</h5>
+                    <h5>Assignee</h5>
                     <Field
                       customValue={formState.values.assigned}
                       name="assigned"
@@ -305,15 +308,15 @@ const Editor: React.FC<ActivityFormProps & InjectedFormProps<{}, ActivityFormPro
   );
 };
 
-const InitializedFormEditor = reduxForm<{}, ActivityFormProps>({
+const InitializedFormEditor = reduxForm<FormValues, ActivityFormProps>({
   form: 'activitiesForm',
   initialValues: {
-    assigned: null,
-    operator: null,
-    activityStatus: '',
-    activityType: '',
-    activityAddress: '',
-    activityEstimation: 0,
+    assigned: void 0,
+    operator: void 0,
+    activityStatus: void 0,
+    activityType: void 0,
+    activityAddress: void 0,
+    activityEstimation: void 0,
   },
 })(Editor);
 

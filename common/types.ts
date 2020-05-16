@@ -30,3 +30,8 @@ export interface IEmployee {
   email: string;
   password: string;
 }
+
+export interface IUser {
+  id: EmployeeId;
+  name: string;
+}
