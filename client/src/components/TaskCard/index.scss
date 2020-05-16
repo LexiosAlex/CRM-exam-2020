@@ -1,5 +1,16 @@
 .cardContainer {
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  .cardActions button {
+    display: none;
+  }
+  &:hover {
+    .cardActions button {
+      display: flex;
+    }
+  }
 }
 
 .cardContent {
@@ -13,4 +24,10 @@
 .address {
   font-size: 0.75rem !important;
   color: #555555;
+}
+
+.cardActions {
+  padding: 0 !important;
+  padding-right: 1rem !important;
+  min-width: 44px;
 }

@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 
-import { ActivityStatus, EmployeeType, IActivity } from 'common/index';
-import { getAllowedStatuses } from 'common/activityWorkflow';
+import { ActivityStatus, EmployeeType } from 'common/index';
 import { ActivityLists } from '../../interfaces/common';
 import TaskList from '../../components/TaskList';
 import { AppState } from '../../reducers/rootReducer';
 import Loading from '../../components/Loading';
 import selectors from '../../selectors';
 import Error from '../../components/Error';
-import { dragStart, dragCancel, dragEnd } from '../../actions/activity';
+import { dragCancel, dragEnd, dragStart } from '../../actions/activity';
+import Editor from '../../components/Editor';
+import { FormType } from '../../components/Editor/common';
 
 import styles from './index.scss';
 
@@ -46,6 +47,9 @@ const Tasks: React.FC<ITasksProps> = ({
     return <Error errorMessage={'An error occupied while loading component'} errorCode={error} />;
   }
 
+  const [dialogOpened, setDialogOpened] = useState<boolean>(false);
+  const [dialogType, setDialogType] = useState<number>(FormType.newForm);
+
   const onDragEnd = ({ destination, draggableId }: DropResult) => {
     if (destination) {
       dragEnd(draggableId, parseInt(destination.droppableId, 10));
@@ -75,11 +79,24 @@ const Tasks: React.FC<ITasksProps> = ({
                 tasks={list}
                 canDrop={allowedStatuses.includes(parseInt(status))}
                 isDragging={isDragging}
+                onOpenDialog={(value: FormType) => {
+                  setDialogType(value);
+                  setDialogOpened(true);
+                }}
               />
             ))}
           </div>
         </div>
       </DragDropContext>
+      {dialogOpened ? (
+        <Editor
+          dialogType={dialogType}
+          open={dialogOpened}
+          onClose={() => {
+            setDialogOpened(false);
+          }}
+        />
+      ) : null}
     </>
   );
 };

@@ -5,6 +5,8 @@ import { IAppState, IActivitiesState } from '../interfaces/state';
 
 const getProfile = (state: IAppState) => state.firebase.profile;
 
+const getAuth = (state: IAppState) => state.firebase.auth;
+
 const getEmployeeType = createSelector(
   [getProfile],
   (profile): EmployeeType => (profile as any).type
@@ -16,6 +18,7 @@ const getAllowedStatuses = createSelector(
 );
 
 export default {
+  getAuth,
   getEmployeeType,
   getVisibleStatuses: getAllowedStatuses,
 };
