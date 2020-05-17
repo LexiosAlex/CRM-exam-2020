@@ -4,11 +4,13 @@ import { reducer as formReducer } from 'redux-form';
 
 import activitiesReducer from './activitiesReducer';
 import notificationsReducer from './notifications';
+import usersReducer from './users';
 
 const rootReducer = combineReducers({
   firebase: firebaseReducer,
   activities: activitiesReducer,
   notifications: notificationsReducer,
+  users: usersReducer,
   formReducer,
 });
 

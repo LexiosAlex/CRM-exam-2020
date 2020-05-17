@@ -1,10 +1,14 @@
 import { FirebaseReducer } from 'react-redux-firebase';
 
-import { IActivity, ActivityStatus } from 'common/index';
+import { IActivity, ActivityStatus, IEmployee } from 'common/index';
 import { INotification } from './common';
 
 export interface IActivitiesHeapState {
   [key: string]: IActivity;
+}
+
+export interface IEmployeesState {
+  [key: string]: IEmployee;
 }
 
 export interface IActivitiesStatusState {
