@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 
 import '../env';
-import { ActivityStatus, ActivityType, EmployeeType } from 'common/index';
+import { ActivityStatus, ActivityType, EmployeeType, IUser } from 'common/index';
 import { firebaseConfig, DB_RESET_CONFIG, REFS } from './config';
 
 const getRandomEnumValue = <T>(anEnum: T): T[keyof T] => {
@@ -18,10 +18,10 @@ const getRandomArrayValue = (array: any[]) => array[Math.floor(Math.random() * (
 type DBConfig = { [key: string]: number };
 
 type MappedEnum<T extends PropertyKey> = {
-  [key in T]: string[];
+  [key in T]: IUser[];
 };
 
-const ids: MappedEnum<EmployeeType> = {
+const users: MappedEnum<EmployeeType> = {
   [EmployeeType.Admin]: [],
   [EmployeeType.Operator]: [],
   [EmployeeType.Volunteer]: [],
@@ -70,7 +70,9 @@ const getUserName = (type: EmployeeType, number: number): string => {
 
 const createUserAndEmployee = async (user: admin.auth.CreateRequest, type: EmployeeType) => {
   const { uid } = await admin.auth().createUser(user);
-  ids[type].push(uid);
+  if (user.displayName) {
+    users[type].push({ id: uid, name: user.displayName });
+  }
   await admin.auth().setCustomUserClaims(uid, { type });
   return await admin
     .database()
@@ -108,7 +110,7 @@ const createActivities = () => {
         i === 0 ? ActivityStatus.ReadyForAssignment : getRandomEnumValue(ActivityStatus);
       const assignee = // first two statuses mean no assignee
         status !== ActivityStatus.ReadyForAssignment && status !== ActivityStatus.New
-          ? getRandomArrayValue(ids[EmployeeType.Volunteer])
+          ? getRandomArrayValue(users[EmployeeType.Volunteer])
           : null;
       await admin
         .database()
@@ -119,7 +121,7 @@ const createActivities = () => {
           description: `Activity description ${i}`,
           address: `Activity address ${i}`,
           estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
-          operator: getRandomArrayValue(ids[EmployeeType.Operator]),
+          operator: getRandomArrayValue(users[EmployeeType.Operator]),
           status,
           assignee,
           history: [],

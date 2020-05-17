@@ -49,7 +49,7 @@ export const processAssignment = functions.database
       const activity = (await activityRef.once('value')).val();
       const { status, assignee } = activity;
       const type = await getEmployeeType(context);
-      const { uid } = context.auth as any;
+      const { uid, displayName } = context.auth as any;
       if (
         !!assignee &&
         (status === ActivityStatus.New || status === ActivityStatus.ReadyForAssignment)
@@ -57,7 +57,7 @@ export const processAssignment = functions.database
         activityRef.update({ assignee: null });
       }
       if (status === ActivityStatus.Assigned && type === EmployeeType.Volunteer) {
-        activityRef.update({ assignee: uid });
+        activityRef.child('assigne').update({ id: uid, name: displayName });
       }
     } catch (e) {
       console.error(e);

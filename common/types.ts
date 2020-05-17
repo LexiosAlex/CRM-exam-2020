@@ -14,8 +14,8 @@ export interface IRawActivity {
   description: string;
   address: string;
   estimation: number;
-  operator?: EmployeeId; // who is curator (operator id)
-  assignee?: EmployeeId; // who is assignee (volunteer id)
+  operator?: IUser; // who is curator (operator id)
+  assignee?: IUser; // who is assignee (volunteer id)
   status: ActivityStatus;
   history: IActivityHistory[];
 }
