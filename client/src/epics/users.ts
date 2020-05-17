@@ -13,6 +13,7 @@ import { Action, isOfType } from 'typesafe-actions';
 import { filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { IAppState } from '../interfaces/state';
 import { notify } from './notification';
+import selectors from '../selectors';
 
 const firebasePrefix: string = '@@reactReduxFirebase';
 
@@ -49,6 +50,7 @@ const fetchUsers = (action$: ActionsObservable<Action>, state$: StateObservable<
   action$.pipe(
     ofType(`${firebasePrefix}/SET_PROFILE`),
     withLatestFrom(state$),
+    filter(([action, state$]) => selectors.user.getEmployeeType(state$) !== EmployeeType.Volunteer),
     switchMap(([action, state]) =>
       getQuery(state.firebase)
         .then((data) => fetchDataFulfilled(data.val() || {}))

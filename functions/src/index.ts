@@ -57,7 +57,7 @@ export const processAssignment = functions.database
         activityRef.update({ assignee: null });
       }
       if (status === ActivityStatus.Assigned && type === EmployeeType.Volunteer) {
-        activityRef.child('assigne').update({ id: uid, name: displayName });
+        activityRef.child('assignee').update({ id: uid, name: displayName });
       }
     } catch (e) {
       console.error(e);
