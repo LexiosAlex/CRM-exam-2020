@@ -36,11 +36,11 @@ const getQuery = async (firebaseState): Promise<Snapshot> => {
       return ActivitiesRef.once('value');
 
     case EmployeeType.Operator:
-      return ActivitiesRef.orderByChild('operator').equalTo(uid).once('value');
+      return ActivitiesRef.orderByChild('operator/id').equalTo(uid).once('value');
 
     case EmployeeType.Volunteer:
       return performAndQuery([
-        ActivitiesRef.orderByChild('assignee').equalTo(uid).once('value'),
+        ActivitiesRef.orderByChild('assignee/id').equalTo(uid).once('value'),
         ActivitiesRef.orderByChild('status')
           .equalTo(ActivityStatus.ReadyForAssignment)
           .once('value'),
