@@ -1,8 +1,4 @@
-interface AsyncReducer {
-  loaded: boolean;
-  pending: boolean;
-  error: string;
-}
+import { IAsyncReducer } from '../../interfaces/state';
 
 const initialState = {
   loaded: false,
@@ -15,7 +11,7 @@ export const createAsyncStateReducer = (
   succeedAction,
   failedAction,
   resetAction = 'ASYNC_STATE/RESET'
-) => (state: AsyncReducer = initialState, { type, payload }): AsyncReducer => {
+) => (state: IAsyncReducer = initialState, { type, payload }): IAsyncReducer => {
   switch (type) {
     case requestedAction:
       return { ...state, pending: true };

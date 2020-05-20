@@ -22,15 +22,6 @@ import Loading from '../Loading';
 import { IActivity, ActivityStatus, ActivityType, IUser } from 'common/index';
 import { FirebaseReducer } from 'react-redux-firebase';
 
-const top100Films: IUser[] = [
-  { name: 'The Shawshank Redemption', id: '1994' },
-  { name: 'The Godfather', id: '1972' },
-  { name: 'The Godfather: Part II', id: '1974' },
-  { name: 'The Dark Knight', id: '2008' },
-  { name: '12 Angry Men', id: '1957' },
-  { name: "Schindler's List", id: '1993' },
-];
-
 const renderAutoComplete = (params) => {
   const {
     input,
@@ -38,12 +29,13 @@ const renderAutoComplete = (params) => {
     children,
     required,
     customValue,
+    options,
     ...custom
   } = params;
 
   return (
     <Autocomplete
-      options={top100Films}
+      options={options}
       getOptionLabel={(option: IUser) => option.name}
       // defaultValue={customValue ? customValue : null}
       value={customValue}
@@ -156,8 +148,8 @@ const Editor: React.FC<EditorProps> = ({
 }) => {
   const inNew = dialogType === FormType.newForm;
 
-  const isLoading = true;
-  const isLoadingData = isLoading && !formState;
+  console.log(authProfile);
+  const isLoadingData: boolean = !formState;
   //TODO: understand the how to mix it with downloadable state;
   const isSendingData = false;
   useEffect(() => {

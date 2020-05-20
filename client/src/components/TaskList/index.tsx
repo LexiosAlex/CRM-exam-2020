@@ -32,9 +32,9 @@ const TaskList: React.FC<TaskListInterface> = ({
     >
       <div className={styles.addNewCardContainer}>
         <h2>{TITLE_STATUS_MAP[status]}</h2>
-        {TITLE_STATUS_MAP[status] === TITLE_STATUS_MAP[1] ? (
+        {TITLE_STATUS_MAP[status] === TITLE_STATUS_MAP[0] ? (
           <button onClick={() => onOpenDialog(FormType.newForm)} className={styles.addButton}>
-            Add card
+            New
           </button>
         ) : null}
       </div>

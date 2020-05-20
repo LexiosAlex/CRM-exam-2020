@@ -105,6 +105,7 @@ export default connect(
   (state: AppState) => ({
     lists: selectors.activities.getLists(state),
     ...state.activities.fetchAsync,
+    ...state.users.fetchAsync,
     userType: state.firebase.profile.type,
     isDragging: selectors.activities.getIsDragging(state),
     allowedStatuses: selectors.activities.getAllowedStatuses(state),

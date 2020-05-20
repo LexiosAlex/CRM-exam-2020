@@ -40,9 +40,11 @@ const fetchDataFailed = ({ error }): getUsersActions => ({
   payload: { error },
 });
 
-const startFetchUsers = (action$: ActionsObservable<Action>) =>
+const startFetchUsers = (action$: ActionsObservable<Action>, state$: StateObservable<IAppState>) =>
   action$.pipe(
     ofType(`${firebasePrefix}/SET_PROFILE`),
+    withLatestFrom(state$),
+    filter(([action, state$]) => selectors.user.getEmployeeType(state$) !== EmployeeType.Volunteer),
     map(() => fetchDataRequested())
   );
 
