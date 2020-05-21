@@ -49,7 +49,7 @@ const TaskList: React.FC<TaskListInterface> = ({
                   address={task.address}
                   id={task.id}
                   index={index}
-                  onOpenDialog={() => onOpenDialog(FormType.editForm)}
+                  onOpenDialog={() => onOpenDialog(FormType.editForm, task)}
                 />
               ))
             ) : (

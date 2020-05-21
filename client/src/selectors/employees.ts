@@ -1,17 +1,27 @@
 import { createSelector } from 'reselect';
 
-import { IAppState, IUsersState } from '../interfaces/state';
+import { IAppState, IEmployeesState, IUsersState } from '../interfaces/state';
 
-import { IEmployee } from 'common/types';
+import { IEmployee, IUser } from 'common/types';
 import { EmployeeType } from 'common/constants';
+
+const getUsersForAutoSuggest = (users: IEmployeesState) => {
+  const usersForAutoSuggest: IUser[] = [];
+  if (users) {
+    for (let [key, user] of Object.entries(users)) {
+      usersForAutoSuggest.push({ id: key, name: user.name });
+    }
+  }
+  return usersForAutoSuggest;
+};
 
 const getUsers = (state: IAppState): IUsersState => state.users;
 
-const geRaw = createSelector([getUsers], (users) => users.users);
+const getRaw = createSelector([getUsers], (users) => users.users);
 
 const isEmpty = createSelector([getUsers], (users) => !Object.keys(users.users).length);
 
-const getOperators = createSelector([geRaw], (users) =>
+const getOperators = createSelector([getRaw], (users) =>
   Object.entries(users).reduce(
     (acc: { [key: string]: IEmployee }, [key, employee]) => ({
       ...acc,
@@ -21,7 +31,7 @@ const getOperators = createSelector([geRaw], (users) =>
   )
 );
 
-const getVolunteers = createSelector([geRaw], (heap) =>
+const getVolunteers = createSelector([getRaw], (heap) =>
   Object.entries(heap).reduce(
     (acc: { [key: string]: IEmployee }, [key, employee]) => ({
       ...acc,
@@ -31,7 +41,17 @@ const getVolunteers = createSelector([geRaw], (heap) =>
   )
 );
 
+const getAutoSuggestOperators = createSelector([getOperators], (users: IEmployeesState) =>
+  getUsersForAutoSuggest(users)
+);
+
+const getAutoSuggestVolunteers = createSelector([getVolunteers], (users: IEmployeesState) =>
+  getUsersForAutoSuggest(users)
+);
+
 export default {
+  getAutoSuggestVolunteers,
+  getAutoSuggestOperators,
   getOperators,
   getVolunteers,
   isEmpty,

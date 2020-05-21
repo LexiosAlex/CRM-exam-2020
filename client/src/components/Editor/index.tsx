@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm, InjectedFormProps } from 'redux-form';
+import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -19,7 +19,14 @@ import styles from './index.scss';
 import { FormType } from './common';
 import { IAppState } from '../../interfaces/state';
 import Loading from '../Loading';
-import { IActivity, ActivityStatus, ActivityType, IUser } from 'common/index';
+import {
+  ActivityStatus,
+  ActivityType,
+  EmployeeType,
+  getAllowedStatuses,
+  IActivity,
+  IUser,
+} from 'common/index';
 import { FirebaseReducer } from 'react-redux-firebase';
 
 const renderAutoComplete = (params) => {
@@ -115,24 +122,28 @@ const renderTextArea = (params) => {
 };
 
 interface FormValues {
-  assigned: IUser;
+  assignee: IUser;
   operator: IUser;
   activityStatus: ActivityStatus;
   activityType: ActivityType;
   activityAddress: string;
   activityEstimation: number;
+  activityDescription: string;
 }
 
 interface StateProps {
   formState: any;
   authProfile: FirebaseReducer.AuthState;
+  employeeType: EmployeeType;
+  autoSuggestOperators: IUser[];
+  autoSuggestVolunteers: IUser[];
 }
 
 interface ActivityFormProps extends StateProps {
   dialogType: FormType;
   open: boolean;
   onClose: () => void;
-  activity?: IActivity;
+  activity: IActivity | null;
 }
 
 interface EditorProps extends ActivityFormProps, InjectedFormProps<FormValues, any> {}
@@ -141,24 +152,46 @@ const Editor: React.FC<EditorProps> = ({
   dialogType,
   onClose,
   open,
+  activity,
   initialize,
   initialValues,
   formState,
   authProfile,
+  employeeType,
+  autoSuggestVolunteers,
+  autoSuggestOperators,
 }) => {
-  const inNew = dialogType === FormType.newForm;
-
-  console.log(authProfile);
+  const isNew = dialogType === FormType.newForm;
+  const { uid, displayName } = authProfile;
   const isLoadingData: boolean = !formState;
-  //TODO: understand the how to mix it with downloadable state;
+
   const isSendingData = false;
+  //sendingForAsyncState
+
+  const operatorAutoSuggestOptions: IUser[] =
+    employeeType === (EmployeeType.Operator || EmployeeType.Admin) ? autoSuggestOperators : [];
+
+  const assigneeAutoSuggestOptions: IUser[] =
+    employeeType === (EmployeeType.Operator || EmployeeType.Admin)
+      ? autoSuggestVolunteers
+      : [{ name: displayName as string, id: uid }];
+
   useEffect(() => {
-    const { uid, displayName } = authProfile;
-    inNew &&
+    isNew &&
       initialize({
         ...initialValues,
         operator: { name: displayName as string, id: uid },
         activityStatus: ActivityStatus.New,
+      });
+    activity &&
+      initialize({
+        assignee: activity.assignee,
+        operator: activity.operator,
+        activityStatus: activity.status,
+        activityType: activity.type,
+        activityAddress: activity.address,
+        activityEstimation: activity.estimation,
+        activityDescription: activity.description,
       });
   }, []);
 
@@ -168,7 +201,7 @@ const Editor: React.FC<EditorProps> = ({
         <form noValidate className={styles.dialogForm}>
           <header className={styles.formHeader}>
             <div>
-              <h4>{inNew ? 'Add new activity' : 'Edit activity'}</h4>
+              <h4>{isNew ? 'Add new activity' : 'Edit activity'}</h4>
             </div>
             <IconButton aria-label="close" className={styles.closeButton} onClick={onClose}>
               <CloseIcon />
@@ -187,6 +220,7 @@ const Editor: React.FC<EditorProps> = ({
                       name="activityType"
                       id="activityType"
                       component={renderSelect}
+                      disabled={employeeType === EmployeeType.Volunteer}
                     >
                       <option aria-label="None" value="" />
                       {Object.keys(ActivityType).map((key) =>
@@ -206,6 +240,7 @@ const Editor: React.FC<EditorProps> = ({
                       id="activityAddress"
                       type="text"
                       component={renderDefaultInput}
+                      disabled={employeeType === EmployeeType.Volunteer}
                     />
                   </div>
                   <div>
@@ -215,6 +250,7 @@ const Editor: React.FC<EditorProps> = ({
                       id="activityDescription"
                       name="activityDescription"
                       component={renderTextArea}
+                      disabled={employeeType === EmployeeType.Volunteer}
                     />
                   </div>
                 </div>
@@ -226,13 +262,18 @@ const Editor: React.FC<EditorProps> = ({
                       name="activityStatus"
                       id="activityStatus"
                       component={renderSelect}
+                      disabled={isNew}
                     >
-                      {Object.keys(ActivityStatus).map((key) =>
-                        isNaN(Number(key)) ? (
-                          <option key={key} value={ActivityStatus[key]}>
-                            {key}
-                          </option>
-                        ) : null
+                      {isNew ? (
+                        <option value={ActivityStatus.New}>New</option>
+                      ) : (
+                        getAllowedStatuses(employeeType, formState.values.activityStatus).map(
+                          (key) => (
+                            <option key={key} value={key}>
+                              {ActivityStatus[key]}
+                            </option>
+                          )
+                        )
                       )}
                     </Field>
                   </div>
@@ -244,15 +285,18 @@ const Editor: React.FC<EditorProps> = ({
                       name="activityEstimation"
                       type="number"
                       component={renderDefaultInput}
+                      disabled={employeeType === EmployeeType.Volunteer}
                     />
                   </div>
                   <div>
                     <h5>Assignee</h5>
                     <Field
-                      customValue={formState.values.assigned}
+                      customValue={formState.values.assignee}
                       name="assigned"
                       id="assigned"
                       component={renderAutoComplete}
+                      options={assigneeAutoSuggestOptions}
+                      disabled={employeeType === EmployeeType.Volunteer}
                     />
                   </div>
                   <div>
@@ -262,6 +306,8 @@ const Editor: React.FC<EditorProps> = ({
                       name="operator"
                       id="operator"
                       component={renderAutoComplete}
+                      options={operatorAutoSuggestOptions}
+                      disabled={employeeType === EmployeeType.Volunteer}
                     />
                   </div>
                 </div>
@@ -303,16 +349,20 @@ const Editor: React.FC<EditorProps> = ({
 const InitializedFormEditor = reduxForm<FormValues, ActivityFormProps>({
   form: 'activitiesForm',
   initialValues: {
-    assigned: void 0,
+    assignee: void 0,
     operator: void 0,
     activityStatus: void 0,
     activityType: void 0,
     activityAddress: void 0,
     activityEstimation: void 0,
+    activityDescription: void 0,
   },
 })(Editor);
 
 export default connect((state: IAppState) => ({
   formState: selectors.forms.getActivityForm(state),
   authProfile: selectors.user.getAuth(state),
+  employeeType: selectors.user.getEmployeeType(state),
+  autoSuggestOperators: selectors.employees.getAutoSuggestOperators(state),
+  autoSuggestVolunteers: selectors.employees.getAutoSuggestVolunteers(state),
 }))(InitializedFormEditor);

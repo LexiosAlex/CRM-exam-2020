@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 
-import { ActivityStatus, EmployeeType } from 'common/index';
+import { ActivityStatus, EmployeeType, IActivity } from 'common/index';
 import { ActivityLists } from '../../interfaces/common';
 import TaskList from '../../components/TaskList';
 import { AppState } from '../../reducers/rootReducer';
@@ -49,6 +49,7 @@ const Tasks: React.FC<ITasksProps> = ({
 
   const [dialogOpened, setDialogOpened] = useState<boolean>(false);
   const [dialogType, setDialogType] = useState<number>(FormType.newForm);
+  const [editorActivity, setEditorActivity] = useState<IActivity | null>(null);
 
   const onDragEnd = ({ destination, draggableId }: DropResult) => {
     if (destination) {
@@ -79,8 +80,9 @@ const Tasks: React.FC<ITasksProps> = ({
                 tasks={list}
                 canDrop={allowedStatuses.includes(parseInt(status))}
                 isDragging={isDragging}
-                onOpenDialog={(value: FormType) => {
-                  setDialogType(value);
+                onOpenDialog={(type: FormType, activity: IActivity) => {
+                  type === FormType.editForm && setEditorActivity(activity);
+                  setDialogType(type);
                   setDialogOpened(true);
                 }}
               />
@@ -93,8 +95,10 @@ const Tasks: React.FC<ITasksProps> = ({
           dialogType={dialogType}
           open={dialogOpened}
           onClose={() => {
+            setEditorActivity(null);
             setDialogOpened(false);
           }}
+          activity={editorActivity}
         />
       ) : null}
     </>

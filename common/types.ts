@@ -29,6 +29,7 @@ export interface IEmployee {
   type: EmployeeType;
   email: string;
   password: string;
+  name: string;
 }
 
 export interface IUser {
