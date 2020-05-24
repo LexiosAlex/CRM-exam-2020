@@ -1,6 +1,7 @@
 {
   "rules": {
     "employees": {
+      ".read": "auth.uid != null && ( auth.token.type === 0 || auth.token.type === 1 )",
       "$user_id": {
         ".write": "$user_id === auth.uid",
         ".read": "$user_id === auth.uid"

@@ -19,7 +19,6 @@ import { IAppState } from '../../interfaces/state';
 import Loading from '../Loading';
 import {
   ActivityStatus,
-  ActivityType,
   EmployeeType,
   getAllowedStatuses,
   IActivity,
@@ -65,6 +64,7 @@ const renderSelect = (params) => {
     children,
     required,
     customValue,
+    disabled,
     ...custom
   } = params;
 
@@ -73,6 +73,7 @@ const renderSelect = (params) => {
       value={customValue}
       onChange={(event) => input.onChange(event.target.value)}
       input={<InputBase className={styles.formSelect} />}
+      disabled={disabled}
       {...custom}
     >
       {children}
@@ -213,7 +214,7 @@ const Editor: React.FC<EditorProps> = ({
                       name="type"
                       id="type"
                       component={renderSelect}
-                      disabled={employeeType === EmployeeType.Volunteer}
+                      disabled={formType === FormType.statusOnly}
                     >
                       <option aria-label="None" value="" />
                       {ACTIVITY_TYPES.map((type) => (
@@ -231,7 +232,7 @@ const Editor: React.FC<EditorProps> = ({
                       id="address"
                       type="text"
                       component={renderDefaultInput}
-                      disabled={employeeType === EmployeeType.Volunteer}
+                      disabled={formType === FormType.statusOnly}
                     />
                   </div>
                   <div>
@@ -241,7 +242,7 @@ const Editor: React.FC<EditorProps> = ({
                       id="description"
                       name="description"
                       component={renderTextArea}
-                      disabled={employeeType === EmployeeType.Volunteer}
+                      disabled={formType === FormType.statusOnly}
                     />
                   </div>
                 </div>
@@ -274,7 +275,7 @@ const Editor: React.FC<EditorProps> = ({
                       name="estimation"
                       type="number"
                       component={renderDefaultInput}
-                      disabled={employeeType === EmployeeType.Volunteer}
+                      disabled={formType === FormType.statusOnly}
                     />
                   </div>
                   <div>
@@ -285,7 +286,7 @@ const Editor: React.FC<EditorProps> = ({
                       id="assigned"
                       component={renderAutoComplete}
                       options={assigneeAutoSuggestOptions}
-                      disabled={employeeType === EmployeeType.Volunteer}
+                      disabled={formType === FormType.statusOnly}
                     />
                   </div>
                   <div>
@@ -296,7 +297,9 @@ const Editor: React.FC<EditorProps> = ({
                       id="operator"
                       component={renderAutoComplete}
                       options={operatorAutoSuggestOptions}
-                      disabled={employeeType === EmployeeType.Volunteer}
+                      disabled={
+                        formType === FormType.statusOnly || employeeType === EmployeeType.Operator
+                      }
                     />
                   </div>
                 </div>

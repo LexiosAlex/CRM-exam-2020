@@ -10,7 +10,8 @@ import styles from './index.scss';
 import logo from '../../media/logo/spiral.svg';
 
 const AppHeader: React.FC = (props: any) => {
-  const { email, name, type } = props.profile;
+  const { email } = props.auth;
+  const { name, type } = props.profile;
   const firebase = useFirebase();
 
   const logOutHandler = () => firebase.logout();

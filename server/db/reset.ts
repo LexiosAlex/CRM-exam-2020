@@ -77,7 +77,7 @@ const createUserAndEmployee = async (user: admin.auth.CreateRequest, type: Emplo
   return await admin
     .database()
     .ref(`${REFS.EMPLOYEES}/${uid}`)
-    .set({ email: user.email, name: user.displayName, type });
+    .set({ name: user.displayName, type });
 };
 
 const createUsersByType = (type: EmployeeType, total: number): Promise<any> =>

@@ -83,7 +83,8 @@ const Tasks: React.FC<ITasksProps> = ({
                 canDrop={allowedStatuses.includes(parseInt(status))}
                 isDragging={isDragging}
                 onOpenDialog={(type: FormType, activity: IActivity) => {
-                  type === FormType.edit && setEditorActivity(activity);
+                  type === FormType.edit ||
+                    (type === FormType.statusOnly && setEditorActivity(activity));
                   setFormType(type);
                   setDialogOpened(true);
                 }}
