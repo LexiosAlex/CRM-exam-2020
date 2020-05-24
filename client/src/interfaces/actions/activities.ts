@@ -13,6 +13,14 @@ export const CHANGE_STATUS_REQUEST_PENDING: string = `${prefix}/CHANGE_STATUS_RE
 export const CHANGE_STATUS_REQUEST_FAIL: string = `${prefix}/CHANGE_STATUS_REQUEST_FAIL`;
 export const CHANGE_STATUS_REQUEST_DONE: string = `${prefix}/CHANGE_STATUS_REQUEST_DONE`;
 
+export const CHANGE_ACTIVITY_REQUEST_PENDING: string = `${prefix}/CHANGE_ACTIVITY_REQUEST_PENDING`;
+export const CHANGE_ACTIVITY_REQUEST_FAIL: string = `${prefix}/CHANGE_ACTIVITY_REQUEST_FAIL`;
+export const CHANGE_ACTIVITY_REQUEST_DONE: string = `${prefix}/CHANGE_ACTIVITY_REQUEST_DONE`;
+
+export const ADD_ACTIVITY_REQUEST_PENDING: string = `${prefix}/ADD_ACTIVITY_REQUEST_PENDING`;
+export const ADD_ACTIVITY_REQUEST_FAIL: string = `${prefix}/ADD_ACTIVITY_REQUEST_FAIL`;
+export const ADD_ACTIVITY_REQUEST_DONE: string = `${prefix}/ADD_ACTIVITY_REQUEST_DONE`;
+
 export interface getActivitiesDone {
   type: typeof GET_ACTIVITIES_DONE;
   payload: { [key: string]: IRawActivity };
@@ -42,22 +50,55 @@ export interface dragActivityDone {
   payload: { id: string; status: ActivityStatus };
 }
 
-export interface changeRequestPending {
+export interface changeStatusRequestPending {
   type: typeof CHANGE_STATUS_REQUEST_PENDING;
   payload: { id: string; status: ActivityStatus };
 }
 
-export interface changeRequestFail {
+export interface changeStatusRequestFail {
   type: typeof CHANGE_STATUS_REQUEST_FAIL;
   payload: { error: string; id: string; status: ActivityStatus };
 }
 
-export interface changeRequestDone {
+export interface changeStatusRequestDone {
   type: typeof CHANGE_STATUS_REQUEST_DONE;
   payload: any;
 }
 
-export type changeRequestActions = changeRequestPending | changeRequestFail | changeRequestDone;
+export interface changeActivityRequestPending {
+  type: typeof CHANGE_ACTIVITY_REQUEST_PENDING;
+  payload: { id: string; activity: IRawActivity };
+}
+
+export interface changeActivityRequestFail {
+  type: typeof CHANGE_ACTIVITY_REQUEST_FAIL;
+  payload: { error: string; id: string; status: ActivityStatus };
+}
+
+export interface changeActivityRequestDone {
+  type: typeof CHANGE_ACTIVITY_REQUEST_DONE;
+  payload: any;
+}
+
+export interface addActivityRequestPending {
+  type: typeof ADD_ACTIVITY_REQUEST_PENDING;
+  payload: { id: string; activity: IRawActivity };
+}
+
+export interface addActivityRequestFail {
+  type: typeof ADD_ACTIVITY_REQUEST_FAIL;
+  payload: { error: string; id: string; status: ActivityStatus };
+}
+
+export interface addActivityRequestDone {
+  type: typeof ADD_ACTIVITY_REQUEST_DONE;
+  payload: any;
+}
+
+export type changeStatusRequestActions =
+  | changeStatusRequestPending
+  | changeStatusRequestFail
+  | changeStatusRequestDone;
 
 export type dragActivitiesActions = dragActivityStart | dragActivityCancel | dragActivityDone;
 

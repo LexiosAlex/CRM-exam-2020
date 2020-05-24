@@ -9,7 +9,7 @@ import {
   CHANGE_STATUS_REQUEST_FAIL,
   CHANGE_STATUS_REQUEST_DONE,
   dragActivitiesActions,
-  changeRequestActions,
+  changeStatusRequestActions,
 } from '../interfaces/actions/activities';
 import { REFS } from '../utils/refs';
 import { notify } from './notification';
@@ -22,7 +22,7 @@ const updateActivityStatus = (payload): Promise<firebase.database.DataSnapshot> 
   return activityRef.update({ status });
 };
 
-const changeStatusStart = (payload): changeRequestActions => ({
+const changeStatusStart = (payload): changeStatusRequestActions => ({
   type: CHANGE_STATUS_REQUEST_PENDING,
   payload,
 });
@@ -31,12 +31,12 @@ const changeStatusFail = (
   error: string,
   id: string,
   status: ActivityStatus
-): changeRequestActions => ({
+): changeStatusRequestActions => ({
   type: CHANGE_STATUS_REQUEST_FAIL,
   payload: { error, id, status },
 });
 
-const changeStatusDone = (): changeRequestActions => ({
+const changeStatusDone = (): changeStatusRequestActions => ({
   type: CHANGE_STATUS_REQUEST_DONE,
   payload: null,
 });
@@ -48,7 +48,7 @@ const onChangeStatusLocalDone = (action$: ActionsObservable<dragActivitiesAction
   );
 
 const changeStatusAsync = (
-  action$: ActionsObservable<changeRequestActions>,
+  action$: ActionsObservable<changeStatusRequestActions>,
   state$: StateObservable<IAppState>
 ) =>
   action$.pipe(
@@ -63,7 +63,7 @@ const changeStatusAsync = (
     )
   );
 
-const onChangeStatusAsyncError = (action$: ActionsObservable<changeRequestActions>) =>
+const onChangeStatusAsyncError = (action$: ActionsObservable<changeStatusRequestActions>) =>
   action$.pipe(
     filter(isOfType(CHANGE_STATUS_REQUEST_FAIL)),
     map((action) => notify(`Can't change status. Code: ${action.payload.error}`))

@@ -259,11 +259,19 @@ const Editor: React.FC<EditorProps> = ({
                       {isNew ? (
                         <option value={ActivityStatus.New}>New</option>
                       ) : (
-                        getAllowedStatuses(employeeType, formState.values.status).map((key) => (
-                          <option key={key} value={key}>
-                            {ActivityStatus[key]}
+                        <>
+                          <option key={formState.values.status} value={formState.values.status}>
+                            {ActivityStatus[formState.values.status]}
                           </option>
-                        ))
+                          {getAllowedStatuses(
+                            employeeType,
+                            activity ? activity.status : formState.values.status
+                          ).map((key) => (
+                            <option key={key} value={key}>
+                              {ActivityStatus[key]}
+                            </option>
+                          ))}
+                        </>
                       )}
                     </Field>
                   </div>
