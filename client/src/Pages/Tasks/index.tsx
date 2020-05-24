@@ -48,8 +48,9 @@ const Tasks: React.FC<ITasksProps> = ({
   }
 
   const [dialogOpened, setDialogOpened] = useState<boolean>(false);
-  const [dialogType, setDialogType] = useState<number>(FormType.newForm);
+  const [formType, setFormType] = useState<number>(FormType.create);
   const [editorActivity, setEditorActivity] = useState<IActivity | null>(null);
+  const statusOnly = userType === EmployeeType.Volunteer;
 
   const onDragEnd = ({ destination, draggableId }: DropResult) => {
     if (destination) {
@@ -77,12 +78,13 @@ const Tasks: React.FC<ITasksProps> = ({
               <TaskList
                 key={index}
                 status={status}
+                statusOnly={statusOnly}
                 tasks={list}
                 canDrop={allowedStatuses.includes(parseInt(status))}
                 isDragging={isDragging}
                 onOpenDialog={(type: FormType, activity: IActivity) => {
-                  type === FormType.editForm && setEditorActivity(activity);
-                  setDialogType(type);
+                  type === FormType.edit && setEditorActivity(activity);
+                  setFormType(type);
                   setDialogOpened(true);
                 }}
               />
@@ -92,7 +94,7 @@ const Tasks: React.FC<ITasksProps> = ({
       </DragDropContext>
       {dialogOpened ? (
         <Editor
-          dialogType={dialogType}
+          formType={formType}
           open={dialogOpened}
           onClose={() => {
             setEditorActivity(null);

@@ -17,11 +17,16 @@ export interface IRawActivity {
   operator?: IUser; // who is curator (operator id)
   assignee?: IUser; // who is assignee (volunteer id)
   status: ActivityStatus;
-  history: IActivityHistory[];
+  history?: IActivityHistory[];
 }
 
 export interface IActivity extends IRawActivity {
   id: Id;
+}
+
+export interface IAppUser {
+  type: EmployeeType;
+  name: string;
 }
 
 export interface IEmployee {

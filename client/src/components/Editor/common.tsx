@@ -1,4 +1,7 @@
+import React from 'react';
+
 export enum FormType {
-  newForm,
-  editForm,
+  create,
+  edit,
+  statusOnly,
 }

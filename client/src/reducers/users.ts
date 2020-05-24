@@ -2,9 +2,9 @@ import { combineReducers } from 'redux';
 
 import { GET_USERS_PENDING, GET_USERS_DONE, GET_USERS_FAIL } from '../interfaces/actions/users';
 import { createAsyncStateReducer } from './Helpers/asyncReducer';
-import { IEmployeesState } from '../interfaces/state';
+import { IUsersHeapState } from '../interfaces/state';
 
-const initialUsersState: IEmployeesState = {};
+const initialUsersState: IUsersHeapState = {};
 
 const usersReducer = (state = initialUsersState, { type, payload }) => {
   switch (type) {
@@ -22,6 +22,6 @@ const fetchUsersAsyncReducer = createAsyncStateReducer(
 );
 
 export default combineReducers({
-  users: usersReducer,
+  heap: usersReducer,
   fetchAsync: fetchUsersAsyncReducer,
 });

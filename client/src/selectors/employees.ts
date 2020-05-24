@@ -1,11 +1,11 @@
 import { createSelector } from 'reselect';
 
-import { IAppState, IEmployeesState, IUsersState } from '../interfaces/state';
+import { IAppState, IUsersHeapState, IUsersState } from '../interfaces/state';
 
-import { IEmployee, IUser } from 'common/types';
+import { IAppUser, IUser } from 'common/types';
 import { EmployeeType } from 'common/constants';
 
-const getUsersForAutoSuggest = (users: IEmployeesState) => {
+const getUsersForAutoSuggest = (users: IUsersHeapState) => {
   const usersForAutoSuggest: IUser[] = [];
   if (users) {
     for (let [key, user] of Object.entries(users)) {
@@ -17,13 +17,13 @@ const getUsersForAutoSuggest = (users: IEmployeesState) => {
 
 const getUsers = (state: IAppState): IUsersState => state.users;
 
-const getRaw = createSelector([getUsers], (users) => users.users);
+const getRaw = createSelector([getUsers], (users) => users.heap);
 
-const isEmpty = createSelector([getUsers], (users) => !Object.keys(users.users).length);
+const isEmpty = createSelector([getUsers], (users) => !Object.keys(users.heap).length);
 
 const getOperators = createSelector([getRaw], (users) =>
   Object.entries(users).reduce(
-    (acc: { [key: string]: IEmployee }, [key, employee]) => ({
+    (acc: { [key: string]: IAppUser }, [key, employee]) => ({
       ...acc,
       ...(employee.type === EmployeeType.Operator ? { [key]: employee } : {}),
     }),
@@ -33,7 +33,7 @@ const getOperators = createSelector([getRaw], (users) =>
 
 const getVolunteers = createSelector([getRaw], (heap) =>
   Object.entries(heap).reduce(
-    (acc: { [key: string]: IEmployee }, [key, employee]) => ({
+    (acc: { [key: string]: IAppUser }, [key, employee]) => ({
       ...acc,
       ...(employee.type === EmployeeType.Volunteer ? { [key]: employee } : {}),
     }),
@@ -41,12 +41,12 @@ const getVolunteers = createSelector([getRaw], (heap) =>
   )
 );
 
-const getAutoSuggestOperators = createSelector([getOperators], (users: IEmployeesState) =>
-  getUsersForAutoSuggest(users)
+const getAutoSuggestOperators = createSelector([getOperators], (heap: IUsersHeapState) =>
+  getUsersForAutoSuggest(heap)
 );
 
-const getAutoSuggestVolunteers = createSelector([getVolunteers], (users: IEmployeesState) =>
-  getUsersForAutoSuggest(users)
+const getAutoSuggestVolunteers = createSelector([getVolunteers], (heap: IUsersHeapState) =>
+  getUsersForAutoSuggest(heap)
 );
 
 export default {

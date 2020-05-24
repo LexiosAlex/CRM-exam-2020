@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Field, InjectedFormProps, reduxForm } from 'redux-form';
+import { FirebaseReducer } from 'react-redux-firebase';
 
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -13,9 +14,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import InputBase from '@material-ui/core/InputBase';
 
-import selectors from '../../selectors';
-
-import styles from './index.scss';
 import { FormType } from './common';
 import { IAppState } from '../../interfaces/state';
 import Loading from '../Loading';
@@ -25,9 +23,14 @@ import {
   EmployeeType,
   getAllowedStatuses,
   IActivity,
+  IRawActivity,
   IUser,
 } from 'common/index';
-import { FirebaseReducer } from 'react-redux-firebase';
+import selectors from '../../selectors';
+import { ACTIVITY_TYPES } from 'common/constants';
+import { TITLE_TYPE_MAP } from '../../utils/activities';
+
+import styles from './index.scss';
 
 const renderAutoComplete = (params) => {
   const {
@@ -44,7 +47,6 @@ const renderAutoComplete = (params) => {
     <Autocomplete
       options={options}
       getOptionLabel={(option: IUser) => option.name}
-      // defaultValue={customValue ? customValue : null}
       value={customValue}
       onChange={(e, value) => input.onChange(value)}
       style={{ width: 300 }}
@@ -121,16 +123,6 @@ const renderTextArea = (params) => {
   );
 };
 
-interface FormValues {
-  assignee: IUser;
-  operator: IUser;
-  activityStatus: ActivityStatus;
-  activityType: ActivityType;
-  activityAddress: string;
-  activityEstimation: number;
-  activityDescription: string;
-}
-
 interface StateProps {
   formState: any;
   authProfile: FirebaseReducer.AuthState;
@@ -140,16 +132,16 @@ interface StateProps {
 }
 
 interface ActivityFormProps extends StateProps {
-  dialogType: FormType;
+  formType: FormType;
   open: boolean;
   onClose: () => void;
   activity: IActivity | null;
 }
 
-interface EditorProps extends ActivityFormProps, InjectedFormProps<FormValues, any> {}
+interface EditorProps extends ActivityFormProps, InjectedFormProps<IRawActivity, any> {}
 
 const Editor: React.FC<EditorProps> = ({
-  dialogType,
+  formType,
   onClose,
   open,
   activity,
@@ -161,7 +153,7 @@ const Editor: React.FC<EditorProps> = ({
   autoSuggestVolunteers,
   autoSuggestOperators,
 }) => {
-  const isNew = dialogType === FormType.newForm;
+  const isNew = formType === FormType.create;
   const { uid, displayName } = authProfile;
   const isLoadingData: boolean = !formState;
 
@@ -177,22 +169,23 @@ const Editor: React.FC<EditorProps> = ({
       : [{ name: displayName as string, id: uid }];
 
   useEffect(() => {
-    isNew &&
-      initialize({
-        ...initialValues,
-        operator: { name: displayName as string, id: uid },
-        activityStatus: ActivityStatus.New,
-      });
-    activity &&
-      initialize({
-        assignee: activity.assignee,
-        operator: activity.operator,
-        activityStatus: activity.status,
-        activityType: activity.type,
-        activityAddress: activity.address,
-        activityEstimation: activity.estimation,
-        activityDescription: activity.description,
-      });
+    const data =
+      !isNew && activity
+        ? {
+            assignee: activity.assignee,
+            operator: activity.operator,
+            status: activity.status,
+            type: activity.type,
+            address: activity.address,
+            estimation: activity.estimation,
+            description: activity.description,
+          }
+        : {
+            ...initialValues,
+            operator: { name: displayName as string, id: uid },
+            status: ActivityStatus.New,
+          };
+    initialize(data);
   }, []);
 
   return (
@@ -214,30 +207,28 @@ const Editor: React.FC<EditorProps> = ({
               <>
                 <div className={styles.formActivityInfo}>
                   <div className={styles.activityStatus}>
-                    <label htmlFor="activityType">Type</label>
+                    <label htmlFor="type">Type</label>
                     <Field
-                      customValue={formState.values.activityType}
-                      name="activityType"
-                      id="activityType"
+                      customValue={formState.values.type}
+                      name="type"
+                      id="type"
                       component={renderSelect}
                       disabled={employeeType === EmployeeType.Volunteer}
                     >
                       <option aria-label="None" value="" />
-                      {Object.keys(ActivityType).map((key) =>
-                        isNaN(Number(key)) ? (
-                          <option key={key} value={ActivityType[key]}>
-                            {key}
-                          </option>
-                        ) : null
-                      )}
+                      {ACTIVITY_TYPES.map((type) => (
+                        <option key={type} value={type}>
+                          {TITLE_TYPE_MAP[type]}
+                        </option>
+                      ))}
                     </Field>
                   </div>
                   <div className={styles.activityAddress}>
-                    <label htmlFor="activityAddress">Address</label>
+                    <label htmlFor="address">Address</label>
                     <Field
-                      customValue={formState.values.activityAddress}
-                      name="activityAddress"
-                      id="activityAddress"
+                      customValue={formState.values.address}
+                      name="address"
+                      id="address"
                       type="text"
                       component={renderDefaultInput}
                       disabled={employeeType === EmployeeType.Volunteer}
@@ -246,9 +237,9 @@ const Editor: React.FC<EditorProps> = ({
                   <div>
                     <h5>Description</h5>
                     <Field
-                      customValue={formState.values.activityDescription}
-                      id="activityDescription"
-                      name="activityDescription"
+                      customValue={formState.values.description}
+                      id="description"
+                      name="description"
                       component={renderTextArea}
                       disabled={employeeType === EmployeeType.Volunteer}
                     />
@@ -256,33 +247,31 @@ const Editor: React.FC<EditorProps> = ({
                 </div>
                 <div className={styles.formUserInfo}>
                   <div className={styles.activityStatus}>
-                    <label htmlFor="activityStatus">Status</label>
+                    <label htmlFor="status">Status</label>
                     <Field
-                      customValue={formState.values.activityStatus}
-                      name="activityStatus"
-                      id="activityStatus"
+                      customValue={formState.values.status}
+                      name="status"
+                      id="status"
                       component={renderSelect}
                       disabled={isNew}
                     >
                       {isNew ? (
                         <option value={ActivityStatus.New}>New</option>
                       ) : (
-                        getAllowedStatuses(employeeType, formState.values.activityStatus).map(
-                          (key) => (
-                            <option key={key} value={key}>
-                              {ActivityStatus[key]}
-                            </option>
-                          )
-                        )
+                        getAllowedStatuses(employeeType, formState.values.status).map((key) => (
+                          <option key={key} value={key}>
+                            {ActivityStatus[key]}
+                          </option>
+                        ))
                       )}
                     </Field>
                   </div>
                   <div className={styles.estimation}>
-                    <label htmlFor="activityEstimation">Estimation in hours</label>
+                    <label htmlFor="estimation">Estimation in hours</label>
                     <Field
-                      customValue={formState.values.activityEstimation}
-                      id="activityEstimation"
-                      name="activityEstimation"
+                      customValue={formState.values.estimation}
+                      id="estimation"
+                      name="estimation"
                       type="number"
                       component={renderDefaultInput}
                       disabled={employeeType === EmployeeType.Volunteer}
@@ -346,16 +335,16 @@ const Editor: React.FC<EditorProps> = ({
   );
 };
 
-const InitializedFormEditor = reduxForm<FormValues, ActivityFormProps>({
-  form: 'activitiesForm',
+const InitializedFormEditor = reduxForm<IRawActivity, ActivityFormProps>({
+  form: 'activityForm',
   initialValues: {
     assignee: void 0,
     operator: void 0,
-    activityStatus: void 0,
-    activityType: void 0,
-    activityAddress: void 0,
-    activityEstimation: void 0,
-    activityDescription: void 0,
+    status: void 0,
+    type: void 0,
+    address: void 0,
+    estimation: void 0,
+    description: void 0,
   },
 })(Editor);
 

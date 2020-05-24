@@ -1,6 +1,6 @@
 import { FirebaseReducer } from 'react-redux-firebase';
 
-import { IActivity, ActivityStatus, IEmployee, IUser } from 'common/index';
+import { IActivity, ActivityStatus, IAppUser } from 'common/index';
 import { INotification } from './common';
 
 export interface IAsyncReducer {
@@ -13,8 +13,8 @@ export interface IActivitiesHeapState {
   [key: string]: IActivity;
 }
 
-export interface IEmployeesState {
-  [key: string]: IEmployee;
+export interface IUsersHeapState {
+  [key: string]: IAppUser;
 }
 
 export interface IActivitiesStatusState {
@@ -36,7 +36,7 @@ export interface INotificationsState {
 }
 
 export interface IUsersState {
-  users: IEmployeesState;
+  heap: IUsersHeapState;
   fetchAsync: IAsyncReducer;
 }
 

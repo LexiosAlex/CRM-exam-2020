@@ -1,4 +1,4 @@
-import { IRawActivity } from 'common/types';
+import { IUser } from 'common/types';
 
 const prefix: string = 'USERS';
 
@@ -8,7 +8,7 @@ export const GET_USERS_DONE: string = `${prefix}/GET_USERS_DONE`;
 
 export interface getUsersDone {
   type: typeof GET_USERS_DONE;
-  payload: { [key: string]: IRawActivity };
+  payload: { [key: string]: IUser };
 }
 
 export interface getUsersFail {
@@ -18,7 +18,6 @@ export interface getUsersFail {
 
 export interface getUsersPending {
   type: typeof GET_USERS_PENDING;
-  payload: string;
 }
 
 export type getUsersActions = getUsersDone | getUsersFail | getUsersPending;

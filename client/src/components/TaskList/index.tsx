@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
-import AddIcon from '@material-ui/icons/Add';
+import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
 import { IActivity } from 'common/index';
 import styles from './index.scss';
 import TaskCard from '../TaskCard';
 import { TITLE_STATUS_MAP } from '../../utils/activities';
-import { IconButton } from '@material-ui/core';
 import { FormType } from '../Editor/common';
 
 interface TaskListInterface {
   status: string;
+  statusOnly: boolean;
   tasks: IActivity[];
   canDrop: boolean;
   isDragging: boolean;
@@ -19,6 +18,7 @@ interface TaskListInterface {
 
 const TaskList: React.FC<TaskListInterface> = ({
   status,
+  statusOnly,
   tasks,
   canDrop,
   isDragging,
@@ -33,7 +33,7 @@ const TaskList: React.FC<TaskListInterface> = ({
       <div className={styles.addNewCardContainer}>
         <h2>{TITLE_STATUS_MAP[status]}</h2>
         {TITLE_STATUS_MAP[status] === TITLE_STATUS_MAP[0] ? (
-          <button onClick={() => onOpenDialog(FormType.newForm)} className={styles.addButton}>
+          <button onClick={() => onOpenDialog(FormType.create)} className={styles.addButton}>
             New
           </button>
         ) : null}
@@ -49,7 +49,9 @@ const TaskList: React.FC<TaskListInterface> = ({
                   address={task.address}
                   id={task.id}
                   index={index}
-                  onOpenDialog={() => onOpenDialog(FormType.editForm, task)}
+                  onOpenDialog={() =>
+                    onOpenDialog(statusOnly ? FormType.statusOnly : FormType.edit, task)
+                  }
                 />
               ))
             ) : (
