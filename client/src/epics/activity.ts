@@ -1,4 +1,4 @@
-import { switchMap, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { switchMap, filter, map, withLatestFrom } from 'rxjs/operators';
 import firebase from 'firebase/app';
 import { isOfType } from 'typesafe-actions';
 import { ActionsObservable, StateObservable } from 'redux-observable';
@@ -10,6 +10,8 @@ import {
   CHANGE_STATUS_REQUEST_DONE,
   dragActivitiesActions,
   changeStatusRequestActions,
+  changeStatusRequestFail,
+  changeStatusRequestDone,
 } from '../interfaces/actions/activities';
 import { REFS } from '../utils/refs';
 import { notify } from './notification';
@@ -36,9 +38,9 @@ const changeStatusFail = (
   payload: { error, id, status },
 });
 
-const changeStatusDone = (): changeStatusRequestActions => ({
+const changeStatusDone = (payload): changeStatusRequestDone => ({
   type: CHANGE_STATUS_REQUEST_DONE,
-  payload: null,
+  payload: { id: payload.id, status: payload.status },
 });
 
 const onChangeStatusLocalDone = (action$: ActionsObservable<dragActivitiesActions>) =>
@@ -56,14 +58,14 @@ const changeStatusAsync = (
     withLatestFrom(state$),
     switchMap(([action, state]) =>
       updateActivityStatus(action.payload)
-        .then((data) => changeStatusDone())
+        .then((data) => changeStatusDone(action.payload))
         .catch((error) =>
           changeStatusFail(error.code, state.activities.status.id, state.activities.status.from)
         )
     )
   );
 
-const onChangeStatusAsyncError = (action$: ActionsObservable<changeStatusRequestActions>) =>
+const onChangeStatusAsyncError = (action$: ActionsObservable<changeStatusRequestFail>) =>
   action$.pipe(
     filter(isOfType(CHANGE_STATUS_REQUEST_FAIL)),
     map((action) => notify(`Can't change status. Code: ${action.payload.error}`))
