@@ -9,6 +9,8 @@ const getActivities = (state: IAppState): IActivitiesState => state.activities;
 
 const getHeap = createSelector([getActivities], (activities) => activities.heap);
 
+const getFormAsyncState = createSelector([getActivities], (activities) => activities.formAsync);
+
 const isEmpty = createSelector(
   [getActivities],
   (activities) => !Object.keys(activities.heap).length
@@ -48,4 +50,5 @@ export default {
   isEmpty,
   getIsDragging,
   getAllowedStatuses,
+  getFormAsyncState,
 };

@@ -21,6 +21,8 @@ export const ADD_ACTIVITY_REQUEST_PENDING: string = `${prefix}/ADD_ACTIVITY_REQU
 export const ADD_ACTIVITY_REQUEST_FAIL: string = `${prefix}/ADD_ACTIVITY_REQUEST_FAIL`;
 export const ADD_ACTIVITY_REQUEST_DONE: string = `${prefix}/ADD_ACTIVITY_REQUEST_DONE`;
 
+export const ACTIVITY_FORM_RESET: string = `${prefix}/ACTIVITY_FORM_RESET`;
+
 export interface getActivitiesDone {
   type: typeof GET_ACTIVITIES_DONE;
   payload: { [key: string]: IRawActivity };
@@ -62,7 +64,7 @@ export interface changeStatusRequestFail {
 
 export interface changeStatusRequestDone {
   type: typeof CHANGE_STATUS_REQUEST_DONE;
-  payload: any;
+  payload?: { id: string; status: ActivityStatus };
 }
 
 export interface changeActivityRequestPending {
@@ -72,27 +74,27 @@ export interface changeActivityRequestPending {
 
 export interface changeActivityRequestFail {
   type: typeof CHANGE_ACTIVITY_REQUEST_FAIL;
-  payload: { error: string; id: string; status: ActivityStatus };
+  payload: { error: string };
 }
 
 export interface changeActivityRequestDone {
   type: typeof CHANGE_ACTIVITY_REQUEST_DONE;
-  payload: any;
+  payload: { id: string; activity: IRawActivity };
 }
 
 export interface addActivityRequestPending {
   type: typeof ADD_ACTIVITY_REQUEST_PENDING;
-  payload: { id: string; activity: IRawActivity };
+  payload: { activity: IRawActivity };
 }
 
 export interface addActivityRequestFail {
   type: typeof ADD_ACTIVITY_REQUEST_FAIL;
-  payload: { error: string; id: string; status: ActivityStatus };
+  payload: { error: string };
 }
 
 export interface addActivityRequestDone {
   type: typeof ADD_ACTIVITY_REQUEST_DONE;
-  payload: any;
+  payload: { id: string; activity: IRawActivity };
 }
 
 export type changeStatusRequestActions =

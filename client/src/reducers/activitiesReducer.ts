@@ -10,6 +10,13 @@ import {
   CHANGE_STATUS_REQUEST_PENDING,
   CHANGE_STATUS_REQUEST_FAIL,
   CHANGE_STATUS_REQUEST_DONE,
+  CHANGE_ACTIVITY_REQUEST_PENDING,
+  ADD_ACTIVITY_REQUEST_PENDING,
+  CHANGE_ACTIVITY_REQUEST_DONE,
+  ADD_ACTIVITY_REQUEST_DONE,
+  CHANGE_ACTIVITY_REQUEST_FAIL,
+  ADD_ACTIVITY_REQUEST_FAIL,
+  ACTIVITY_FORM_RESET,
 } from '../interfaces/actions/activities';
 import { createAsyncStateReducer } from './Helpers/asyncReducer';
 import { IActivity, getAllowedStatuses, ActivityStatus } from 'common/index';
@@ -22,9 +29,13 @@ const heapReducer = (state = initialHeapState, { type, payload }) => {
     case GET_ACTIVITIES_DONE:
       return payload;
     case DRAG_ACTIVITY_DONE:
+    case CHANGE_STATUS_REQUEST_DONE:
     case CHANGE_STATUS_REQUEST_FAIL:
-      const { id, status } = payload;
-      return { ...state, [id]: { ...state[id], status } };
+      return { ...state, [payload.id]: { ...state[payload.id], status: payload.status } };
+    case ADD_ACTIVITY_REQUEST_DONE:
+      return { ...state, [payload.id]: { ...payload.activity } };
+    case CHANGE_ACTIVITY_REQUEST_DONE:
+      return { ...state, [payload.id]: { ...state[payload.id], ...payload.activity } };
     default:
       return state;
   }
@@ -56,6 +67,13 @@ const statusReducer = (state = initialStatusState, { type, payload }) => {
   }
 };
 
+const activitiesFormAsyncReducer = createAsyncStateReducer(
+  CHANGE_STATUS_REQUEST_PENDING || CHANGE_ACTIVITY_REQUEST_PENDING || ADD_ACTIVITY_REQUEST_PENDING,
+  CHANGE_STATUS_REQUEST_DONE || CHANGE_ACTIVITY_REQUEST_DONE || ADD_ACTIVITY_REQUEST_DONE,
+  CHANGE_STATUS_REQUEST_FAIL || CHANGE_ACTIVITY_REQUEST_FAIL || ADD_ACTIVITY_REQUEST_FAIL,
+  ACTIVITY_FORM_RESET
+);
+
 const changeStatusAsyncReducer = createAsyncStateReducer(
   CHANGE_STATUS_REQUEST_PENDING,
   CHANGE_STATUS_REQUEST_DONE,
@@ -73,4 +91,5 @@ export default combineReducers({
   status: statusReducer,
   fetchAsync: fetchAsyncReducer,
   statusAsync: changeStatusAsyncReducer,
+  formAsync: activitiesFormAsyncReducer,
 });

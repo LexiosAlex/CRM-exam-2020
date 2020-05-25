@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 import { FirebaseReducer } from 'react-redux-firebase';
 
@@ -28,6 +28,12 @@ import {
 import selectors from '../../selectors';
 import { ACTIVITY_TYPES } from 'common/constants';
 import { TITLE_TYPE_MAP } from '../../utils/activities';
+import {
+  changeActivity,
+  changeActivityStatus,
+  addActivity,
+  resetFormState,
+} from '../../actions/activity';
 
 import styles from './index.scss';
 
@@ -126,6 +132,9 @@ const renderTextArea = (params) => {
 
 interface StateProps {
   formState: any;
+  isSendingData: boolean;
+  isError: string;
+  isSent: boolean;
   authProfile: FirebaseReducer.AuthState;
   employeeType: EmployeeType;
   autoSuggestOperators: IUser[];
@@ -139,13 +148,16 @@ interface ActivityFormProps extends StateProps {
   activity: IActivity | null;
 }
 
-interface EditorProps extends ActivityFormProps, InjectedFormProps<IRawActivity, any> {}
+interface EditorProps extends ActivityFormProps, InjectedFormProps<IActivity, any> {}
 
 const Editor: React.FC<EditorProps> = ({
   formType,
   onClose,
   open,
   activity,
+  isSendingData,
+  isError,
+  isSent,
   initialize,
   initialValues,
   formState,
@@ -154,11 +166,11 @@ const Editor: React.FC<EditorProps> = ({
   autoSuggestVolunteers,
   autoSuggestOperators,
 }) => {
+  const dispatch = useDispatch();
   const isNew = formType === FormType.create;
   const { uid, displayName } = authProfile;
   const isLoadingData: boolean = !formState;
 
-  const isSendingData = false;
   //sendingForAsyncState
 
   const operatorAutoSuggestOptions: IUser[] =
@@ -189,10 +201,42 @@ const Editor: React.FC<EditorProps> = ({
     initialize(data);
   }, []);
 
+  React.useEffect(() => {
+    return () => {
+      dispatch(resetFormState());
+      onClose();
+    };
+  }, [isSent]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const activityValues: IRawActivity = {
+      assignee: formState.values.assignee,
+      operator: formState.values.operator,
+      status: formState.values.status,
+      type: formState.values.type,
+      address: formState.values.address,
+      estimation: formState.values.estimation,
+      description: formState.values.description,
+    };
+    switch (formType) {
+      case FormType.create:
+        dispatch(addActivity(activityValues));
+        break;
+      case FormType.statusOnly:
+        activity && dispatch(changeActivityStatus(activity.id, parseInt(formState.values.status)));
+        break;
+      case FormType.edit:
+        activity && dispatch(changeActivity(activity.id, activityValues));
+        break;
+      default:
+        return;
+    }
+  };
   return (
     <>
       <Dialog maxWidth="lg" onClose={onClose} aria-labelledby="customized-dialog-title" open={open}>
-        <form noValidate className={styles.dialogForm}>
+        <form onSubmit={handleSubmit} noValidate className={styles.dialogForm}>
           <header className={styles.formHeader}>
             <div>
               <h4>{isNew ? 'Add new activity' : 'Edit activity'}</h4>
@@ -259,19 +303,14 @@ const Editor: React.FC<EditorProps> = ({
                       {isNew ? (
                         <option value={ActivityStatus.New}>New</option>
                       ) : (
-                        <>
-                          <option key={formState.values.status} value={formState.values.status}>
-                            {ActivityStatus[formState.values.status]}
+                        getAllowedStatuses(
+                          employeeType,
+                          activity ? activity.status : formState.values.status
+                        ).map((key) => (
+                          <option key={key} value={key}>
+                            {ActivityStatus[key]}
                           </option>
-                          {getAllowedStatuses(
-                            employeeType,
-                            activity ? activity.status : formState.values.status
-                          ).map((key) => (
-                            <option key={key} value={key}>
-                              {ActivityStatus[key]}
-                            </option>
-                          ))}
-                        </>
+                        ))
                       )}
                     </Field>
                   </div>
@@ -290,11 +329,11 @@ const Editor: React.FC<EditorProps> = ({
                     <h5>Assignee</h5>
                     <Field
                       customValue={formState.values.assignee}
-                      name="assigned"
-                      id="assigned"
+                      name="assignee"
+                      id="assignee"
                       component={renderAutoComplete}
                       options={assigneeAutoSuggestOptions}
-                      disabled={formType === FormType.statusOnly}
+                      disabled={formType === FormType.statusOnly || isNew}
                     />
                   </div>
                   <div>
@@ -346,7 +385,7 @@ const Editor: React.FC<EditorProps> = ({
   );
 };
 
-const InitializedFormEditor = reduxForm<IRawActivity, ActivityFormProps>({
+const InitializedFormEditor = reduxForm<IActivity, ActivityFormProps>({
   form: 'activityForm',
   initialValues: {
     assignee: void 0,
@@ -363,6 +402,9 @@ export default connect((state: IAppState) => ({
   formState: selectors.forms.getActivityForm(state),
   authProfile: selectors.user.getAuth(state),
   employeeType: selectors.user.getEmployeeType(state),
+  isSendingData: selectors.activities.getFormAsyncState(state).pending,
+  isSent: selectors.activities.getFormAsyncState(state).loaded,
+  isError: selectors.activities.getFormAsyncState(state).error,
   autoSuggestOperators: selectors.employees.getAutoSuggestOperators(state),
   autoSuggestVolunteers: selectors.employees.getAutoSuggestVolunteers(state),
 }))(InitializedFormEditor);
