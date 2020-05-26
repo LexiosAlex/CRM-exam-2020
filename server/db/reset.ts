@@ -13,7 +13,7 @@ const getRandomEnumValue = <T>(anEnum: T): T[keyof T] => {
   return randomEnumValue;
 };
 
-const getRandomArrayValue = (array: any[]) => array[Math.floor(Math.random() * (array.length - 1))];
+const getRandomArrayValue = (array: any[]) => array[~~(array.length * Math.random())];
 
 type DBConfig = { [key: string]: number };
 
