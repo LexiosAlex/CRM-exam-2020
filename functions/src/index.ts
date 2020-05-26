@@ -1,7 +1,12 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import { resolve } from 'path';
+import { config } from 'dotenv';
 
 import { EmployeeType, ActivityStatus } from '../../common/index';
+
+config({ path: resolve(__dirname, '../../../../.env') });
+const isDev = process.env.DEV === 'true';
 
 admin.initializeApp();
 
