@@ -53,8 +53,14 @@ export const processAssignment = functions.database
       const activityRef = change.after.ref.parent as admin.database.Reference;
       const activity = (await activityRef.once('value')).val();
       const { status, assignee } = activity;
-      const type = await getEmployeeType(context);
-      const { uid, displayName } = context.auth as any;
+      let type, uid;
+      if (isDev) {
+        type = EmployeeType.Volunteer;
+        uid = 'mtUCkrkOz0XjENgUDmaMsYNq0j92';
+      } else {
+        type = await getEmployeeType(context);
+        uid = (context.auth as any).uid;
+      }
       if (
         !!assignee &&
         (status === ActivityStatus.New || status === ActivityStatus.ReadyForAssignment)
@@ -62,7 +68,9 @@ export const processAssignment = functions.database
         activityRef.update({ assignee: null });
       }
       if (status === ActivityStatus.Assigned && type === EmployeeType.Volunteer) {
-        activityRef.child('assignee').update({ id: uid, name: displayName });
+        const employee = (await admin.database().ref(`employees/${uid}`).once('value')).val();
+        const { name } = employee;
+        activityRef.child('assignee').update({ id: uid, name });
       }
     } catch (e) {
       console.error(e);
