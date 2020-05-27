@@ -47,17 +47,17 @@ export const processAssignment = functions.database
     try {
       const activityRef = change.after.ref.parent as admin.database.Reference;
       const activity = (await activityRef.once('value')).val();
-      const { status, assignee } = activity;
+      const { status } = activity;
       const type = await getEmployeeType(context);
       const { uid, displayName } = context.auth as any;
       if (
-        !!assignee &&
+        !activity.assignee &&
         (status === ActivityStatus.New || status === ActivityStatus.ReadyForAssignment)
       ) {
-        activityRef.update({ assignee: null });
+        await activityRef.update({ assignee: null });
       }
-      if (status === ActivityStatus.Assigned && type === EmployeeType.Volunteer) {
-        activityRef.child('assignee').update({ id: uid, name: displayName });
+      if (status === ActivityStatus.Assigned && type == EmployeeType.Volunteer) {
+        await activityRef.child('assignee').update({ id: uid, name: displayName });
       }
     } catch (e) {
       console.error(e);

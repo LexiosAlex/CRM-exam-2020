@@ -64,6 +64,7 @@
     "@types/redux-form": "^8.2.5",
     "final-form": "^4.19.1",
     "firebase": "^7.14.0",
+    "material-table": "^1.58.2",
     "notistack": "^0.9.11",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",

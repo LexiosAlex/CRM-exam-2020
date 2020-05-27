@@ -35,7 +35,7 @@ const Sidebar: React.FC = () => {
       >
         <List className={`${styles.list} ${open ? styles.drawerOpen : styles.drawerClose}`}>
           <ListItem button>
-            <Link className={styles.link} to={navPaths.HOME}>
+            <Link className={styles.link} to={navPaths.STATS}>
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
@@ -43,7 +43,7 @@ const Sidebar: React.FC = () => {
             </Link>
           </ListItem>
           <ListItem button>
-            <Link className={styles.link} to={navPaths.HOME}>
+            <Link className={styles.link} to={navPaths.USERS}>
               <ListItemIcon>
                 <GroupIcon />
               </ListItemIcon>

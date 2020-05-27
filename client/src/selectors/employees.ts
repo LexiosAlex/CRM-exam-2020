@@ -41,6 +41,15 @@ const getVolunteers = createSelector([getRaw], (heap) =>
   )
 );
 
+const employeesForTable = createSelector([getRaw], (heap) =>
+  Object.entries(heap).reduce(
+    (acc: { [key: string]: IAppUser }, [key, employee]) => ({
+      ...acc,
+      ...(employee.type !== EmployeeType.Admin ? { uid: key, ...employee } : {}),
+    }),
+    [] as any
+  )
+);
 const getAutoSuggestOperators = createSelector([getOperators], (heap: IUsersHeapState) =>
   getUsersForAutoSuggest(heap)
 );
@@ -54,5 +63,6 @@ export default {
   getAutoSuggestOperators,
   getOperators,
   getVolunteers,
+  employeesForTable,
   isEmpty,
 };
