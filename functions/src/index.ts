@@ -1,7 +1,12 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import { resolve } from 'path';
+import { config } from 'dotenv';
 
 import { EmployeeType, ActivityStatus } from '../../common/index';
+
+config({ path: resolve(__dirname, '../../../../.env') });
+const isDev = process.env.DEV === 'true';
 
 admin.initializeApp();
 
@@ -47,17 +52,25 @@ export const processAssignment = functions.database
     try {
       const activityRef = change.after.ref.parent as admin.database.Reference;
       const activity = (await activityRef.once('value')).val();
-      const { status } = activity;
-      const type = await getEmployeeType(context);
-      const { uid, displayName } = context.auth as any;
+      const { status, assignee } = activity;
+      let type, uid;
+      if (isDev) {
+        type = EmployeeType.Volunteer;
+        uid = 'mtUCkrkOz0XjENgUDmaMsYNq0j92';
+      } else {
+        type = await getEmployeeType(context);
+        uid = (context.auth as any).uid;
+      }
       if (
-        !activity.assignee &&
+        !!assignee &&
         (status === ActivityStatus.New || status === ActivityStatus.ReadyForAssignment)
       ) {
-        await activityRef.update({ assignee: null });
+        activityRef.update({ assignee: null });
       }
-      if (status === ActivityStatus.Assigned && type == EmployeeType.Volunteer) {
-        await activityRef.child('assignee').update({ id: uid, name: displayName });
+      if (status === ActivityStatus.Assigned && type === EmployeeType.Volunteer) {
+        const employee = (await admin.database().ref(`employees/${uid}`).once('value')).val();
+        const { name } = employee;
+        activityRef.child('assignee').update({ id: uid, name });
       }
     } catch (e) {
       console.error(e);
