@@ -9,6 +9,8 @@ export const DRAG_ACTIVITY_START: string = `${prefix}/DRAG_ACTIVITY_START`;
 export const DRAG_ACTIVITY_CANCEL: string = `${prefix}/DRAG_ACTIVITY_CANCEL`;
 export const DRAG_ACTIVITY_DONE: string = `${prefix}/DRAG_ACTIVITY_DONE`;
 
+export const CHANGE_ACTIVITY_STATUS: string = `${prefix}/CHANGE_ACTIVITY_STATUS`;
+
 export const CHANGE_STATUS_REQUEST_PENDING: string = `${prefix}/CHANGE_STATUS_REQUEST_PENDING`;
 export const CHANGE_STATUS_REQUEST_FAIL: string = `${prefix}/CHANGE_STATUS_REQUEST_FAIL`;
 export const CHANGE_STATUS_REQUEST_DONE: string = `${prefix}/CHANGE_STATUS_REQUEST_DONE`;
@@ -49,6 +51,11 @@ export interface dragActivityCancel {
 
 export interface dragActivityDone {
   type: typeof DRAG_ACTIVITY_DONE;
+  payload: { id: string; status: ActivityStatus };
+}
+
+export interface changeActivityStatusAction {
+  type: typeof CHANGE_ACTIVITY_STATUS;
   payload: { id: string; status: ActivityStatus };
 }
 

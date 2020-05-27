@@ -3,8 +3,9 @@ import {
   DRAG_ACTIVITY_DONE,
   DRAG_ACTIVITY_CANCEL,
   dragActivitiesActions,
+  CHANGE_ACTIVITY_STATUS,
+  changeActivityStatusAction,
   CHANGE_ACTIVITY_REQUEST_PENDING,
-  CHANGE_STATUS_REQUEST_PENDING,
   ADD_ACTIVITY_REQUEST_PENDING,
   addActivityRequestPending,
   changeActivityRequestPending,
@@ -28,20 +29,20 @@ export const dragEnd = (id: string, status: ActivityStatus): dragActivitiesActio
   payload: { id, status },
 });
 
+export const changeActivityStatus = (
+  id: string,
+  status: ActivityStatus
+): changeActivityStatusAction => ({
+  type: CHANGE_ACTIVITY_STATUS,
+  payload: { id, status },
+});
+
 export const changeActivity = (
   id: string,
   activity: IRawActivity
 ): changeActivityRequestPending => ({
   type: CHANGE_ACTIVITY_REQUEST_PENDING,
   payload: { id, activity },
-});
-
-export const changeActivityStatus = (
-  id: string,
-  status: ActivityStatus
-): changeStatusRequestPending => ({
-  type: CHANGE_STATUS_REQUEST_PENDING,
-  payload: { id, status },
 });
 
 export const addActivity = (activity: IRawActivity): addActivityRequestPending => ({

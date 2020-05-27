@@ -201,36 +201,28 @@ const Editor: React.FC<EditorProps> = ({
     initialize(data);
   }, []);
 
-  React.useEffect(() => {
-    return () => {
+  React.useEffect(
+    () => () => {
       dispatch(resetFormState());
       onClose();
-    };
-  }, [isSent]);
+    },
+    [isSent]
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const activityValues: IRawActivity = {
-      assignee: formState.values.assignee,
-      operator: formState.values.operator,
-      status: formState.values.status,
-      type: formState.values.type,
-      address: formState.values.address,
-      estimation: formState.values.estimation,
-      description: formState.values.description,
-    };
-    switch (formType) {
-      case FormType.create:
-        dispatch(addActivity(activityValues));
-        break;
-      case FormType.statusOnly:
-        activity && dispatch(changeActivityStatus(activity.id, parseInt(formState.values.status)));
-        break;
-      case FormType.edit:
-        activity && dispatch(changeActivity(activity.id, activityValues));
-        break;
-      default:
-        return;
+    const _activity: IRawActivity = Object.entries(formState.values).reduce(
+      (acc, [k, v]) => ({ ...acc, ...(v !== void 0 ? { [k]: v } : {}) }),
+      {} as IRawActivity
+    );
+    if (formType === FormType.create) {
+      dispatch(addActivity(_activity));
+    } else if (activity) {
+      if (formType === FormType.edit) {
+        dispatch(changeActivity(activity.id, _activity));
+      } else if (formType === FormType.statusOnly) {
+        dispatch(changeActivityStatus(activity.id, _activity.status));
+      }
     }
   };
   return (
@@ -296,9 +288,11 @@ const Editor: React.FC<EditorProps> = ({
                     <Field
                       customValue={formState.values.status}
                       name="status"
+                      type="number"
                       id="status"
                       component={renderSelect}
                       disabled={isNew}
+                      parse={(value) => Number(value)}
                     >
                       {isNew ? (
                         <option value={ActivityStatus.New}>New</option>
