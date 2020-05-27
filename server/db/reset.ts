@@ -68,30 +68,30 @@ const getUserName = (type: EmployeeType, number: number): string => {
   return 'volunteer' + number;
 };
 
-const createUserAndEmployee = async (user: admin.auth.CreateRequest, type: EmployeeType) => {
+const createUserAndEmployee = async (
+  user: admin.auth.CreateRequest,
+  type: EmployeeType,
+  name: string
+) => {
   const { uid } = await admin.auth().createUser(user);
-  if (user.displayName) {
-    users[type].push({ id: uid, name: user.displayName });
-  }
+  console.log('Creating user', uid, `(type ${type}, ${user.email})`);
+  users[type].push({ id: uid, name });
   await admin.auth().setCustomUserClaims(uid, { type });
-  return await admin
-    .database()
-    .ref(`${REFS.EMPLOYEES}/${uid}`)
-    .set({ name: user.displayName, type });
+  return await admin.database().ref(`${REFS.EMPLOYEES}/${uid}`).set({ name, type });
 };
 
 const createUsersByType = (type: EmployeeType, total: number): Promise<any> =>
   Promise.all(
     Array.from({ length: total }).map((j, i) => {
+      const displayName = getUserName(type, i);
       const user: admin.auth.CreateRequest = {
         email: getUserEmail(type, i),
         emailVerified: true,
         password: `password${i}`,
-        displayName: getUserName(type, i),
+        displayName,
         disabled: false,
       };
-      console.log('Creating user', user.email);
-      return createUserAndEmployee(user, type);
+      return createUserAndEmployee(user, type, displayName);
     })
   );
 
