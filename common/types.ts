@@ -20,6 +20,8 @@ export interface IRawActivity {
   history?: IActivityHistory[];
 }
 
+export interface IDraftActivity extends Partial<IRawActivity> {}
+
 export interface IActivity extends IRawActivity {
   id: Id;
 }

@@ -8,13 +8,11 @@ import {
   CHANGE_STATUS_REQUEST_PENDING,
   CHANGE_STATUS_REQUEST_FAIL,
   CHANGE_STATUS_REQUEST_DONE,
-  dragActivitiesActions,
-  changeActivityStatusAction,
+  dragActivityDone,
   changeStatusRequestActions,
   changeStatusRequestFail,
   changeStatusRequestDone,
   changeStatusRequestPending,
-  CHANGE_ACTIVITY_STATUS,
 } from '../interfaces/actions/activities';
 import { REFS } from '../utils/refs';
 import { notify } from './notification';
@@ -46,11 +44,9 @@ const changeStatusDone = (payload): changeStatusRequestDone => ({
   payload: { id: payload.id, status: payload.status },
 });
 
-const onChangeStatusLocalDone = (
-  action$: ActionsObservable<dragActivitiesActions | changeActivityStatusAction>
-) =>
+const onChangeStatusLocalDone = (action$: ActionsObservable<dragActivityDone>) =>
   action$.pipe(
-    filter(isOfType([DRAG_ACTIVITY_DONE, CHANGE_ACTIVITY_STATUS])),
+    filter(isOfType(DRAG_ACTIVITY_DONE)),
     map((action) => changeStatusStart(action.payload))
   );
 

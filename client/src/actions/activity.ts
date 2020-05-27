@@ -3,8 +3,6 @@ import {
   DRAG_ACTIVITY_DONE,
   DRAG_ACTIVITY_CANCEL,
   dragActivitiesActions,
-  CHANGE_ACTIVITY_STATUS,
-  changeActivityStatusAction,
   CHANGE_ACTIVITY_REQUEST_PENDING,
   ADD_ACTIVITY_REQUEST_PENDING,
   addActivityRequestPending,
@@ -12,7 +10,7 @@ import {
   changeStatusRequestPending,
   ACTIVITY_FORM_RESET,
 } from '../interfaces/actions/activities';
-import { ActivityStatus, EmployeeType, IRawActivity } from 'common/index';
+import { ActivityStatus, EmployeeType, IRawActivity, IDraftActivity } from 'common/index';
 
 export const dragStart = (type: EmployeeType, status: ActivityStatus): dragActivitiesActions => ({
   type: DRAG_ACTIVITY_START,
@@ -29,17 +27,9 @@ export const dragEnd = (id: string, status: ActivityStatus): dragActivitiesActio
   payload: { id, status },
 });
 
-export const changeActivityStatus = (
-  id: string,
-  status: ActivityStatus
-): changeActivityStatusAction => ({
-  type: CHANGE_ACTIVITY_STATUS,
-  payload: { id, status },
-});
-
 export const changeActivity = (
   id: string,
-  activity: IRawActivity
+  activity: IDraftActivity
 ): changeActivityRequestPending => ({
   type: CHANGE_ACTIVITY_REQUEST_PENDING,
   payload: { id, activity },

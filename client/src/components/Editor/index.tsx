@@ -28,12 +28,7 @@ import {
 import selectors from '../../selectors';
 import { ACTIVITY_TYPES } from 'common/constants';
 import { TITLE_TYPE_MAP } from '../../utils/activities';
-import {
-  changeActivity,
-  changeActivityStatus,
-  addActivity,
-  resetFormState,
-} from '../../actions/activity';
+import { changeActivity, addActivity, resetFormState } from '../../actions/activity';
 
 import styles from './index.scss';
 
@@ -221,10 +216,11 @@ const Editor: React.FC<EditorProps> = ({
       if (formType === FormType.edit) {
         dispatch(changeActivity(activity.id, _activity));
       } else if (formType === FormType.statusOnly) {
-        dispatch(changeActivityStatus(activity.id, _activity.status));
+        dispatch(changeActivity(activity.id, { status: _activity.status }));
       }
     }
   };
+
   return (
     <>
       <Dialog maxWidth="lg" onClose={onClose} aria-labelledby="customized-dialog-title" open={open}>
