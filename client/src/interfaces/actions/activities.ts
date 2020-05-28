@@ -30,7 +30,7 @@ export interface getActivitiesDone {
 
 export interface getActivitiesFail {
   type: typeof GET_ACTIVITIES_FAIL;
-  payload: string;
+  payload: { error: string };
 }
 
 export interface getActivitiesPending {
