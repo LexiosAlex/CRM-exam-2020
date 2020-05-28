@@ -29,7 +29,7 @@ export const getAllowedStatuses = (
   userType: EmployeeType,
   startStatus: ActivityStatus
 ): ActivityStatus[] => {
-  if (userType === EmployeeType.Operator || EmployeeType.Admin) {
+  if (userType === EmployeeType.Operator || userType === EmployeeType.Admin) {
     return VISIBLE_STATUSES[userType];
   }
 

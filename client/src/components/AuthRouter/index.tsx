@@ -16,10 +16,10 @@ const AuthRouter: React.FC = (props: any) => {
 
   return (
     <BrowserRouter>
-      {auth.isEmpty ? <Redirect to={navPath.SIGN_IN} /> : <Redirect to={navPath.LANDING} />}
+      {auth.isEmpty ? <Redirect to={navPath.SIGN_IN} /> : <Redirect to={navPath.TASKS} />}
       <div>
         <Switch>
-          <Route component={AppRouter} path={navPath.LANDING} exact />
+          <Route component={AppRouter} path={navPath.TASKS} exact />
           <Route component={SignIn} path={navPath.SIGN_IN} exact />
           <Route component={SignUp} path={navPath.SIGN_UP} exact />
           <Route component={PwForget} path={navPath.PASSWORD_FORGET} exact />

@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import MaterialTable, { Column, Icons } from 'material-table';
 import { EmployeeType } from 'common/constants';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import selectors from '../../selectors/index';
 
 import AddBox from '@material-ui/icons/AddBox';
@@ -25,6 +25,7 @@ import { IAppState } from '../../interfaces/state';
 import employees from '../../selectors/employees';
 import { IUsersHeapState } from '../../interfaces/state';
 import { IAppUser } from 'common/types';
+import { EDIT_USER_PENDING } from '../../interfaces/actions/users';
 
 const tableIcons: Icons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -48,8 +49,8 @@ const tableIcons: Icons = {
 
 interface Row {
   name: string;
-  role: EmployeeType;
-  uid: string;
+  type: EmployeeType;
+  id: string;
 }
 
 interface TableState {
@@ -57,40 +58,31 @@ interface TableState {
   data: Row[];
 }
 
-interface TableUser extends IAppUser {
-  uid: string;
-}
-
 interface UsersTableProps {
   employees: any;
+  isLoading: boolean;
 }
 
-const UsersTable: React.FC<UsersTableProps> = ({ employees }) => {
-  console.log(employees);
+const UsersTable: React.FC<UsersTableProps> = ({ employees, isLoading }) => {
+  const dispatch = useDispatch();
   const [state, setState] = React.useState<TableState>({
     columns: [
       { title: 'Name', field: 'name', editable: 'never' },
       {
         title: 'Role',
-        field: 'role',
+        field: 'type',
         lookup: { 2: 'Volunteer', 1: 'Operator' },
         editable: 'onUpdate',
       },
     ],
-    data: [
-      { name: 'Mehmet', role: 1, uid: '123' },
-      {
-        name: 'Zerya Betül',
-        role: 2,
-        uid: '123',
-      },
-    ],
+    data: employees,
   });
 
   return (
     <div className={styles.container}>
       <h2>Users management</h2>
       <MaterialTable
+        isLoading={isLoading}
         icons={tableIcons}
         title="Users"
         columns={state.columns}
@@ -98,16 +90,10 @@ const UsersTable: React.FC<UsersTableProps> = ({ employees }) => {
         editable={{
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                if (oldData) {
-                  setState((prevState) => {
-                    const data = [...prevState.data];
-                    data[data.indexOf(oldData)] = newData;
-                    return { ...prevState, data };
-                  });
-                }
-              }, 600);
+              const { id, type } = newData;
+              dispatch({ type: EDIT_USER_PENDING, payload: { id, type } });
+              resolve();
+              //As the doc says it should be a promise
             }),
         }}
       />
@@ -117,4 +103,5 @@ const UsersTable: React.FC<UsersTableProps> = ({ employees }) => {
 
 export default connect((state: IAppState) => ({
   employees: selectors.employees.employeesForTable(state),
+  isLoading: selectors.employees.getTableLoading(state),
 }))(UsersTable);

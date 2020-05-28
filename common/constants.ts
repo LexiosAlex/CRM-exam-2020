@@ -35,9 +35,11 @@ const OPERATOR_ACTIVITY_STATUSES: ActivityStatus[] = [
   ActivityStatus.Archived,
 ];
 
-const ADMIN_ACTIVITY_STATUSES: ActivityStatus[] = Object.entries(ActivityStatus)
-  .filter(([key, value]) => isNaN(Number(key)))
-  .map(([key, value]) => value as ActivityStatus);
+const ADMIN_ACTIVITY_STATUSES: ActivityStatus[] = [
+  ActivityStatus.New,
+  ...VOLUNTEER_ACTIVITY_STATUSES,
+  ActivityStatus.Archived,
+];
 
 export const VISIBLE_STATUSES: { [key in EmployeeType]: ActivityStatus[] } = {
   [EmployeeType.Volunteer]: VOLUNTEER_ACTIVITY_STATUSES,

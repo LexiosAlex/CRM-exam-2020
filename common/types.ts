@@ -29,6 +29,12 @@ export interface IAppUser {
   name: string;
 }
 
+export interface ITableUser {
+  id: Id;
+  type: EmployeeType;
+  name: string;
+}
+
 export interface IEmployee {
   id?: EmployeeId;
   type: EmployeeType;

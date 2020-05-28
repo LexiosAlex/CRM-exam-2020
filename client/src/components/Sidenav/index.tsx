@@ -51,7 +51,7 @@ const Sidebar: React.FC = () => {
             </Link>
           </ListItem>
           <ListItem button>
-            <Link className={styles.link} to={navPaths.LANDING}>
+            <Link className={styles.link} to={navPaths.TASKS}>
               <ListItemIcon>
                 <ViewColumnIcon />
               </ListItemIcon>

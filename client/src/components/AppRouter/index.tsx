@@ -26,7 +26,7 @@ const AppRouter: React.FC = () => {
           <SideNav />
           <div>
             <Switch>
-              <Route component={Tasks} path={navPath.LANDING} exact />
+              <Route component={Tasks} path={navPath.TASKS} exact />
               <Route component={Account} path={navPath.ACCOUNT} exact />
               <Route component={Admin} path={navPath.STATS} exact />
               <Route component={UsersTable} path={navPath.USERS} exact />

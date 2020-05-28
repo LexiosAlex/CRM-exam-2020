@@ -27,7 +27,7 @@ import {
 } from 'common/index';
 import selectors from '../../selectors';
 import { ACTIVITY_TYPES } from 'common/constants';
-import { TITLE_TYPE_MAP } from '../../utils/activities';
+import { TITLE_STATUS_MAP, TITLE_TYPE_MAP } from '../../utils/activities';
 import {
   changeActivity,
   changeActivityStatus,
@@ -170,14 +170,16 @@ const Editor: React.FC<EditorProps> = ({
   const isNew = formType === FormType.create;
   const { uid, displayName } = authProfile;
   const isLoadingData: boolean = !formState;
-
+  console.log(isSendingData);
   //sendingForAsyncState
 
   const operatorAutoSuggestOptions: IUser[] =
-    employeeType === (EmployeeType.Operator || EmployeeType.Admin) ? autoSuggestOperators : [];
+    employeeType === EmployeeType.Operator || employeeType === EmployeeType.Admin
+      ? autoSuggestOperators
+      : [];
 
   const assigneeAutoSuggestOptions: IUser[] =
-    employeeType === (EmployeeType.Operator || EmployeeType.Admin)
+    employeeType === EmployeeType.Operator || employeeType === EmployeeType.Admin
       ? autoSuggestVolunteers
       : [{ name: displayName as string, id: uid }];
 
@@ -308,7 +310,7 @@ const Editor: React.FC<EditorProps> = ({
                           activity ? activity.status : formState.values.status
                         ).map((key) => (
                           <option key={key} value={key}>
-                            {ActivityStatus[key]}
+                            {TITLE_STATUS_MAP[key]}
                           </option>
                         ))
                       )}
@@ -363,7 +365,7 @@ const Editor: React.FC<EditorProps> = ({
                   styles.btnPrimary
                 }`}
               >
-                <span>Save changes</span>
+                <span>{`${isNew ? 'Add activity' : 'Save changes'}`}</span>
               </button>
               <button
                 onClick={(event) => {
