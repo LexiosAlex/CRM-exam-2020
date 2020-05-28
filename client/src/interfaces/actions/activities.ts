@@ -1,4 +1,4 @@
-import { ActivityStatus, EmployeeType, IRawActivity } from 'common/index';
+import { ActivityStatus, EmployeeType, IRawActivity, IDraftActivity } from 'common/index';
 const prefix: string = 'ACTIVITIES';
 
 export const GET_ACTIVITIES_PENDING: string = `${prefix}/GET_ACTIVITIES_PENDING`;
@@ -69,7 +69,7 @@ export interface changeStatusRequestDone {
 
 export interface changeActivityRequestPending {
   type: typeof CHANGE_ACTIVITY_REQUEST_PENDING;
-  payload: { id: string; activity: IRawActivity };
+  payload: { id: string; activity: IDraftActivity };
 }
 
 export interface changeActivityRequestFail {
@@ -79,7 +79,7 @@ export interface changeActivityRequestFail {
 
 export interface changeActivityRequestDone {
   type: typeof CHANGE_ACTIVITY_REQUEST_DONE;
-  payload: { id: string; activity: IRawActivity };
+  payload: { id: string; activity: IDraftActivity };
 }
 
 export interface addActivityRequestPending {

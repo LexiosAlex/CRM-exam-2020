@@ -46,7 +46,7 @@ const getQuery = async (firebaseState): Promise<Snapshot> => {
           .once('value'),
       ]);
     default:
-      return Promise.reject({ code: 'Bad Employee type' });
+      return Promise.reject({ code: `Bad Employee type (${type})` });
   }
 };
 

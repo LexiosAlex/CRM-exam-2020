@@ -8,10 +8,11 @@ import {
   CHANGE_STATUS_REQUEST_PENDING,
   CHANGE_STATUS_REQUEST_FAIL,
   CHANGE_STATUS_REQUEST_DONE,
-  dragActivitiesActions,
+  dragActivityDone,
   changeStatusRequestActions,
   changeStatusRequestFail,
   changeStatusRequestDone,
+  changeStatusRequestPending,
 } from '../interfaces/actions/activities';
 import { REFS } from '../utils/refs';
 import { notify } from './notification';
@@ -43,14 +44,14 @@ const changeStatusDone = (payload): changeStatusRequestDone => ({
   payload: { id: payload.id, status: payload.status },
 });
 
-const onChangeStatusLocalDone = (action$: ActionsObservable<dragActivitiesActions>) =>
+const onChangeStatusLocalDone = (action$: ActionsObservable<dragActivityDone>) =>
   action$.pipe(
     filter(isOfType(DRAG_ACTIVITY_DONE)),
     map((action) => changeStatusStart(action.payload))
   );
 
 const changeStatusAsync = (
-  action$: ActionsObservable<changeStatusRequestActions>,
+  action$: ActionsObservable<changeStatusRequestPending>,
   state$: StateObservable<IAppState>
 ) =>
   action$.pipe(

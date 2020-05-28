@@ -25,7 +25,7 @@ import { IAppState } from '../interfaces/state';
 const onChangeAsyncError = (action$: ActionsObservable<changeActivityRequestFail>) =>
   action$.pipe(
     filter(isOfType(CHANGE_ACTIVITY_REQUEST_FAIL)),
-    map((action) => notify(`Cant change activity. Code: ${action.payload.error}`))
+    map((action) => notify(`Can't change activity. Code: ${action.payload.error}`))
   );
 
 const onChangeError = (error): changeActivityRequestFail => ({
@@ -43,7 +43,7 @@ const changeActivity = ({ id, activity }): Promise<firebase.database.DataSnapsho
   return activityRef.update({ ...activity });
 };
 
-const onChangeActivityDone = (
+const changeActivityAsync = (
   action$: ActionsObservable<changeActivityRequestPending>,
   state$: StateObservable<IAppState>
 ) =>
@@ -98,7 +98,7 @@ const onAddError = (error): addActivityRequestFail => ({
 const onAddAsyncError = (action$: ActionsObservable<addActivityRequestFail>) =>
   action$.pipe(
     filter(isOfType(ADD_ACTIVITY_REQUEST_FAIL)),
-    map((action) => notify(`Cant change activity. Code: ${action.payload.error}`))
+    map((action) => notify(`Can't add activity. Code: ${action.payload.error}`))
   );
 
-export default [onChangeActivityDone, onChangeAsyncError, onAddActivityDone, onAddAsyncError];
+export default [changeActivityAsync, onChangeAsyncError, onAddActivityDone, onAddAsyncError];
