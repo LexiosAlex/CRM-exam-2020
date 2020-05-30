@@ -49,7 +49,7 @@ const Tasks: React.FC<ITasksProps> = ({
 
   const dispatch = useDispatch();
   const [dialogOpened, setDialogOpened] = useState<boolean>(false);
-  const [formType, setFormType] = useState<number>(FormType.create);
+  const [formType, setFormType] = useState<FormType>(FormType.create);
   const [editorActivity, setEditorActivity] = useState<IActivity | null>(null);
   const statusOnly = userType === EmployeeType.Volunteer;
 
@@ -84,8 +84,9 @@ const Tasks: React.FC<ITasksProps> = ({
                 canDrop={allowedStatuses.includes(parseInt(status))}
                 isDragging={isDragging}
                 onOpenDialog={(type: FormType, activity: IActivity) => {
-                  (type === FormType.edit || type === FormType.statusOnly) &&
+                  if (type === FormType.edit || type === FormType.statusOnly) {
                     setEditorActivity(activity);
+                  }
                   setFormType(type);
                   setDialogOpened(true);
                 }}

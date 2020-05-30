@@ -181,13 +181,7 @@ const Editor: React.FC<EditorProps> = ({
     const data =
       !isNew && activity
         ? {
-            assignee: activity.assignee,
-            operator: activity.operator,
-            status: activity.status,
-            type: activity.type,
-            address: activity.address,
-            estimation: activity.estimation,
-            description: activity.description,
+            ...activity,
           }
         : {
             ...initialValues,
