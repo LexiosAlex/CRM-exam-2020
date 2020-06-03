@@ -8,7 +8,7 @@ import Notifier from '../Notifier';
 import * as navPath from '../../utils/router';
 import Account from '../../Pages/Account';
 // import Landing from '../../Pages/Landing';
-import Admin from '../../Pages/Admin';
+import Stats from '../../Pages/Stats';
 import UsersTable from '../../Pages/UsersTable';
 import Tasks from '../../Pages/Tasks';
 import AppHeader from '../Header';
@@ -28,7 +28,7 @@ const AppRouter: React.FC = () => {
             <Switch>
               <Route component={Tasks} path={navPath.TASKS} exact />
               <Route component={Account} path={navPath.ACCOUNT} exact />
-              <Route component={Admin} path={navPath.STATS} exact />
+              <Route component={Stats} path={navPath.STATS} exact />
               <Route component={UsersTable} path={navPath.USERS} exact />
             </Switch>
           </div>
