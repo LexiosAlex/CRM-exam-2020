@@ -3,6 +3,7 @@ const prefix: string = 'ACTIVITIES';
 
 export const GET_ACTIVITIES_PENDING: string = `${prefix}/GET_ACTIVITIES_PENDING`;
 export const GET_ACTIVITIES_FAIL: string = `${prefix}/GET_ACTIVITIES_FAIL`;
+export const GET_ACTIVITIES_FULFILL: string = `${prefix}/GET_ACTIVITIES_FULFILL`;
 export const GET_ACTIVITIES_DONE: string = `${prefix}/GET_ACTIVITIES_DONE`;
 
 export const DRAG_ACTIVITY_START: string = `${prefix}/DRAG_ACTIVITY_START`;

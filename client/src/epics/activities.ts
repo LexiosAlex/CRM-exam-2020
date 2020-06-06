@@ -1,19 +1,22 @@
 import { ofType, StateObservable, ActionsObservable } from 'redux-observable';
 import firebase from 'firebase/app';
-import { switchMap, map, withLatestFrom, mergeMap, catchError } from 'rxjs/operators';
+import { switchMap, map, withLatestFrom, mergeMap, catchError, filter } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { Action } from 'typesafe-actions';
 
 import { ActivityStatus, EmployeeType } from 'common/index';
 import { REFS } from '../utils/refs';
 import {
+  GET_ACTIVITIES_FULFILL,
   GET_ACTIVITIES_DONE,
   GET_ACTIVITIES_FAIL,
   GET_ACTIVITIES_PENDING,
   getActivitiesFail,
+  getActivitiesDone,
 } from '../interfaces/actions/activities';
 import { notify } from './notification';
 import { IAppState } from '../interfaces/state';
+import selectors from '../selectors';
 
 const firebasePrefix: string = '@@reactReduxFirebase';
 type Snapshot = firebase.database.DataSnapshot;
@@ -60,7 +63,8 @@ const getQuery = (firebaseState) =>
   });
 
 const fetchDataRequested = () => ({ type: GET_ACTIVITIES_PENDING });
-const fetchDataFulfilled = (payload) => ({ type: GET_ACTIVITIES_DONE, payload });
+const fetchDataFulfilled = (payload) => ({ type: GET_ACTIVITIES_FULFILL, payload });
+const fetchDataDone = (payload) => ({ type: GET_ACTIVITIES_DONE, payload });
 const fetchDataFailed = (payload) => ({ type: GET_ACTIVITIES_FAIL, payload });
 
 const startFetchActivities = (action$: ActionsObservable<Action>) =>
@@ -81,10 +85,27 @@ const fetchActivities = (action$: ActionsObservable<Action>, state$: StateObserv
     )
   );
 
+// we want to ignore firebase.activities updates during manual changing of Activity status
+const onFetchActivitiesAsyncFulfill = (
+  action$: ActionsObservable<getActivitiesDone>,
+  state$: StateObservable<IAppState>
+) =>
+  action$.pipe(
+    ofType(GET_ACTIVITIES_FULFILL),
+    withLatestFrom(state$),
+    filter(([action, state]) => !selectors.activities.isStatusPending(state)),
+    map(([action]) => fetchDataDone(action.payload))
+  );
+
 const onFetchActivitiesAsyncError = (action$: ActionsObservable<getActivitiesFail>) =>
   action$.pipe(
     ofType(GET_ACTIVITIES_FAIL),
     map((action) => notify(`Can't get activities. ${action.payload.error}`))
   );
 
-export default [startFetchActivities, fetchActivities, onFetchActivitiesAsyncError];
+export default [
+  startFetchActivities,
+  fetchActivities,
+  onFetchActivitiesAsyncFulfill,
+  onFetchActivitiesAsyncError,
+];
