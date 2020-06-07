@@ -32,10 +32,6 @@ const heapReducer = (state = initialHeapState, { type, payload }) => {
     case CHANGE_STATUS_REQUEST_DONE:
     case CHANGE_STATUS_REQUEST_FAIL:
       return { ...state, [payload.id]: { ...state[payload.id], status: payload.status } };
-    case ADD_ACTIVITY_REQUEST_DONE:
-      return { ...state, [payload.id]: { ...payload.activity } };
-    case CHANGE_ACTIVITY_REQUEST_DONE:
-      return { ...state, [payload.id]: { ...state[payload.id], ...payload.activity } };
     default:
       return state;
   }

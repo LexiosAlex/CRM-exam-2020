@@ -45,10 +45,17 @@ const getStatusState = createSelector([getActivities], (activities) => activitie
 const getIsDragging = createSelector([getStatusState], (statusState) => statusState.dragging);
 const getAllowedStatuses = createSelector([getStatusState], (statusState) => statusState.allowed);
 
+const getStatusAsyncState = createSelector([getActivities], (activities) => activities.statusAsync);
+const isStatusPending = createSelector(
+  [getStatusAsyncState],
+  (statusAsyncState) => statusAsyncState.pending
+);
+
 export default {
   getLists,
   isEmpty,
   getIsDragging,
   getAllowedStatuses,
   getFormAsyncState,
+  isStatusPending,
 };
