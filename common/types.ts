@@ -31,10 +31,8 @@ export interface IAppUser {
   name: string;
 }
 
-export interface ITableUser {
-  id: Id;
+export interface ITypedUser extends IUser {
   type: EmployeeType;
-  name: string;
 }
 
 export interface IEmployee {

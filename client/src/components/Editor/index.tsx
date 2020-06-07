@@ -167,16 +167,6 @@ const Editor: React.FC<EditorProps> = ({
   const isLoadingData: boolean = !formState;
   //sendingForAsyncState
 
-  const operatorAutoSuggestOptions: IUser[] =
-    employeeType === EmployeeType.Operator || employeeType === EmployeeType.Admin
-      ? autoSuggestOperators
-      : [];
-
-  const assigneeAutoSuggestOptions: IUser[] =
-    employeeType === EmployeeType.Operator || employeeType === EmployeeType.Admin
-      ? autoSuggestVolunteers
-      : [{ name: displayName as string, id: uid }];
-
   useEffect(() => {
     const data =
       !isNew && activity
@@ -317,7 +307,7 @@ const Editor: React.FC<EditorProps> = ({
                       name="assignee"
                       id="assignee"
                       component={renderAutoComplete}
-                      options={assigneeAutoSuggestOptions}
+                      options={autoSuggestVolunteers}
                       disabled={formType === FormType.statusOnly || isNew}
                     />
                   </div>
@@ -328,7 +318,7 @@ const Editor: React.FC<EditorProps> = ({
                       name="operator"
                       id="operator"
                       component={renderAutoComplete}
-                      options={operatorAutoSuggestOptions}
+                      options={autoSuggestOperators}
                       disabled={
                         formType === FormType.statusOnly || employeeType === EmployeeType.Operator
                       }
@@ -390,6 +380,6 @@ export default connect((state: IAppState) => ({
   isSendingData: selectors.activities.getFormAsyncState(state).pending,
   isSent: selectors.activities.getFormAsyncState(state).loaded,
   isError: selectors.activities.getFormAsyncState(state).error,
-  autoSuggestOperators: selectors.employees.getAutoSuggestOperators(state),
-  autoSuggestVolunteers: selectors.employees.getAutoSuggestVolunteers(state),
+  autoSuggestOperators: selectors.employees.getOperators(state),
+  autoSuggestVolunteers: selectors.employees.getVolunteers(state),
 }))(InitializedFormEditor);

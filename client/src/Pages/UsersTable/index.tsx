@@ -22,10 +22,7 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 
 import styles from './index.scss';
 import { IAppState } from '../../interfaces/state';
-import employees from '../../selectors/employees';
-import { IUsersHeapState } from '../../interfaces/state';
-import { IAppUser } from 'common/types';
-import { EDIT_USER_PENDING } from '../../interfaces/actions/users';
+import { editUser } from '../../actions/users';
 
 const tableIcons: Icons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -61,9 +58,15 @@ interface TableState {
 interface UsersTableProps {
   employees: any;
   isLoading: boolean;
+  editUser: Function;
 }
 
-const UsersTable: React.FC<UsersTableProps> = ({ employees, isLoading }) => {
+const TITLE_USERS_LIST_TYPE_MAP = {
+  [EmployeeType.Operator]: 'Operator',
+  [EmployeeType.Volunteer]: 'Volunteer',
+};
+
+const UsersTable: React.FC<UsersTableProps> = ({ employees, isLoading, editUser }) => {
   const dispatch = useDispatch();
   const [state, setState] = React.useState<TableState>({
     columns: [
@@ -71,7 +74,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ employees, isLoading }) => {
       {
         title: 'Role',
         field: 'type',
-        lookup: { 2: 'Volunteer', 1: 'Operator' },
+        lookup: TITLE_USERS_LIST_TYPE_MAP,
         editable: 'onUpdate',
       },
     ],
@@ -88,20 +91,23 @@ const UsersTable: React.FC<UsersTableProps> = ({ employees, isLoading }) => {
         columns={state.columns}
         data={state.data}
         editable={{
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve) => {
-              const { id, type } = newData;
-              dispatch({ type: EDIT_USER_PENDING, payload: { id, type } });
-              resolve();
-              //As the doc says it should be a promise
-            }),
+          onRowUpdate: (newData, oldData) => {
+            const { id, type } = newData;
+            editUser(id, type);
+            return Promise.resolve();
+          },
         }}
       />
     </div>
   );
 };
 
-export default connect((state: IAppState) => ({
-  employees: selectors.employees.employeesForTable(state),
-  isLoading: selectors.employees.getTableLoading(state),
-}))(UsersTable);
+export default connect(
+  (state: IAppState) => ({
+    employees: selectors.employees.userList(state),
+    isLoading: selectors.employees.getTableLoading(state),
+  }),
+  (dispatch) => ({
+    editUser: (id: string, type: EmployeeType) => dispatch(editUser(id, type)),
+  })
+)(UsersTable);

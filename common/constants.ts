@@ -37,7 +37,11 @@ const OPERATOR_ACTIVITY_STATUSES: ActivityStatus[] = [
 
 const ADMIN_ACTIVITY_STATUSES: ActivityStatus[] = [
   ActivityStatus.New,
-  ...VOLUNTEER_ACTIVITY_STATUSES,
+  ActivityStatus.ReadyForAssignment,
+  ActivityStatus.Assigned,
+  ActivityStatus.InProgress,
+  ActivityStatus.Canceled,
+  ActivityStatus.Done,
   ActivityStatus.Archived,
 ];
 

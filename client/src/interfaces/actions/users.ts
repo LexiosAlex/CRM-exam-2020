@@ -13,7 +13,7 @@ export const EDIT_USER_DONE: string = `${prefix}/EDIT_USER_DONE`;
 export const EDIT_USER_STATE_RESET: string = `${prefix}/EDIT_USER_STATE_RESET`;
 
 export interface editUserDone {
-  type: typeof EDIT_USER_PENDING;
+  type: typeof EDIT_USER_DONE;
   payload: { id: string; type: EmployeeType };
 }
 
