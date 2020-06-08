@@ -12,7 +12,15 @@ const checkVolunteerTransition = (start: ActivityStatus, end: ActivityStatus): b
         end === ActivityStatus.Assigned
       );
     case ActivityStatus.InProgress:
-      return end === ActivityStatus.Done || end === ActivityStatus.Canceled;
+      return (
+        end === ActivityStatus.InProgress ||
+        end === ActivityStatus.Done ||
+        end === ActivityStatus.Canceled
+      );
+    case ActivityStatus.Done:
+      return end === ActivityStatus.Done;
+    case ActivityStatus.Canceled:
+      return end === ActivityStatus.Canceled;
   }
   return false;
 };

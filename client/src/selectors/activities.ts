@@ -9,6 +9,8 @@ const getActivities = (state: IAppState): IActivitiesState => state.activities;
 
 const getHeap = createSelector([getActivities], (activities) => activities.heap);
 
+const getFormAsyncState = createSelector([getActivities], (activities) => activities.formAsync);
+
 const isEmpty = createSelector(
   [getActivities],
   (activities) => !Object.keys(activities.heap).length
@@ -43,9 +45,17 @@ const getStatusState = createSelector([getActivities], (activities) => activitie
 const getIsDragging = createSelector([getStatusState], (statusState) => statusState.dragging);
 const getAllowedStatuses = createSelector([getStatusState], (statusState) => statusState.allowed);
 
+const getStatusAsyncState = createSelector([getActivities], (activities) => activities.statusAsync);
+const isStatusPending = createSelector(
+  [getStatusAsyncState],
+  (statusAsyncState) => statusAsyncState.pending
+);
+
 export default {
   getLists,
   isEmpty,
   getIsDragging,
   getAllowedStatuses,
+  getFormAsyncState,
+  isStatusPending,
 };

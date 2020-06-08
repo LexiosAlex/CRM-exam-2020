@@ -1,57 +1,70 @@
 import { ofType, StateObservable, ActionsObservable } from 'redux-observable';
 import firebase from 'firebase/app';
-import { switchMap, map, withLatestFrom } from 'rxjs/operators';
+import { switchMap, map, withLatestFrom, mergeMap, catchError, filter } from 'rxjs/operators';
+import { of, Observable } from 'rxjs';
 import { Action } from 'typesafe-actions';
 
 import { ActivityStatus, EmployeeType } from 'common/index';
 import { REFS } from '../utils/refs';
 import {
+  GET_ACTIVITIES_FULFILL,
   GET_ACTIVITIES_DONE,
   GET_ACTIVITIES_FAIL,
   GET_ACTIVITIES_PENDING,
+  getActivitiesFail,
+  getActivitiesDone,
 } from '../interfaces/actions/activities';
+import { notify } from './notification';
 import { IAppState } from '../interfaces/state';
+import selectors from '../selectors';
 
 const firebasePrefix: string = '@@reactReduxFirebase';
-
 type Snapshot = firebase.database.DataSnapshot;
 
-const performAndQuery = (queries: Promise<Snapshot>[]): Promise<Snapshot> =>
-  Promise.all(queries).then(
-    (results) =>
-      ({
-        val: () => results.reduce((acc, result) => ({ ...acc, ...result.val() }), {}),
-      } as Snapshot)
-  );
-
-const getQuery = async (firebaseState): Promise<Snapshot> => {
-  const {
-    profile: { type },
-    auth: { uid },
-  } = firebaseState;
-  const ActivitiesRef = firebase.database().ref(REFS.ACTIVITIES);
-
-  switch (type) {
-    case EmployeeType.Admin:
-      return ActivitiesRef.once('value');
-
-    case EmployeeType.Operator:
-      return ActivitiesRef.orderByChild('operator/id').equalTo(uid).once('value');
-
-    case EmployeeType.Volunteer:
-      return performAndQuery([
-        ActivitiesRef.orderByChild('assignee/id').equalTo(uid).once('value'),
-        ActivitiesRef.orderByChild('status')
-          .equalTo(ActivityStatus.ReadyForAssignment)
-          .once('value'),
-      ]);
-    default:
-      return Promise.reject({ code: 'Bad Employee type' });
-  }
+const performAndQuery = (queries: firebase.database.Query[], onDone: Function) => {
+  const snapStore = queries.map(() => ({}));
+  const done = (index: number, snap: Snapshot) => {
+    snapStore[index] = snap.val();
+    (snap as any)['val'] = () => snapStore.reduce((acc, v) => ({ ...acc, ...v }), {});
+    onDone(snap);
+  };
+  queries.forEach((query, index) => query.on('value', (snap) => done(index, snap)));
 };
 
+const getQuery = (firebaseState) =>
+  new Observable((subscriber) => {
+    const ActivitiesRef = firebase.database().ref(REFS.ACTIVITIES);
+    const done = (snap: Snapshot) => subscriber.next(snap);
+    const fail = (err: string) => subscriber.error(err);
+    const {
+      profile: { type },
+      auth: { uid },
+    } = firebaseState;
+
+    switch (type) {
+      case EmployeeType.Admin:
+        return ActivitiesRef.on('value', done);
+
+      case EmployeeType.Operator:
+        return ActivitiesRef.orderByChild('operator/id').equalTo(uid).on('value', done);
+
+      case EmployeeType.Volunteer:
+        return performAndQuery(
+          [
+            ActivitiesRef.orderByChild('assignee/id').equalTo(uid),
+            ActivitiesRef.orderByChild('status').equalTo(ActivityStatus.ReadyForAssignment),
+          ],
+          done
+        );
+
+      default:
+        return fail(`Bad Employee type (${type})`);
+    }
+  });
+
 const fetchDataRequested = () => ({ type: GET_ACTIVITIES_PENDING });
-const fetchDataFulfilled = (payload) => ({ type: GET_ACTIVITIES_DONE, payload });
+const fetchDataFulfilled = (payload) => ({ type: GET_ACTIVITIES_FULFILL, payload });
+const fetchDataDone = (payload) => ({ type: GET_ACTIVITIES_DONE, payload });
 const fetchDataFailed = (payload) => ({ type: GET_ACTIVITIES_FAIL, payload });
 
 const startFetchActivities = (action$: ActionsObservable<Action>) =>
@@ -64,11 +77,35 @@ const fetchActivities = (action$: ActionsObservable<Action>, state$: StateObserv
   action$.pipe(
     ofType(`${firebasePrefix}/SET_PROFILE`),
     withLatestFrom(state$),
-    switchMap(([action, state]) =>
-      getQuery(state.firebase)
-        .then((data) => fetchDataFulfilled(data.val() || {}))
-        .catch((error) => fetchDataFailed({ error: error.code }))
+    mergeMap(([action, state]) =>
+      getQuery(state.firebase).pipe(
+        map((data: any) => fetchDataFulfilled(data.val() || {})),
+        catchError((error) => of(fetchDataFailed({ error })))
+      )
     )
   );
 
-export default [startFetchActivities, fetchActivities];
+// we want to ignore firebase.activities updates during manual changing of Activity status
+const onFetchActivitiesAsyncFulfill = (
+  action$: ActionsObservable<getActivitiesDone>,
+  state$: StateObservable<IAppState>
+) =>
+  action$.pipe(
+    ofType(GET_ACTIVITIES_FULFILL),
+    withLatestFrom(state$),
+    filter(([action, state]) => !selectors.activities.isStatusPending(state)),
+    map(([action]) => fetchDataDone(action.payload))
+  );
+
+const onFetchActivitiesAsyncError = (action$: ActionsObservable<getActivitiesFail>) =>
+  action$.pipe(
+    ofType(GET_ACTIVITIES_FAIL),
+    map((action) => notify(`Can't get activities. ${action.payload.error}`))
+  );
+
+export default [
+  startFetchActivities,
+  fetchActivities,
+  onFetchActivitiesAsyncFulfill,
+  onFetchActivitiesAsyncError,
+];

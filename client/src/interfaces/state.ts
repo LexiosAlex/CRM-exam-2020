@@ -29,6 +29,8 @@ export interface IActivitiesState {
   heap: IActivitiesHeapState;
   status: IActivitiesStatusState;
   fetchAsync: IAsyncReducer;
+  statusAsync: IAsyncReducer;
+  formAsync: IAsyncReducer;
 }
 
 export interface INotificationsState {

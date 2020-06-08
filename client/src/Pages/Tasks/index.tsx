@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 
 import { ActivityStatus, EmployeeType, IActivity } from 'common/index';
@@ -9,7 +9,7 @@ import { AppState } from '../../reducers/rootReducer';
 import Loading from '../../components/Loading';
 import selectors from '../../selectors';
 import Error from '../../components/Error';
-import { dragCancel, dragEnd, dragStart } from '../../actions/activity';
+import { dragCancel, dragEnd, dragStart, resetFormState } from '../../actions/activity';
 import Editor from '../../components/Editor';
 import { FormType } from '../../components/Editor/common';
 
@@ -47,6 +47,7 @@ const Tasks: React.FC<ITasksProps> = ({
     return <Error errorMessage={'An error occupied while loading component'} errorCode={error} />;
   }
 
+  const dispatch = useDispatch();
   const [dialogOpened, setDialogOpened] = useState<boolean>(false);
   const [formType, setFormType] = useState<number>(FormType.create);
   const [editorActivity, setEditorActivity] = useState<IActivity | null>(null);
@@ -83,8 +84,8 @@ const Tasks: React.FC<ITasksProps> = ({
                 canDrop={allowedStatuses.includes(parseInt(status))}
                 isDragging={isDragging}
                 onOpenDialog={(type: FormType, activity: IActivity) => {
-                  type === FormType.edit ||
-                    (type === FormType.statusOnly && setEditorActivity(activity));
+                  (type === FormType.edit || type === FormType.statusOnly) &&
+                    setEditorActivity(activity);
                   setFormType(type);
                   setDialogOpened(true);
                 }}
@@ -98,6 +99,7 @@ const Tasks: React.FC<ITasksProps> = ({
           formType={formType}
           open={dialogOpened}
           onClose={() => {
+            dispatch(resetFormState());
             setEditorActivity(null);
             setDialogOpened(false);
           }}
