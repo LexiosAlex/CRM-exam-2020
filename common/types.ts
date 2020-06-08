@@ -14,14 +14,21 @@ export interface IRawActivity {
   description: string;
   address: string;
   estimation: number;
-  operator?: EmployeeId; // who is curator (operator id)
-  assignee?: EmployeeId; // who is assignee (volunteer id)
+  operator?: IUser; // who is curator (operator id)
+  assignee?: IUser; // who is assignee (volunteer id)
   status: ActivityStatus;
-  history: IActivityHistory[];
+  history?: IActivityHistory[];
 }
+
+export interface IDraftActivity extends Partial<IRawActivity> {}
 
 export interface IActivity extends IRawActivity {
   id: Id;
+}
+
+export interface IAppUser {
+  type: EmployeeType;
+  name: string;
 }
 
 export interface IEmployee {
@@ -29,4 +36,10 @@ export interface IEmployee {
   type: EmployeeType;
   email: string;
   password: string;
+  name: string;
+}
+
+export interface IUser {
+  id: EmployeeId;
+  name: string;
 }

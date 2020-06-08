@@ -2,6 +2,9 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { ActivityType } from 'common/index';
@@ -14,9 +17,10 @@ interface ITaskCardProps {
   index: number;
   type: ActivityType;
   address: string;
+  onOpenDialog: Function;
 }
 
-const TaskCard: React.FC<ITaskCardProps> = ({ type, address, id, index }) => {
+const TaskCard: React.FC<ITaskCardProps> = ({ type, address, id, index, onOpenDialog }) => {
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -30,6 +34,11 @@ const TaskCard: React.FC<ITaskCardProps> = ({ type, address, id, index }) => {
                 {address}
               </Typography>
             </CardContent>
+            <CardActions className={styles.cardActions}>
+              <IconButton onClick={() => onOpenDialog()}>
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </CardActions>
           </Card>
         </div>
       )}

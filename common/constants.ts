@@ -44,3 +44,7 @@ export const VISIBLE_STATUSES: { [key in EmployeeType]: ActivityStatus[] } = {
   [EmployeeType.Operator]: OPERATOR_ACTIVITY_STATUSES,
   [EmployeeType.Admin]: ADMIN_ACTIVITY_STATUSES,
 };
+
+export const ACTIVITY_TYPES: ActivityType[] = Object.entries(ActivityType)
+  .filter(([key, value]) => isNaN(Number(key)))
+  .map(([key, value]) => value as ActivityType);

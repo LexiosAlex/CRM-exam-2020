@@ -1,7 +1,14 @@
 {
   "rules": {
+    "employees": {
+      ".read": "auth.uid != null && ( auth.token.type === 0 || auth.token.type === 1 )",
+      "$user_id": {
+        ".write": "$user_id === auth.uid",
+        ".read": "$user_id === auth.uid"
+      }
+    },
     "activities": {
-      ".read": "auth.uid != null && (auth.token.type === 0 || (auth.token.type === 1 && query.orderByChild === 'operator' && query.equalTo === auth.uid) || (auth.token.type === 2 && query.orderByChild === 'assignee' && query.equalTo === auth.uid) || (auth.token.type === 2 && query.orderByChild === 'status' && query.equalTo === 1))",
+      ".read": "auth.uid != null && (auth.token.type === 0 || (auth.token.type === 1 && query.orderByChild === 'operator/id' && query.equalTo === auth.uid) || (auth.token.type === 2 && query.orderByChild === 'assignee/id' && query.equalTo === auth.uid) || (auth.token.type === 2 && query.orderByChild === 'status' && query.equalTo === 1))",
       "$activity": {
         ".write": "auth.uid != null && (auth.token.type === 0 || (auth.token.type === 1 && data.child('operator').val() === auth.uid) || (auth.token.type === 2 && (data.child('assignee').val() === auth.uid || data.child('status').val() === 1)))",
         "status": {

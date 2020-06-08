@@ -1,27 +1,43 @@
-import React, { useState } from 'react';
-import AddIcon from '@material-ui/icons/Add';
+import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
 import { IActivity } from 'common/index';
 import styles from './index.scss';
 import TaskCard from '../TaskCard';
 import { TITLE_STATUS_MAP } from '../../utils/activities';
+import { FormType } from '../Editor/common';
 
 interface TaskListInterface {
   status: string;
+  statusOnly: boolean;
   tasks: IActivity[];
   canDrop: boolean;
   isDragging: boolean;
+  onOpenDialog: Function;
 }
 
-const TaskList: React.FC<TaskListInterface> = ({ status, tasks, canDrop, isDragging }) => {
+const TaskList: React.FC<TaskListInterface> = ({
+  status,
+  statusOnly,
+  tasks,
+  canDrop,
+  isDragging,
+  onOpenDialog,
+}) => {
   return (
     <div
       className={`${styles.container} ${
         isDragging && (!canDrop ? styles.dropDisabled : styles.dropEnabled)
       }`}
     >
-      <h2>{TITLE_STATUS_MAP[status]}</h2>
+      <div className={styles.addNewCardContainer}>
+        <h2>{TITLE_STATUS_MAP[status]}</h2>
+        {TITLE_STATUS_MAP[status] === TITLE_STATUS_MAP[0] ? (
+          <button onClick={() => onOpenDialog(FormType.create)} className={styles.addButton}>
+            New
+          </button>
+        ) : null}
+      </div>
       <Droppable droppableId={status} isDropDisabled={!canDrop}>
         {(provided) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
@@ -33,6 +49,9 @@ const TaskList: React.FC<TaskListInterface> = ({ status, tasks, canDrop, isDragg
                   address={task.address}
                   id={task.id}
                   index={index}
+                  onOpenDialog={() =>
+                    onOpenDialog(statusOnly ? FormType.statusOnly : FormType.edit, task)
+                  }
                 />
               ))
             ) : (
