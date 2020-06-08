@@ -3,6 +3,7 @@ const prefix: string = 'ACTIVITIES';
 
 export const GET_ACTIVITIES_PENDING: string = `${prefix}/GET_ACTIVITIES_PENDING`;
 export const GET_ACTIVITIES_FAIL: string = `${prefix}/GET_ACTIVITIES_FAIL`;
+export const GET_ACTIVITIES_FULFILL: string = `${prefix}/GET_ACTIVITIES_FULFILL`;
 export const GET_ACTIVITIES_DONE: string = `${prefix}/GET_ACTIVITIES_DONE`;
 
 export const DRAG_ACTIVITY_START: string = `${prefix}/DRAG_ACTIVITY_START`;
@@ -30,7 +31,7 @@ export interface getActivitiesDone {
 
 export interface getActivitiesFail {
   type: typeof GET_ACTIVITIES_FAIL;
-  payload: string;
+  payload: { error: string };
 }
 
 export interface getActivitiesPending {
