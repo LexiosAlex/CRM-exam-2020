@@ -31,10 +31,6 @@ export interface IAppUser {
   name: string;
 }
 
-export interface ITypedUser extends IUser {
-  type: EmployeeType;
-}
-
 export interface IEmployee {
   id?: EmployeeId;
   type: EmployeeType;
@@ -46,4 +42,8 @@ export interface IEmployee {
 export interface IUser {
   id: EmployeeId;
   name: string;
+}
+
+export interface ITypedUser extends IUser {
+  type: EmployeeType;
 }

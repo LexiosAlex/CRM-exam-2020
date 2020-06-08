@@ -1,8 +1,6 @@
 import React, { forwardRef } from 'react';
 import MaterialTable, { Column, Icons } from 'material-table';
-import { EmployeeType } from 'common/constants';
 import { connect, useDispatch } from 'react-redux';
-import selectors from '../../selectors/index';
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -20,9 +18,12 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
+import { EmployeeType, ITypedUser } from 'common/index';
 import styles from './index.scss';
 import { IAppState } from '../../interfaces/state';
 import { editUser } from '../../actions/users';
+import selectors from '../../selectors/index';
+import { TITLE_USER_TYPE_MAP } from '../../utils/users';
 
 const tableIcons: Icons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -44,40 +45,31 @@ const tableIcons: Icons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-interface Row {
-  name: string;
-  type: EmployeeType;
-  id: string;
-}
-
 interface TableState {
-  columns: Array<Column<Row>>;
-  data: Row[];
+  columns: Array<Column<ITypedUser>>;
+  data: ITypedUser[];
 }
 
 interface UsersTableProps {
-  employees: any;
+  employees: ITypedUser[];
   isLoading: boolean;
   editUser: Function;
 }
 
-const TITLE_USERS_LIST_TYPE_MAP = {
-  [EmployeeType.Operator]: 'Operator',
-  [EmployeeType.Volunteer]: 'Volunteer',
-};
+const columns: Column<ITypedUser>[] = [
+  { title: 'Name', field: 'name', editable: 'never' },
+  {
+    title: 'Role',
+    field: 'type',
+    lookup: TITLE_USER_TYPE_MAP,
+    editable: 'onUpdate',
+  },
+];
 
 const UsersTable: React.FC<UsersTableProps> = ({ employees, isLoading, editUser }) => {
   const dispatch = useDispatch();
   const [state, setState] = React.useState<TableState>({
-    columns: [
-      { title: 'Name', field: 'name', editable: 'never' },
-      {
-        title: 'Role',
-        field: 'type',
-        lookup: TITLE_USERS_LIST_TYPE_MAP,
-        editable: 'onUpdate',
-      },
-    ],
+    columns,
     data: employees,
   });
 
@@ -91,11 +83,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ employees, isLoading, editUser 
         columns={state.columns}
         data={state.data}
         editable={{
-          onRowUpdate: (newData, oldData) => {
-            const { id, type } = newData;
-            editUser(id, type);
-            return Promise.resolve();
-          },
+          onRowUpdate: ({ id, type }) => editUser(id, type),
         }}
       />
     </div>
@@ -105,9 +93,12 @@ const UsersTable: React.FC<UsersTableProps> = ({ employees, isLoading, editUser 
 export default connect(
   (state: IAppState) => ({
     employees: selectors.employees.userList(state),
-    isLoading: selectors.employees.getTableLoading(state),
+    isLoading: selectors.employees.isLoading(state),
   }),
   (dispatch) => ({
-    editUser: (id: string, type: EmployeeType) => dispatch(editUser(id, type)),
+    editUser: (id: string, type: EmployeeType) => {
+      dispatch(editUser(id, type));
+      return Promise.resolve();
+    },
   })
 )(UsersTable);

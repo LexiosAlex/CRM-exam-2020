@@ -18,15 +18,15 @@ import { FormType } from './common';
 import { IAppState } from '../../interfaces/state';
 import Loading from '../Loading';
 import {
+  ACTIVITY_TYPES,
   ActivityStatus,
   EmployeeType,
   getAllowedStatuses,
   IActivity,
   IRawActivity,
-  IUser,
+  ITypedUser,
 } from 'common/index';
 import selectors from '../../selectors';
-import { ACTIVITY_TYPES } from 'common/constants';
 import { TITLE_STATUS_MAP, TITLE_TYPE_MAP } from '../../utils/activities';
 import { changeActivity, addActivity, resetFormState } from '../../actions/activity';
 
@@ -46,7 +46,7 @@ const renderAutoComplete = (params) => {
   return (
     <Autocomplete
       options={options}
-      getOptionLabel={(option: IUser) => option.name}
+      getOptionLabel={(option: ITypedUser) => option.name}
       value={customValue}
       onChange={(e, value) => input.onChange(value)}
       style={{ width: 300 }}
@@ -132,8 +132,8 @@ interface StateProps {
   isSent: boolean;
   authProfile: FirebaseReducer.AuthState;
   employeeType: EmployeeType;
-  autoSuggestOperators: IUser[];
-  autoSuggestVolunteers: IUser[];
+  operators: ITypedUser[];
+  volunteers: ITypedUser[];
 }
 
 interface ActivityFormProps extends StateProps {
@@ -158,8 +158,8 @@ const Editor: React.FC<EditorProps> = ({
   formState,
   authProfile,
   employeeType,
-  autoSuggestVolunteers,
-  autoSuggestOperators,
+  volunteers,
+  operators,
 }) => {
   const dispatch = useDispatch();
   const isNew = formType === FormType.create;
@@ -307,7 +307,7 @@ const Editor: React.FC<EditorProps> = ({
                       name="assignee"
                       id="assignee"
                       component={renderAutoComplete}
-                      options={autoSuggestVolunteers}
+                      options={volunteers}
                       disabled={formType === FormType.statusOnly || isNew}
                     />
                   </div>
@@ -318,7 +318,7 @@ const Editor: React.FC<EditorProps> = ({
                       name="operator"
                       id="operator"
                       component={renderAutoComplete}
-                      options={autoSuggestOperators}
+                      options={operators}
                       disabled={
                         formType === FormType.statusOnly || employeeType === EmployeeType.Operator
                       }
@@ -380,6 +380,6 @@ export default connect((state: IAppState) => ({
   isSendingData: selectors.activities.getFormAsyncState(state).pending,
   isSent: selectors.activities.getFormAsyncState(state).loaded,
   isError: selectors.activities.getFormAsyncState(state).error,
-  autoSuggestOperators: selectors.employees.getOperators(state),
-  autoSuggestVolunteers: selectors.employees.getVolunteers(state),
+  operators: selectors.employees.operators(state),
+  volunteers: selectors.employees.volunteers(state),
 }))(InitializedFormEditor);
