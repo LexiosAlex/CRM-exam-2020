@@ -46,13 +46,34 @@ const getEmployeeType = (context: functions.EventContext): Promise<EmployeeType>
     }
   });
 
+export const processCreateActivity = functions.database
+  .ref('/activities/{activityId}')
+  .onCreate(async (snapshot, context) => {
+    try {
+      const activityRef = snapshot.ref as admin.database.Reference;
+      const historyRef = activityRef.child('/history') as admin.database.Reference;
+      const activity = snapshot.val();
+      const { status, assignee, operator } = activity;
+
+      const time = Date.now();
+      const historyChanges = assignee
+        ? { status, assignee, operator, time }
+        : { status, operator, time };
+
+      await historyRef.set([historyChanges]);
+    } catch (e) {
+      console.error(e);
+    }
+  });
+
 export const processAssignment = functions.database
   .ref('/activities/{activityId}/status')
   .onUpdate(async (change, context) => {
     try {
       const activityRef = change.after.ref.parent as admin.database.Reference;
+      const historyRef = activityRef.child('/history') as admin.database.Reference;
       const activity = (await activityRef.once('value')).val();
-      const { status, assignee } = activity;
+      const { status, assignee, operator, history } = activity;
       let type, uid;
       if (isDev) {
         type = EmployeeType.Volunteer;
@@ -61,6 +82,14 @@ export const processAssignment = functions.database
         type = await getEmployeeType(context);
         uid = (context.auth as any).uid;
       }
+
+      const time = Date.now();
+      const historyChanges = assignee
+        ? { status, assignee, operator, time }
+        : { status, operator, time };
+
+      await historyRef.set([...history, historyChanges]);
+
       if (
         !!assignee &&
         (status === ActivityStatus.New || status === ActivityStatus.ReadyForAssignment)
