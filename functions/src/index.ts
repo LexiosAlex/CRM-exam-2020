@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 import { resolve } from 'path';
 import { config } from 'dotenv';
 
-import { EmployeeType, ActivityStatus } from '../../common/index';
+import { EmployeeType, ActivityStatus, IUser } from '../../common/index';
 
 config({ path: resolve(__dirname, '../../../../.env') });
 const isDev = process.env.DEV === 'true';
@@ -46,61 +46,77 @@ const getEmployeeType = (context: functions.EventContext): Promise<EmployeeType>
     }
   });
 
+const updateHistory = (
+  activityRef: admin.database.Reference,
+  status: ActivityStatus,
+  assignee: IUser | null,
+  operator?: IUser
+) => {
+  const historyRef = activityRef.child('/history') as admin.database.Reference;
+  const newHistoryRecordRef = historyRef.push();
+  const time = Date.now();
+  return newHistoryRecordRef.set({
+    status,
+    ...(operator ? { operator } : {}),
+    ...(assignee ? { assignee } : {}),
+    time,
+  });
+};
+
+const updateAssignee = async (
+  activityRef: admin.database.Reference,
+  status: ActivityStatus,
+  type: EmployeeType,
+  uid: string,
+  assignee?: IUser
+): Promise<IUser | null> => {
+  let user: IUser | null = assignee || null;
+  if (!user && status === ActivityStatus.Assigned && type === EmployeeType.Volunteer) {
+    // set assignee if Volunteer had moved Activity to Assigned status
+    const { name } = (await admin.database().ref(`employees/${uid}`).once('value')).val();
+    user = { id: uid, name };
+    await activityRef.child('assignee').update(user);
+  } else if (
+    !!user &&
+    (status === ActivityStatus.New || status === ActivityStatus.ReadyForAssignment)
+  ) {
+    // reset assignee if assigned Activity had been moved to New or Ready status
+    user = null;
+    activityRef.update({ assignee: user });
+  }
+  return Promise.resolve(user);
+};
+
 export const processCreateActivity = functions.database
   .ref('/activities/{activityId}')
   .onCreate(async (snapshot, context) => {
     try {
       const activityRef = snapshot.ref as admin.database.Reference;
-      const historyRef = activityRef.child('/history') as admin.database.Reference;
       const activity = snapshot.val();
       const { status, assignee, operator } = activity;
-
-      const time = Date.now();
-      const historyChanges = assignee
-        ? { status, assignee, operator, time }
-        : { status, operator, time };
-
-      await historyRef.set([historyChanges]);
+      await updateHistory(activityRef, status, assignee, operator);
     } catch (e) {
       console.error(e);
     }
   });
 
-export const processAssignment = functions.database
+export const processActivityStatusChange = functions.database
   .ref('/activities/{activityId}/status')
   .onUpdate(async (change, context) => {
     try {
       const activityRef = change.after.ref.parent as admin.database.Reference;
-      const historyRef = activityRef.child('/history') as admin.database.Reference;
       const activity = (await activityRef.once('value')).val();
-      const { status, assignee, operator, history } = activity;
+      const { status, operator, assignee } = activity;
       let type, uid;
       if (isDev) {
         type = EmployeeType.Volunteer;
-        uid = 'mtUCkrkOz0XjENgUDmaMsYNq0j92';
+        uid = 'u78A8pMgl0WrkitrcyabUS4RML02';
       } else {
         type = await getEmployeeType(context);
         uid = (context.auth as any).uid;
       }
-
-      const time = Date.now();
-      const historyChanges = assignee
-        ? { status, assignee, operator, time }
-        : { status, operator, time };
-
-      await historyRef.set([...history, historyChanges]);
-
-      if (
-        !!assignee &&
-        (status === ActivityStatus.New || status === ActivityStatus.ReadyForAssignment)
-      ) {
-        activityRef.update({ assignee: null });
-      }
-      if (status === ActivityStatus.Assigned && type === EmployeeType.Volunteer) {
-        const employee = (await admin.database().ref(`employees/${uid}`).once('value')).val();
-        const { name } = employee;
-        activityRef.child('assignee').update({ id: uid, name });
-      }
+      const _assignee = await updateAssignee(activityRef, status, type, uid, assignee);
+      await updateHistory(activityRef, status, _assignee, operator);
     } catch (e) {
       console.error(e);
     }
