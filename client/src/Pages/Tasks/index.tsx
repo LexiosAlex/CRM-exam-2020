@@ -12,8 +12,11 @@ import Error from '../../components/Error';
 import { dragCancel, dragEnd, dragStart, resetFormState } from '../../actions/activity';
 import Editor from '../../components/Editor';
 import { FormType } from '../../components/Editor/common';
+import { IActivityHistory } from 'common/types';
+import HistoryTableDialog from '../../components/HistoryTableDialog';
 
 import styles from './index.scss';
+import activity from '../../epics/activity';
 
 interface ITasksProps {
   lists: ActivityLists;
@@ -48,7 +51,9 @@ const Tasks: React.FC<ITasksProps> = ({
   }
 
   const dispatch = useDispatch();
-  const [dialogOpened, setDialogOpened] = useState<boolean>(false);
+  const [editorDialogOpened, setEditorDialogOpened] = useState<boolean>(false);
+  const [historyDialogOpened, setHistoryDialogOpened] = useState<boolean>(false);
+
   const [formType, setFormType] = useState<FormType>(FormType.create);
   const [editorActivity, setEditorActivity] = useState<IActivity | null>(null);
   const statusOnly = userType === EmployeeType.Volunteer;
@@ -88,21 +93,35 @@ const Tasks: React.FC<ITasksProps> = ({
                     setEditorActivity(activity);
                   }
                   setFormType(type);
-                  setDialogOpened(true);
+                  setEditorDialogOpened(true);
+                }}
+                onOpenHistory={(activity: IActivity) => {
+                  setEditorActivity(activity);
+                  setHistoryDialogOpened(true);
                 }}
               />
             ))}
           </div>
         </div>
       </DragDropContext>
-      {dialogOpened ? (
+      {historyDialogOpened && editorActivity ? (
+        <HistoryTableDialog
+          open={historyDialogOpened}
+          onClose={() => {
+            setHistoryDialogOpened(false);
+            setEditorActivity(null);
+          }}
+          activity={editorActivity}
+        />
+      ) : null}
+      {editorDialogOpened ? (
         <Editor
           formType={formType}
-          open={dialogOpened}
+          open={editorDialogOpened}
           onClose={() => {
             dispatch(resetFormState());
             setEditorActivity(null);
-            setDialogOpened(false);
+            setEditorDialogOpened(false);
           }}
           activity={editorActivity}
         />

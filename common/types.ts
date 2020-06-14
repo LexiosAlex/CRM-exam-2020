@@ -3,7 +3,7 @@ import { ActivityType, ActivityStatus, EmployeeType } from './index';
 type Id = string;
 export type EmployeeId = Id;
 
-interface IActivityHistory {
+export interface IActivityHistory {
   operator?: IUser;
   assignee?: IUser;
   time: number;
@@ -18,7 +18,7 @@ export interface IRawActivity {
   operator?: IUser; // who is curator (operator id)
   assignee?: IUser; // who is assignee (volunteer id)
   status: ActivityStatus;
-  history?: IActivityHistory[];
+  history: { [id: string]: IActivityHistory };
 }
 
 export interface IDraftActivity extends Partial<IRawActivity> {}
