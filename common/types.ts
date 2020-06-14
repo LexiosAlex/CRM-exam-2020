@@ -4,7 +4,8 @@ type Id = string;
 export type EmployeeId = Id;
 
 interface IActivityHistory {
-  id?: Id;
+  operator?: IUser;
+  assignee?: IUser;
   time: number;
   status: ActivityType;
 }
