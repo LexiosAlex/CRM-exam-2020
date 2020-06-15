@@ -1,0 +1,37 @@
+.tableCell {
+  flex: 1;
+}
+
+.flexContainer {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.tableHeader {
+  display: flex !important;
+  flex: 1;
+}
+
+.closeButton {
+  position: absolute !important;
+  right: 1rem;
+  top: 1rem;
+  color: #323232;
+}
+
+.dialogHeader {
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  transition: all 0.3s linear;
+  h4 {
+    margin: 0;
+    padding: 2rem 0;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 700;
+  }
+}

@@ -14,6 +14,7 @@ interface TaskListInterface {
   canDrop: boolean;
   isDragging: boolean;
   onOpenDialog: Function;
+  onOpenHistory: Function;
 }
 
 const TaskList: React.FC<TaskListInterface> = ({
@@ -23,6 +24,7 @@ const TaskList: React.FC<TaskListInterface> = ({
   canDrop,
   isDragging,
   onOpenDialog,
+  onOpenHistory,
 }) => {
   return (
     <div
@@ -52,6 +54,7 @@ const TaskList: React.FC<TaskListInterface> = ({
                   onOpenDialog={() =>
                     onOpenDialog(statusOnly ? FormType.statusOnly : FormType.edit, task)
                   }
+                  onOpenHistory={() => onOpenHistory(task)}
                 />
               ))
             ) : (

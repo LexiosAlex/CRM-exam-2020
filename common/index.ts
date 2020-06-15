@@ -7,6 +7,7 @@ import {
 } from './constants';
 import {
   EmployeeId,
+  IActivityHistory,
   IRawActivity,
   IDraftActivity,
   IActivity,
@@ -19,6 +20,7 @@ import { getAllowedStatuses } from './activityWorkflow';
 
 export type {
   EmployeeId,
+  IActivityHistory,
   IRawActivity,
   IDraftActivity,
   IActivity,
