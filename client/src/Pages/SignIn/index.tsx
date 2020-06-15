@@ -22,7 +22,6 @@ const SignIn: React.FC = (props: any) => {
   const [passwordValue, setPassword] = useState<string>('');
 
   const [isSendingData, setSendingData] = useState<boolean>(false);
-  //TODO: made it with observables, asyncReducer
 
   const firebase = useFirebase();
 

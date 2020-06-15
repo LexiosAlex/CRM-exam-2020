@@ -40,6 +40,7 @@ export interface INotificationsState {
 export interface IUsersState {
   heap: IUsersHeapState;
   fetchAsync: IAsyncReducer;
+  editAsync: IAsyncReducer;
 }
 
 export interface IAppState {

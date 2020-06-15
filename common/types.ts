@@ -43,3 +43,7 @@ export interface IUser {
   id: EmployeeId;
   name: string;
 }
+
+export interface ITypedUser extends IUser {
+  type: EmployeeType;
+}

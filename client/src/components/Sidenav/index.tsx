@@ -34,29 +34,23 @@ const Sidebar: React.FC = () => {
         className={`${styles.drawer} ${open ? styles.drawerOpen : styles.drawerClose}`}
       >
         <List className={`${styles.list} ${open ? styles.drawerOpen : styles.drawerClose}`}>
-          <ListItem button>
-            <Link className={styles.link} to={navPaths.HOME}>
-              <ListItemIcon>
-                <DashboardIcon />
-              </ListItemIcon>
-              <ListItemText className={`${!open ? styles.hide : ''}`} primary={'Dashboard'} />
-            </Link>
+          <ListItem button className={styles.link} component={Link} to={navPaths.STATS}>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText className={`${!open ? styles.hide : ''}`} primary={'Dashboard'} />
           </ListItem>
-          <ListItem button>
-            <Link className={styles.link} to={navPaths.HOME}>
-              <ListItemIcon>
-                <GroupIcon />
-              </ListItemIcon>
-              <ListItemText className={`${!open ? styles.hide : ''}`} primary={'Users'} />
-            </Link>
+          <ListItem button className={styles.link} component={Link} to={navPaths.USERS}>
+            <ListItemIcon>
+              <GroupIcon />
+            </ListItemIcon>
+            <ListItemText className={`${!open ? styles.hide : ''}`} primary={'Users'} />
           </ListItem>
-          <ListItem button>
-            <Link className={styles.link} to={navPaths.LANDING}>
-              <ListItemIcon>
-                <ViewColumnIcon />
-              </ListItemIcon>
-              <ListItemText className={`${!open ? styles.hide : ''}`} primary={'Task Lists'} />
-            </Link>
+          <ListItem button className={styles.link} component={Link} to={navPaths.TASKS}>
+            <ListItemIcon>
+              <ViewColumnIcon />
+            </ListItemIcon>
+            <ListItemText className={`${!open ? styles.hide : ''}`} primary={'Task Lists'} />
           </ListItem>
         </List>
         <Divider />

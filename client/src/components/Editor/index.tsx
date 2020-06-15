@@ -18,16 +18,16 @@ import { FormType } from './common';
 import { IAppState } from '../../interfaces/state';
 import Loading from '../Loading';
 import {
+  ACTIVITY_TYPES,
   ActivityStatus,
   EmployeeType,
   getAllowedStatuses,
   IActivity,
   IRawActivity,
-  IUser,
+  ITypedUser,
 } from 'common/index';
 import selectors from '../../selectors';
-import { ACTIVITY_TYPES } from 'common/constants';
-import { TITLE_TYPE_MAP } from '../../utils/activities';
+import { TITLE_STATUS_MAP, TITLE_TYPE_MAP } from '../../utils/activities';
 import { changeActivity, addActivity, resetFormState } from '../../actions/activity';
 
 import styles from './index.scss';
@@ -46,7 +46,7 @@ const renderAutoComplete = (params) => {
   return (
     <Autocomplete
       options={options}
-      getOptionLabel={(option: IUser) => option.name}
+      getOptionLabel={(option: ITypedUser) => option.name}
       value={customValue}
       onChange={(e, value) => input.onChange(value)}
       style={{ width: 300 }}
@@ -132,8 +132,8 @@ interface StateProps {
   isSent: boolean;
   authProfile: FirebaseReducer.AuthState;
   employeeType: EmployeeType;
-  autoSuggestOperators: IUser[];
-  autoSuggestVolunteers: IUser[];
+  operators: ITypedUser[];
+  volunteers: ITypedUser[];
 }
 
 interface ActivityFormProps extends StateProps {
@@ -158,35 +158,20 @@ const Editor: React.FC<EditorProps> = ({
   formState,
   authProfile,
   employeeType,
-  autoSuggestVolunteers,
-  autoSuggestOperators,
+  volunteers,
+  operators,
 }) => {
   const dispatch = useDispatch();
   const isNew = formType === FormType.create;
   const { uid, displayName } = authProfile;
   const isLoadingData: boolean = !formState;
-
   //sendingForAsyncState
-
-  const operatorAutoSuggestOptions: IUser[] =
-    employeeType === (EmployeeType.Operator || EmployeeType.Admin) ? autoSuggestOperators : [];
-
-  const assigneeAutoSuggestOptions: IUser[] =
-    employeeType === (EmployeeType.Operator || EmployeeType.Admin)
-      ? autoSuggestVolunteers
-      : [{ name: displayName as string, id: uid }];
 
   useEffect(() => {
     const data =
       !isNew && activity
         ? {
-            assignee: activity.assignee,
-            operator: activity.operator,
-            status: activity.status,
-            type: activity.type,
-            address: activity.address,
-            estimation: activity.estimation,
-            description: activity.description,
+            ...activity,
           }
         : {
             ...initialValues,
@@ -298,7 +283,7 @@ const Editor: React.FC<EditorProps> = ({
                           activity ? activity.status : formState.values.status
                         ).map((key) => (
                           <option key={key} value={key}>
-                            {ActivityStatus[key]}
+                            {TITLE_STATUS_MAP[key]}
                           </option>
                         ))
                       )}
@@ -322,7 +307,7 @@ const Editor: React.FC<EditorProps> = ({
                       name="assignee"
                       id="assignee"
                       component={renderAutoComplete}
-                      options={assigneeAutoSuggestOptions}
+                      options={volunteers}
                       disabled={formType === FormType.statusOnly || isNew}
                     />
                   </div>
@@ -333,7 +318,7 @@ const Editor: React.FC<EditorProps> = ({
                       name="operator"
                       id="operator"
                       component={renderAutoComplete}
-                      options={operatorAutoSuggestOptions}
+                      options={operators}
                       disabled={
                         formType === FormType.statusOnly || employeeType === EmployeeType.Operator
                       }
@@ -353,7 +338,7 @@ const Editor: React.FC<EditorProps> = ({
                   styles.btnPrimary
                 }`}
               >
-                <span>Save changes</span>
+                <span>{`${isNew ? 'Add activity' : 'Save changes'}`}</span>
               </button>
               <button
                 onClick={(event) => {
@@ -395,6 +380,6 @@ export default connect((state: IAppState) => ({
   isSendingData: selectors.activities.getFormAsyncState(state).pending,
   isSent: selectors.activities.getFormAsyncState(state).loaded,
   isError: selectors.activities.getFormAsyncState(state).error,
-  autoSuggestOperators: selectors.employees.getAutoSuggestOperators(state),
-  autoSuggestVolunteers: selectors.employees.getAutoSuggestVolunteers(state),
+  operators: selectors.employees.operators(state),
+  volunteers: selectors.employees.volunteers(state),
 }))(InitializedFormEditor);
