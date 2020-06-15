@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 
 import { ActivityStatus, EmployeeType, IActivity } from 'common/index';
@@ -12,11 +12,9 @@ import Error from '../../components/Error';
 import { dragCancel, dragEnd, dragStart, resetFormState } from '../../actions/activity';
 import Editor from '../../components/Editor';
 import { FormType } from '../../components/Editor/common';
-import { IActivityHistory } from 'common/types';
 import HistoryTableDialog from '../../components/HistoryTableDialog';
 
 import styles from './index.scss';
-import activity from '../../epics/activity';
 
 interface ITasksProps {
   lists: ActivityLists;
@@ -29,6 +27,7 @@ interface ITasksProps {
   dragStart: Function;
   dragCancel: Function;
   dragEnd: Function;
+  resetEditForm: Function;
 }
 
 const Tasks: React.FC<ITasksProps> = ({
@@ -42,6 +41,7 @@ const Tasks: React.FC<ITasksProps> = ({
   dragStart,
   dragCancel,
   dragEnd,
+  resetEditForm,
 }) => {
   if (pending) {
     return <Loading />;
@@ -50,7 +50,6 @@ const Tasks: React.FC<ITasksProps> = ({
     return <Error errorMessage={'An error occupied while loading component'} errorCode={error} />;
   }
 
-  const dispatch = useDispatch();
   const [editorDialogOpened, setEditorDialogOpened] = useState<boolean>(false);
   const [historyDialogOpened, setHistoryDialogOpened] = useState<boolean>(false);
 
@@ -119,7 +118,7 @@ const Tasks: React.FC<ITasksProps> = ({
           formType={formType}
           open={editorDialogOpened}
           onClose={() => {
-            dispatch(resetFormState());
+            resetEditForm();
             setEditorActivity(null);
             setEditorDialogOpened(false);
           }}
@@ -143,5 +142,6 @@ export default connect(
     dragStart: (type: EmployeeType, status: ActivityStatus) => dispatch(dragStart(type, status)),
     dragCancel: (id: string) => dispatch(dragCancel(id)),
     dragEnd: (id: string, status: ActivityStatus) => dispatch(dragEnd(id, status)),
+    resetEditForm: () => dispatch(resetFormState()),
   })
 )(Tasks);

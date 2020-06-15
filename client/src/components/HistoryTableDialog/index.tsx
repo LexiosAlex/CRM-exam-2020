@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
 
 import { IActivity, IActivityHistory } from 'common/types';
+import { ActivityStatus } from 'common/index';
 import { TITLE_STATUS_MAP } from '../../utils/activities';
 
 import styles from './index.scss';
@@ -69,23 +70,22 @@ const renderHeader = ({ dataKey, label }) => {
   );
 };
 
-const HistoryTableDialog: React.FC<DialogProps> = ({ open, onClose, activity }) => {
-  const { history, type, address } = activity;
-  console.log(history);
+const getHistoryItem = (record: IActivityHistory): IHistoryTableItem => ({
+  operatorName: record.operator ? record.operator.name : 'no data provided',
+  assigneeName: record.assignee ? record.assignee.name : 'no data provided',
+  time: moment(record.time).format('LLL'),
+  status: TITLE_STATUS_MAP[record.status],
+});
 
-  const mutateHistoryItem = (historyItem: IActivityHistory): IHistoryTableItem => {
-    return {
-      operatorName: historyItem.operator ? historyItem.operator.name : 'no data provided',
-      assigneeName: historyItem.assignee ? historyItem.assignee.name : 'no data provided',
-      time: moment(historyItem.time).format('LLL'),
-      status: TITLE_STATUS_MAP[historyItem.status],
-    };
-  };
-
-  const mappedHistory = Object.entries(history).reduce(
-    (acc: IHistoryTableItem[], [key, historyData]) => [...acc, ...[mutateHistoryItem(historyData)]],
+const getHistoryList = (history: { [id: string]: IActivityHistory }) =>
+  Object.values(history).reduce(
+    (acc: IHistoryTableItem[], record) => [...acc, getHistoryItem(record)],
     []
   );
+
+const HistoryTableDialog: React.FC<DialogProps> = ({ open, onClose, activity }) => {
+  const { history, type, address } = activity;
+  const historyList = getHistoryList(history);
   return (
     <>
       <Dialog maxWidth="lg" open={open} onClose={onClose}>
@@ -102,7 +102,7 @@ const HistoryTableDialog: React.FC<DialogProps> = ({ open, onClose, activity }) 
             <AutoSizer>
               {({ height, width }) => (
                 <Table
-                  rowGetter={({ index }) => mappedHistory[index]}
+                  rowGetter={({ index }) => historyList[index]}
                   height={height}
                   width={width}
                   rowHeight={50}
@@ -110,7 +110,7 @@ const HistoryTableDialog: React.FC<DialogProps> = ({ open, onClose, activity }) 
                     direction: 'inherit',
                   }}
                   headerHeight={75}
-                  rowCount={mappedHistory.length}
+                  rowCount={historyList.length}
                   rowClassName={styles.flexContainer}
                 >
                   {columns.map(({ dataKey, label }, index) => (

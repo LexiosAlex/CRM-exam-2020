@@ -7,7 +7,7 @@ export interface IActivityHistory {
   operator?: IUser;
   assignee?: IUser;
   time: number;
-  status: ActivityType;
+  status: ActivityStatus;
 }
 
 export interface IRawActivity {
