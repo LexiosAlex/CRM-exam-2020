@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 import { FirebaseReducer } from 'react-redux-firebase';
+import PlacesAutoSuggest from './PlacesAutoSuggest';
 
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -165,7 +166,6 @@ const Editor: React.FC<EditorProps> = ({
   const isNew = formType === FormType.create;
   const { uid, displayName } = authProfile;
   const isLoadingData: boolean = !formState;
-  //sendingForAsyncState
 
   useEffect(() => {
     const data =
@@ -248,7 +248,7 @@ const Editor: React.FC<EditorProps> = ({
                       name="address"
                       id="address"
                       type="text"
-                      component={renderDefaultInput}
+                      component={PlacesAutoSuggest}
                       disabled={formType === FormType.statusOnly}
                     />
                   </div>

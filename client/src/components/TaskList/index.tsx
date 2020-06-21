@@ -48,7 +48,7 @@ const TaskList: React.FC<TaskListInterface> = ({
                 <TaskCard
                   key={task.id}
                   type={task.type}
-                  address={task.address}
+                  address={task.address.description}
                   id={task.id}
                   index={index}
                   onOpenDialog={() =>
