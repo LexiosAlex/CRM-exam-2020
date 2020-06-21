@@ -130,9 +130,10 @@ const PlacesAutoSuggest: React.FC<PlacesAutoSuggestProps> = (params) => {
         const geoCoderService = new google.maps.Geocoder();
         await geoCoderService.geocode({ address: newValue?.description }, (results, status) => {
           if (status == google.maps.GeocoderStatus.OK) {
-            var latitude = results[0].geometry.location.lat();
-            var longitude = results[0].geometry.location.lng();
-            const coords: ILatLng = { lat: latitude, lng: longitude };
+            const coords: ILatLng = {
+              lat: results[0].geometry.location.lat(),
+              lng: results[0].geometry.location.lng(),
+            };
             input.onChange({ description: newValue?.description, coords } as IActivityAddress);
             setOptions([newValue, ...options]);
           }
