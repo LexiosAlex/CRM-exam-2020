@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 import { FirebaseReducer } from 'react-redux-firebase';
-import PlacesAutoSuggest from './PlacesAutoSuggest';
 
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -30,6 +29,7 @@ import {
 import selectors from '../../selectors';
 import { TITLE_STATUS_MAP, TITLE_TYPE_MAP } from '../../utils/activities';
 import { changeActivity, addActivity, resetFormState } from '../../actions/activity';
+import PlacesAutoSuggest from './PlacesAutoSuggest';
 
 import styles from './index.scss';
 

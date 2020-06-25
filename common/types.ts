@@ -15,7 +15,7 @@ export interface ILatLng {
   lng: number;
 }
 
-export interface IActivityAddress {
+export interface IAddress {
   coords?: ILatLng;
   description: string;
 }
@@ -23,7 +23,7 @@ export interface IActivityAddress {
 export interface IRawActivity {
   type: ActivityType;
   description: string;
-  address: IActivityAddress;
+  address: IAddress;
   estimation: number;
   operator?: IUser; // who is curator (operator id)
   assignee?: IUser; // who is assignee (volunteer id)
