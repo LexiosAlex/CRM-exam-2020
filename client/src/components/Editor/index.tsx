@@ -29,6 +29,7 @@ import {
 import selectors from '../../selectors';
 import { TITLE_STATUS_MAP, TITLE_TYPE_MAP } from '../../utils/activities';
 import { changeActivity, addActivity, resetFormState } from '../../actions/activity';
+import PlacesAutoSuggest from './PlacesAutoSuggest';
 
 import styles from './index.scss';
 
@@ -165,7 +166,6 @@ const Editor: React.FC<EditorProps> = ({
   const isNew = formType === FormType.create;
   const { uid, displayName } = authProfile;
   const isLoadingData: boolean = !formState;
-  //sendingForAsyncState
 
   useEffect(() => {
     const data =
@@ -248,7 +248,7 @@ const Editor: React.FC<EditorProps> = ({
                       name="address"
                       id="address"
                       type="text"
-                      component={renderDefaultInput}
+                      component={PlacesAutoSuggest}
                       disabled={formType === FormType.statusOnly}
                     />
                   </div>

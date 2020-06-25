@@ -119,7 +119,8 @@ const createActivities = () => {
         .set({
           type: getRandomEnumValue(ActivityType),
           description: `Activity description ${i}`,
-          address: `Activity address ${i}`,
+          address: { description: `Activity address ${i}`, coords: { lat: 60, lng: 50 } },
+          //Need to refactor it somehow
           estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
           operator: getRandomArrayValue(users[EmployeeType.Operator]),
           status,

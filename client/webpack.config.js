@@ -80,6 +80,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
+      firebaseApiKey: process.env.FIREBASE_API_KEY,
     }),
     new webpack.DefinePlugin(envKeys),
   ],

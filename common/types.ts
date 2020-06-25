@@ -10,10 +10,20 @@ export interface IActivityHistory {
   status: ActivityStatus;
 }
 
+export interface ILatLng {
+  lat: number;
+  lng: number;
+}
+
+export interface IAddress {
+  coords?: ILatLng;
+  description: string;
+}
+
 export interface IRawActivity {
   type: ActivityType;
   description: string;
-  address: string;
+  address: IAddress;
   estimation: number;
   operator?: IUser; // who is curator (operator id)
   assignee?: IUser; // who is assignee (volunteer id)
