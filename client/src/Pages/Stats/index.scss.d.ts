@@ -3,7 +3,10 @@
 interface CssExports {
   container: string;
   counter: string;
+  mapsContainer: string;
+  mapsInnerContainer: string;
   statsContainer: string;
+  statsInnerContainer: string;
 }
 export const cssExports: CssExports;
 export default cssExports;

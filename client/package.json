@@ -75,6 +75,7 @@
     "react-cool-onclickoutside": "^1.5.2",
     "react-dom": "^16.13.1",
     "react-final-form": "^6.4.0",
+    "react-google-maps": "^9.4.5",
     "react-redux": "^7.2.0",
     "react-redux-firebase": "^3.3.0",
     "react-router-dom": "^5.1.2",

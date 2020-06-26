@@ -52,6 +52,7 @@ const isStatusPending = createSelector(
 );
 
 export default {
+  getFilteredHeap,
   getLists,
   isEmpty,
   getIsDragging,

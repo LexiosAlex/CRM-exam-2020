@@ -19,8 +19,8 @@ import {
   ACTIVITY_FORM_RESET,
 } from '../interfaces/actions/activities';
 import { createAsyncStateReducer } from './Helpers/asyncReducer';
-import { IActivity, getAllowedStatuses, ActivityStatus } from 'common/index';
-import { IActivitiesHeapState, IActivitiesStatusState } from '../interfaces/state';
+import { getAllowedStatuses } from 'common/index';
+import { IActivitiesHeapState } from '../interfaces/state';
 
 const initialHeapState: IActivitiesHeapState = {};
 
