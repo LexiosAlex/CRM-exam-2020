@@ -60,10 +60,7 @@ const Stats: React.FC = () => {
         </div>
       </div>
       <div className={styles.mapsContainer}>
-        <ActivitiesMap
-          containerElement={<div className={styles.mapsInnerContainer} />}
-          mapElement={<div className={styles.mapsInnerContainer} />}
-        />
+        <ActivitiesMap />
       </div>
     </div>
   );
