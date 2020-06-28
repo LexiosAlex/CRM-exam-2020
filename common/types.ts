@@ -10,6 +10,18 @@ export interface IActivityHistory {
   status: ActivityStatus;
 }
 
+export interface IActivityStatistics {
+  created: number;
+  canceled: number;
+  done: number;
+}
+
+export interface IStatistics {
+  dailyActivitiesStats: IActivityStatistics;
+  weeklyActivitiesStats: IActivityStatistics;
+  monthlyActivitiesStats: IActivityStatistics;
+}
+
 export interface ILatLng {
   lat: number;
   lng: number;

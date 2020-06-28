@@ -1,8 +1,19 @@
 import React from 'react';
-import styles from './index.scss';
+import { useSelector } from 'react-redux';
+
 import ActivitiesMap from '../../components/ActivitiesMap';
+import selectors from '../../selectors';
+
+import styles from './index.scss';
+import { IAppState } from '../../interfaces/state';
+import { IStatistics } from 'common/types';
 
 const Stats: React.FC = () => {
+  const statistics: IStatistics = useSelector((state: IAppState) =>
+    selectors.activities.getActivitiesStats(state)
+  );
+
+  console.log(statistics);
   return (
     <div className={styles.container}>
       <h2>Statistics</h2>
@@ -11,15 +22,15 @@ const Stats: React.FC = () => {
           <h3>Activities today</h3>
           <div className={styles.statsInnerContainer}>
             <div className={styles.counter}>
-              <span>10</span>
+              <span>{statistics.dailyActivitiesStats.done}</span>
               <p>Done</p>
             </div>
             <div className={styles.counter}>
-              <span>3</span>
+              <span>{statistics.dailyActivitiesStats.canceled}</span>
               <p>Canceled</p>
             </div>
             <div className={styles.counter}>
-              <span>10</span>
+              <span>{statistics.dailyActivitiesStats.created}</span>
               <p>Created</p>
             </div>
           </div>
@@ -28,15 +39,15 @@ const Stats: React.FC = () => {
           <h3>Activities this week</h3>
           <div className={styles.statsInnerContainer}>
             <div className={styles.counter}>
-              <span>16</span>
+              <span>{statistics.weeklyActivitiesStats.done}</span>
               <p>Done</p>
             </div>
             <div className={styles.counter}>
-              <span>5</span>
+              <span>{statistics.weeklyActivitiesStats.canceled}</span>
               <p>Canceled</p>
             </div>
             <div className={styles.counter}>
-              <span>15</span>
+              <span>{statistics.weeklyActivitiesStats.created}</span>
               <p>Created</p>
             </div>
           </div>
@@ -45,15 +56,15 @@ const Stats: React.FC = () => {
           <h3>Activities this month</h3>
           <div className={styles.statsInnerContainer}>
             <div className={styles.counter}>
-              <span>16</span>
+              <span>{statistics.monthlyActivitiesStats.done}</span>
               <p>Done</p>
             </div>
             <div className={styles.counter}>
-              <span>5</span>
+              <span>{statistics.monthlyActivitiesStats.canceled}</span>
               <p>Canceled</p>
             </div>
             <div className={styles.counter}>
-              <span>15</span>
+              <span>{statistics.monthlyActivitiesStats.created}</span>
               <p>Created</p>
             </div>
           </div>

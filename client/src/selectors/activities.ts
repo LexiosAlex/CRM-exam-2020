@@ -1,9 +1,14 @@
 import { createSelector } from 'reselect';
 
 import userSelectors from './user';
-import { IActivity } from 'common/index';
-import { IAppState, IActivitiesState } from '../interfaces/state';
+import { ActivityStatus, IActivity } from 'common/index';
+import { IActivitiesState, IAppState } from '../interfaces/state';
 import { ActivityLists } from 'src/interfaces/common';
+import { IActivityStatistics } from 'common/types';
+
+const dayTimeStamp = Date.now() - 60 * 60 * 24;
+const weekTimeStamp = Date.now() - dayTimeStamp * 7;
+const monthTimeStamp = Date.now() - dayTimeStamp * 30;
 
 const getActivities = (state: IAppState): IActivitiesState => state.activities;
 
@@ -51,7 +56,79 @@ const isStatusPending = createSelector(
   (statusAsyncState) => statusAsyncState.pending
 );
 
+const getActivitiesStats = createSelector([getHeap], (heap) => {
+  const dailyActivitiesStats: IActivityStatistics = {
+    created: 0,
+    canceled: 0,
+    done: 0,
+  };
+
+  const weeklyActivitiesStats: IActivityStatistics = {
+    created: 0,
+    canceled: 0,
+    done: 0,
+  };
+
+  const monthlyActivitiesStats: IActivityStatistics = {
+    created: 0,
+    canceled: 0,
+    done: 0,
+  };
+
+  Object.entries(heap).map(([activityId, activityProps]) => {
+    const { history } = activityProps;
+
+    const historyArray = Object.entries(history);
+    const created = historyArray[0][1].time;
+    const canceled =
+      activityProps.status === ActivityStatus.Canceled &&
+      historyArray[historyArray.length - 1][1].time;
+    const done =
+      activityProps.status === ActivityStatus.Done && historyArray[historyArray.length - 1][1].time;
+
+    switch (true) {
+      case created >= dayTimeStamp:
+        dailyActivitiesStats.created += 1;
+        break;
+      case created < dayTimeStamp && created > weekTimeStamp:
+        weeklyActivitiesStats.created += 1;
+        break;
+      case created < weekTimeStamp && created > monthTimeStamp:
+        monthlyActivitiesStats.created += 1;
+        break;
+    }
+
+    switch (typeof canceled === 'number') {
+      case canceled >= dayTimeStamp:
+        dailyActivitiesStats.canceled += 1;
+        break;
+      case canceled < dayTimeStamp && canceled > weekTimeStamp:
+        weeklyActivitiesStats.canceled += 1;
+        break;
+      case canceled < weekTimeStamp && canceled > monthTimeStamp:
+        monthlyActivitiesStats.canceled += 1;
+        break;
+    }
+    switch (typeof done === 'number') {
+      case done >= dayTimeStamp:
+        dailyActivitiesStats.done += 1;
+        break;
+      case done < dayTimeStamp && canceled > weekTimeStamp:
+        weeklyActivitiesStats.done += 1;
+        break;
+      case done < weekTimeStamp && done > monthTimeStamp:
+        monthlyActivitiesStats.done += 1;
+        break;
+    }
+    //need to refactor it someHow
+    //switch is working with (false) statement, idk
+  });
+
+  return { dailyActivitiesStats, weeklyActivitiesStats, monthlyActivitiesStats };
+});
+
 export default {
+  getActivitiesStats,
   getFilteredHeap,
   getLists,
   isEmpty,
