@@ -5,18 +5,14 @@ import { GoogleMap, Marker } from '@react-google-maps/api';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputBase from '@material-ui/core/InputBase';
 
-import { IActivity, ILatLng } from 'common/types';
+import { IActivity } from 'common/types';
 import { IAppState } from '../../interfaces/state';
 import selectors from '../../selectors';
 import { TITLE_STATUS_MAP, TITLE_TYPE_MAP } from '../../utils/activities';
 import { ActivityStatus } from 'common/constants';
+import AREA from '../../utils/placeConfig';
 
 import styles from './index.scss';
-
-const SaintPLatLng: ILatLng = {
-  lat: 59.93863,
-  lng: 30.31413,
-};
 
 const ActivitiesMap: React.FC = () => {
   const activities: { [key: string]: IActivity } = useSelector((state: IAppState) =>
@@ -46,8 +42,8 @@ const ActivitiesMap: React.FC = () => {
         </NativeSelect>
       </div>
       <GoogleMap
-        zoom={10}
-        center={SaintPLatLng}
+        zoom={AREA.ZOOM}
+        center={AREA.COORDS}
         mapContainerStyle={{ height: 'calc(100% - 6rem)' }}
       >
         {Object.entries(activities).map(([activityId, activityProps]) => {
@@ -55,23 +51,13 @@ const ActivitiesMap: React.FC = () => {
             return;
           }
 
-          return status === -1 ? (
-            <Marker
-              key={activityId}
-              position={activityProps.address.coords}
-              title={`${TITLE_TYPE_MAP[activityProps.type]} , ${activityProps.address.description}`}
-            />
-          ) : (
-            activityProps.status === status && (
-              <Marker
-                key={activityId}
-                position={activityProps.address.coords}
-                title={`${TITLE_TYPE_MAP[activityProps.type]} , ${
-                  activityProps.address.description
-                }`}
-              />
-            )
-          );
+          const title =
+            status === -1 || activityProps.status === status
+              ? `${TITLE_TYPE_MAP[activityProps.type]} , ${activityProps.address.description}`
+              : null;
+          return title ? (
+            <Marker key={activityId} position={activityProps.address.coords} title={title} />
+          ) : null;
         })}
       </GoogleMap>
     </>
