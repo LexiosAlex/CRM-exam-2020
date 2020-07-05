@@ -7,6 +7,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { IAddress } from 'common/types';
 import Option from './Option';
 import autoCompleteOnChange from './autoCompleteOnChange';
+import AREA from '../../../utils/placeConfig';
 
 interface IAutocompleteService {
   current: null | google.maps.places.AutocompleteService;
@@ -80,7 +81,7 @@ const PlacesAutoSuggest: React.FC<PlacesAutoSuggestProps> = (params) => {
 
     doSuggest(
       {
-        input: `Saint Petersburg,${inputValue}`,
+        input: `${AREA.NAME},${inputValue}`,
         componentRestrictions: { country: ['ru'] },
       } as AutoSuggestQuery,
       (results?: PlaceType[]) => {

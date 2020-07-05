@@ -1,8 +1,9 @@
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+
 import { IAddress } from 'common/types';
 
 const useStyles = makeStyles((theme) => ({

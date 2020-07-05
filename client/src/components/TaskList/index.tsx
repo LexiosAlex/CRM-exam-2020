@@ -27,11 +27,7 @@ const TaskList: React.FC<TaskListInterface> = ({
   onOpenHistory,
 }) => {
   return (
-    <div
-      className={`${styles.container} ${
-        isDragging && (!canDrop ? styles.dropDisabled : styles.dropEnabled)
-      }`}
-    >
+    <div className={styles.container}>
       <div className={styles.addNewCardContainer}>
         <h2>{TITLE_STATUS_MAP[status]}</h2>
         {TITLE_STATUS_MAP[status] === TITLE_STATUS_MAP[0] ? (
@@ -42,7 +38,11 @@ const TaskList: React.FC<TaskListInterface> = ({
       </div>
       <Droppable droppableId={status} isDropDisabled={!canDrop}>
         {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            className={`${isDragging && (!canDrop ? styles.dropDisabled : styles.dropEnabled)}`}
+          >
             {tasks.length ? (
               tasks.map((task, index) => (
                 <TaskCard
