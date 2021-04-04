@@ -24,8 +24,9 @@ module.exports = {
     compress: true,
     port: env.DEV_SERVER_PORT || 3000,
     historyApiFallback: true,
+    open: true,
   },
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   entry: path.resolve(__dirname, 'src', 'index.tsx'),
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -69,11 +70,6 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|gif)$/i,
         use: ['file-loader'],
-      },
-      {
-        enforce: 'pre',
-        test: /\.js$/,
-        loader: 'source-map-loader',
       },
     ],
   },
