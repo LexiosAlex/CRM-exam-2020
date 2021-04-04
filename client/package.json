@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "test",
-    "start": "webpack-dev-server --mode development --open --watch",
-    "build": "webpack --mode production"
+    "start": "cross-env NODE_ENV=development webpack serve",
+    "build": "webpack NODE_ENV=production"
   },
   "author": "LexiosAlex",
   "license": "ISC",
@@ -21,11 +21,11 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.13.10",
-    "@babel/core": "^7.13.10",
+    "@babel/cli": "^7.13.14",
+    "@babel/core": "^7.13.14",
     "@babel/plugin-transform-typescript": "^7.13.0",
     "@babel/preset-env": "^7.13.12",
-    "@babel/preset-react": "^7.12.13",
+    "@babel/preset-react": "^7.13.13",
     "@types/react": "^17.0.3",
     "@types/react-beautiful-dnd": "^13.0.0",
     "@types/react-dom": "^17.0.3",
@@ -35,6 +35,7 @@
     "@typescript-eslint/parser": "^4.19.0",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.2.2",
+    "cross-env": "^7.0.3",
     "css-loader": "^5.2.0",
     "css-modules-typescript-loader": "^4.0.1",
     "dotenv": "^8.2.0",
@@ -54,10 +55,11 @@
     "typescript": "^4.2.3",
     "typings-for-css-modules-loader": "^1.7.0",
     "webpack": "^5.28.0",
-    "webpack-cli": "^4.5.0",
+    "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "@babel/runtime": "^7.13.10",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
@@ -81,8 +83,10 @@
     "react-virtualized": "^9.22.3",
     "redux": "^4.0.5",
     "redux-form": "^8.3.7",
+    "redux-toolkit": "^1.1.2",
     "reselect": "^4.0.0",
     "rxjs": "^6.6.6",
+    "styled-components": "^5.2.1",
     "typesafe-actions": "^5.1.0"
   }
 }

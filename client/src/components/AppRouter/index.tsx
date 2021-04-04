@@ -7,7 +7,6 @@ import SideNav from '../Sidenav';
 import Notifier from '../Notifier';
 import * as navPath from '../../utils/router';
 import Account from '../../Pages/Account';
-// import Landing from '../../Pages/Landing';
 import Stats from '../../Pages/Stats';
 import UsersTable from '../../Pages/UsersTable';
 import Tasks from '../../Pages/Tasks';
