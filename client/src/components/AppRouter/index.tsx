@@ -12,7 +12,7 @@ import UsersTable from '../../Pages/UsersTable';
 import Tasks from '../../Pages/Tasks';
 import AppHeader from '../Header';
 
-import styles from './index.scss';
+import { LayoutContainer } from './AppRouter.styles';
 
 const AppRouter: React.FC = () => {
   return (
@@ -21,7 +21,7 @@ const AppRouter: React.FC = () => {
       <Notifier />
       <BrowserRouter>
         <AppHeader />
-        <div className={styles.layoutContainer}>
+        <LayoutContainer>
           <SideNav />
           <div>
             <Switch>
@@ -31,7 +31,7 @@ const AppRouter: React.FC = () => {
               <Route component={UsersTable} path={navPath.USERS} exact />
             </Switch>
           </div>
-        </div>
+        </LayoutContainer>
       </BrowserRouter>
     </SnackbarProvider>
   );
