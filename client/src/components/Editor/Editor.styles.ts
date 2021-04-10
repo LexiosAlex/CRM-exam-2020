@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import { Form } from 'redux-form';
-import { Box, Button } from '@material-ui/core';
+import { ButtonBase } from '@material-ui/core';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import InputBase from '@material-ui/core/InputBase';
 import TextField from '@material-ui/core/TextField';
@@ -24,19 +24,6 @@ export const StyledCloseButton = styled(IconButton)`
 
 export const StyledDialogForm = styled(Form)`
   min-width: 900px;
-`;
-
-export const StyledBtnPrimary = styled(Button)`
-  width: 350px;
-  display: inline-block;
-  text-decoration: none;
-  letter-spacing: 3px;
-  color: #323232;
-  background: #ffdd2d;
-  min-height: 15px;
-  padding: 0.4rem 0.9rem;
-  border: 3px solid #ffdd2d;
-  text-transform: uppercase;
 `;
 
 const btnActive = css`
@@ -73,12 +60,12 @@ const btnDisabled = css`
   cursor: not-allowed;
 `;
 
-export const StyledSubmitButton = styled(Button)<SubmitButtonProps>`
+export const StyledSubmitButton = styled(ButtonBase)<SubmitButtonProps>`
   ${({ $isLoading }) => ($isLoading ? btnSpinner : btnActive)}
 `;
 
 export const StyledContentContainer = styled(MuiDialogContent)`
-  padding: 1.25rem 2rem !important;
+  padding: 1.25rem 2rem;
   display: grid;
   grid-template-columns: auto 300px;
   grid-column-gap: 3rem;
@@ -147,11 +134,7 @@ export const StyledTextareaAutoSize = styled(TextareaAutosize)`
   resize: none;
 `;
 
-export const StyledFormActionsContainer = styled(Box)`
-  padding: 1rem 2rem;
-`;
-
-export const StyledBtnCancel = styled(Button)<CancelButtonProps>`
+export const StyledBtnCancel = styled(ButtonBase)<CancelButtonProps>`
   display: inline-block;
   text-decoration: none;
   letter-spacing: 3px;
