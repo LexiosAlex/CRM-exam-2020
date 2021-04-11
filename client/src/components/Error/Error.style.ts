@@ -1,4 +1,7 @@
-.errorContainer {
+import styled from 'styled-components';
+import { Box } from '@material-ui/core';
+
+export const ErrorContainer = styled(Box)`
   margin-top: 200px;
   margin-left: auto;
   margin-right: auto;
@@ -11,9 +14,9 @@
   border-radius: 5px;
   border: 1px solid #7c0a02;
   background-color: rgba(255, 0, 0, 0.4);
-}
+`;
 
-.errorMsg {
+export const ErrorMsg = styled.p`
   font-weight: 700;
   color: #323232;
-}
+`;
