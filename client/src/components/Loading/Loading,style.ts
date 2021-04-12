@@ -1,4 +1,6 @@
-.loadingContainer {
+import styled from 'styled-components';
+
+export const StyledLoadingContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -11,16 +13,16 @@
   min-height: 100%;
   width: 100%;
   z-index: 6;
-}
+`;
 
-.loadingIcon {
+export const LoadingIcon = styled.img`
   width: 60px;
   height: 60px;
-}
+`;
 
-.loadingText {
+export const LoadingText = styled.p`
   text-align: center;
   font-size: 2rem;
   letter-spacing: 3px;
   text-transform: capitalize;
-}
+`;
