@@ -1,4 +1,6 @@
-.logo {
+import styled from 'styled-components';
+
+export const StyledLogo = styled.div`
   display: flex;
   align-self: flex-start;
   flex-direction: row;
@@ -12,9 +14,9 @@
     text-transform: uppercase;
     font-weight: 700;
   }
-}
+`;
 
-.header {
+export const StyledHeader = styled.header`
   padding: 8px;
   display: flex;
   justify-content: space-between;
@@ -27,28 +29,13 @@
   background-color: #fff;
   width: 100%;
   box-shadow: 0 0 5px #999;
-}
+`;
 
-.userInfo {
-  align-self: flex-end;
-}
+export const StyledUserName = styled.p`
+  display: inline-flex;
+`;
 
-.logOut {
-  align-self: flex-end;
-}
-
-.account {
-  display: flex;
-  p {
-    margin: 0;
-  }
-}
-
-.userName {
-  display: flex;
-}
-
-.userInfoContainer {
+export const StyledInfoContainer = styled.div`
   display: flex;
   flex-direction: row;
   font-size: 0.8rem;
@@ -56,4 +43,11 @@
   p {
     padding-right: 12px;
   }
-}
+`;
+
+export const StyledAccount = styled.div`
+  display: flex;
+  p {
+    margin: 0;
+  }
+`;
