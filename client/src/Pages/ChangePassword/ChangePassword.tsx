@@ -5,7 +5,7 @@ enum FormInputType {
   confPw,
 }
 
-const ChangePassword: React.FC = () => {
+export const ChangePassword: React.FC = () => {
   const [newPassword, setPassword] = useState<string>('');
   const [confirmPassword, setConfPassword] = useState<string>('');
 
@@ -49,5 +49,3 @@ const ChangePassword: React.FC = () => {
     </div>
   );
 };
-
-export default ChangePassword;
