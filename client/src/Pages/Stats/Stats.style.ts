@@ -1,16 +1,6 @@
-.container {
-  margin-top: 1rem;
-  margin-left: 50px;
-  margin-right: 50px;
-}
+import styled from 'styled-components';
 
-.statsContainer {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-
-.counter {
+export const StyledCounter = styled.div`
   margin-right: 2.5rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -21,4 +11,4 @@
   span {
     font-weight: bold;
   }
-}
+`;
