@@ -25,7 +25,7 @@ export const StyledContainer = styled.div<StyledContainerProps>`
   border: 1px solid #f5f5f6;
 
   ${({ $isDropEnabled, $isDragging }) =>
-    $isDragging && $isDropEnabled ? dropEnabled : dropDisabled}
+    $isDragging && ($isDropEnabled ? dropEnabled : dropDisabled)}
 `;
 
 export const StyledAddNewCardContainer = styled.div`
