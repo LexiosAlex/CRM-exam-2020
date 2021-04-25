@@ -12,7 +12,7 @@ import firebase from 'firebase';
 import rootEpic from './epics/root';
 import 'firebase/auth';
 
-import './index.scss';
+import { GlobalStyle } from './app.styles';
 
 const reduxDevTools = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 const composeEnhancers = reduxDevTools || compose;
@@ -29,7 +29,7 @@ const initialState = {};
 const store = createStore(
   rootReducer,
   initialState,
-  composeEnhancers(applyMiddleware(epicMiddleware))
+  composeEnhancers(applyMiddleware(epicMiddleware)),
 );
 
 const rrfProps = {
@@ -44,7 +44,8 @@ ReactDOM.render(
   <Provider store={store}>
     <ReactReduxFirebaseProvider {...rrfProps}>
       <App />
+      <GlobalStyle />
     </ReactReduxFirebaseProvider>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
