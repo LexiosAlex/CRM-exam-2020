@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import * as navPaths from '../../utils/router';
 import { useFirebase } from 'react-redux-firebase';
-import WithAuth from '../../Hocs/WithAuth';
 import { Box } from '@material-ui/core';
+import * as navPaths from '../../utils/router';
+import WithAuth from '../../Hocs/WithAuth';
 import {
   StyledButtonPrimary,
   StyledInputWrapper,
@@ -12,22 +12,20 @@ import {
   StyledErrorMsg,
   StyledHead,
   StyledWrapper,
-} from './SignIn.style';
-
-interface User {
-  email: string;
-  password: string;
-}
+} from './SignUp.style';
 
 enum FormInputType {
   email,
   password,
+  name,
 }
 
-const SignIn: React.FC = (props: any) => {
+const SignUp: React.FC = (props: any) => {
   const { authError } = props;
-  const [emailValue, setEmail] = useState<string>('');
-  const [passwordValue, setPassword] = useState<string>('');
+
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>('');
 
   const [isSendingData, setSendingData] = useState<boolean>(false);
 
@@ -36,26 +34,32 @@ const SignIn: React.FC = (props: any) => {
   const onChange: { [key in FormInputType]: Function } = {
     [FormInputType.email]: setEmail,
     [FormInputType.password]: setPassword,
+    [FormInputType.name]: setName,
   };
 
   const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSendingData(true);
-    const credentials: User = {
-      email: emailValue,
-      password: passwordValue,
-    };
-    firebase.login(credentials).finally(() => {
-      setSendingData(false);
-    });
+    firebase.createUser({ email, password }, { name }).finally(() => setSendingData(false));
   };
 
   return (
     <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center">
       <StyledWrapper>
         <form onSubmit={handleSubmitForm} noValidate>
-          <StyledHead>Sign In</StyledHead>
+          <StyledHead>Sign Up</StyledHead>
           {authError ? <StyledErrorMsg>{authError.message}</StyledErrorMsg> : null}
+          <StyledInputWrapper>
+            <label htmlFor="name">name</label>
+            <input
+              type="text"
+              placeholder="Your name"
+              name="name"
+              formNoValidate
+              onChange={(event) => onChange[FormInputType.name](event.target.value)}
+              value={name}
+            />
+          </StyledInputWrapper>
           <StyledInputWrapper>
             <label htmlFor="email">Email</label>
             <input
@@ -64,7 +68,7 @@ const SignIn: React.FC = (props: any) => {
               name="email"
               formNoValidate
               onChange={(event) => onChange[FormInputType.email](event.target.value)}
-              value={emailValue}
+              value={email}
             />
           </StyledInputWrapper>
           <StyledInputWrapper>
@@ -75,7 +79,7 @@ const SignIn: React.FC = (props: any) => {
               name="password"
               formNoValidate
               onChange={(event) => onChange[FormInputType.password](event.target.value)}
-              value={passwordValue}
+              value={password}
             />
           </StyledInputWrapper>
           <StyledActionsContainer
@@ -89,9 +93,9 @@ const SignIn: React.FC = (props: any) => {
             marginBottom="0.5rem"
           >
             <StyledButtonPrimary disabled={isSendingData} type="submit" $isLoading={isSendingData}>
-              <span>Sign In</span>
+              <span>Sign Up</span>
             </StyledButtonPrimary>
-            <Link to={navPaths.SIGN_UP}>Dont have account? create one</Link>
+            <Link to={navPaths.SIGN_IN}>Already registered</Link>
             <Link to={navPaths.PASSWORD_FORGET}>Forgot password</Link>
           </StyledActionsContainer>
         </form>
@@ -100,4 +104,4 @@ const SignIn: React.FC = (props: any) => {
   );
 };
 
-export const WrappedSignIn = WithAuth(withRouter(SignIn));
+export const WrappedSignUp = WithAuth(withRouter(SignUp));
