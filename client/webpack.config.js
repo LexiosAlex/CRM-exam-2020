@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const _env = dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const env = _env.parsed;
@@ -13,6 +15,7 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
   prev[`process.env.${next}`] = JSON.stringify(env[next]);
   return prev;
 }, {});
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 module.exports = {
   resolve: {
@@ -45,39 +48,34 @@ module.exports = {
         loader: 'awesome-typescript-loader',
       },
       {
-        test: /\.css$/,
-        include: path.join(__dirname, 'src'),
+        test: /\.(png|svg|jpg|gif)$/i,
         use: [
-          'style-loader',
           {
-            loader: 'typings-for-css-modules-loader',
+            loader: 'file-loader',
             options: {
-              modules: true,
-              namedExport: true,
+              name: isDevelopment ? '[name]__[contenthash].[ext]' : '[contenthash].[ext]',
             },
           },
         ],
       },
       {
-        test: /\.scss$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-modules-typescript-loader' },
-          { loader: 'css-loader', options: { modules: true } },
-          { loader: 'sass-loader' },
-        ],
-      },
-      {
-        test: /\.(png|svg|jpg|gif)$/i,
-        use: ['file-loader'],
+        test: /\.(woff|woff2)$/,
+        use: {
+          loader: 'url-loader',
+        },
       },
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
       firebaseApiKey: process.env.FIREBASE_API_KEY,
     }),
     new webpack.DefinePlugin(envKeys),
+    new MiniCssExtractPlugin({
+      filename: isDevelopment ? '[name].css' : '[name].[hash].css',
+      chunkFilename: isDevelopment ? '[id].css' : '[id].[hash].css',
+    }),
   ],
 };
