@@ -83,38 +83,41 @@ const btnActive = css`
 `;
 
 const btnSpinner = css`
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-image: url('../../media/icons/BtnSpinner.svg');
-  background-size: 25px 25px;
-  height: 33px;
-  background-color: #ffe55e;
-  border-color: #ffe55e;
-  cursor: not-allowed;
+  && {
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-image: url('../../media/icons/BtnSpinner.svg');
+    background-size: 25px 25px;
+    height: 33px;
+    background-color: #ffe55e;
+    border-color: #ffe55e;
+    cursor: not-allowed;
 
-  span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    border: 0;
-    clip: rect(0 0 0 0);
+    span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      clip: rect(0 0 0 0);
+    }
   }
 `;
 
 export const StyledButtonPrimary = styled(ButtonBase)<ButtonProps>`
-  width: 100%;
-  display: inline-block;
-  text-decoration: none;
-  letter-spacing: 3px;
-  color: #323232;
-  background: #ffdd2d;
-  min-height: 15px;
-  padding: 0.4rem 0.9rem;
-  border: 3px solid #ffdd2d;
-  text-transform: uppercase;
-
+  && {
+    width: 100%;
+    display: inline-block;
+    text-decoration: none;
+    letter-spacing: 3px;
+    color: #323232;
+    background: #ffdd2d;
+    min-height: 15px;
+    padding: 0.4rem 0.9rem;
+    border: 3px solid #ffdd2d;
+    text-transform: uppercase;
+  }
   ${({ $isLoading }) => ($isLoading ? btnSpinner : btnActive)}
 `;
