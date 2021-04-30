@@ -37,6 +37,7 @@ import {
   StyledFormSelect,
   StyledTextareaAutoSize,
   StyledBtnCancel,
+  LoadingSpinner,
 } from './Editor.styles';
 import PlacesAutoSuggest from './PlacesAutoSuggest';
 
@@ -316,7 +317,13 @@ const Editor: React.FC<EditorProps> = ({
                 type="submit"
                 $isLoading={isSendingData}
               >
-                <span>{`${isNew ? 'Add activity' : 'Save changes'}`}</span>
+                {isSendingData ? (
+                  <Box display="flex">
+                    <LoadingSpinner />
+                  </Box>
+                ) : (
+                  <span>{`${isNew ? 'Add activity' : 'Save changes'}`}</span>
+                )}
               </StyledSubmitButton>
               <StyledBtnCancel
                 onClick={(event) => {

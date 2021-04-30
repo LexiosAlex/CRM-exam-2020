@@ -12,6 +12,7 @@ import {
   StyledErrorMsg,
   StyledHead,
   StyledWrapper,
+  LoadingSpinner,
 } from './SignIn.style';
 
 interface User {
@@ -89,7 +90,13 @@ const SignIn: React.FC = (props: any) => {
             marginBottom="0.5rem"
           >
             <StyledButtonPrimary disabled={isSendingData} type="submit" $isLoading={isSendingData}>
-              <span>Sign In</span>
+              {isSendingData ? (
+                <Box display="flex">
+                  <LoadingSpinner />
+                </Box>
+              ) : (
+                <span> Sign Up</span>
+              )}
             </StyledButtonPrimary>
             <Link to={navPaths.SIGN_UP}>Dont have account? create one</Link>
             <Link to={navPaths.PASSWORD_FORGET}>Forgot password</Link>

@@ -12,6 +12,7 @@ import {
   StyledErrorMsg,
   StyledHead,
   StyledWrapper,
+  LoadingSpinner,
 } from './SignUp.style';
 
 enum FormInputType {
@@ -93,7 +94,13 @@ const SignUp: React.FC = (props: any) => {
             marginBottom="0.5rem"
           >
             <StyledButtonPrimary disabled={isSendingData} type="submit" $isLoading={isSendingData}>
-              <span>Sign Up</span>
+              {isSendingData ? (
+                <Box display="flex">
+                  <LoadingSpinner />
+                </Box>
+              ) : (
+                <span> Sign Up</span>
+              )}
             </StyledButtonPrimary>
             <Link to={navPaths.SIGN_IN}>Already registered</Link>
             <Link to={navPaths.PASSWORD_FORGET}>Forgot password</Link>

@@ -6,6 +6,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import InputBase from '@material-ui/core/InputBase';
 import TextField from '@material-ui/core/TextField';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import { ReactComponent as LoadingSpinnerIcon } from '../../media/icons/BtnSpinner.svg';
 
 interface SubmitButtonProps {
   $isLoading: boolean;
@@ -14,6 +15,11 @@ interface SubmitButtonProps {
 interface CancelButtonProps {
   $isSendingData: boolean;
 }
+
+export const LoadingSpinner = styled(LoadingSpinnerIcon)`
+  display: block;
+  width: 20px;
+`;
 
 export const StyledCloseButton = styled(IconButton)`
   position: absolute !important;
@@ -35,24 +41,25 @@ const btnActive = css`
 `;
 
 const btnSpinner = css`
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-image: url('../../media/icons/BtnSpinner.svg');
-  background-size: 25px 25px;
-  height: 33px;
-  background-color: #ffe55e;
-  border-color: #ffe55e;
-  cursor: not-allowed;
+  && {
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 25px 25px;
+    height: 33px;
+    background-color: #ffe55e;
+    border-color: #ffe55e;
+    cursor: not-allowed;
 
-  span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    border: 0;
-    clip: rect(0 0 0 0);
+    span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      clip: rect(0 0 0 0);
+    }
   }
 `;
 
@@ -61,7 +68,26 @@ const btnDisabled = css`
 `;
 
 export const StyledSubmitButton = styled(ButtonBase)<SubmitButtonProps>`
-  ${({ $isLoading }) => ($isLoading ? btnSpinner : btnActive)}
+  && {
+    width: 140px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    line-height: 1rem;
+    display: block;
+    text-decoration: none;
+    letter-spacing: 3px;
+    color: #323232;
+    background: #ffdd2d;
+    height: 35px;
+    border-radius: 3px;
+    border: 3px solid #ffdd2d;
+    text-transform: uppercase;
+    &:hover,
+    &:focus {
+      background-color: transparent;
+    }
+    ${({ $isLoading }) => ($isLoading ? btnSpinner : btnActive)}
+  }
 `;
 
 export const StyledContentContainer = styled(MuiDialogContent)`
@@ -105,6 +131,9 @@ const defaultInputStyled = css`
   &:active {
     border-color: #ffe55e !important;
   }
+  &&:disabled {
+    border-color: #555555 !important;
+  }
 `;
 
 export const StyledTextField = styled(TextField)`
@@ -135,15 +164,17 @@ export const StyledTextareaAutoSize = styled(TextareaAutosize)`
 `;
 
 export const StyledBtnCancel = styled(ButtonBase)<CancelButtonProps>`
-  display: inline-block;
-  text-decoration: none;
-  letter-spacing: 3px;
-  color: #323232;
-  background: #cfcfcf;
-  min-height: 15px;
-  padding: 0.4rem 0.9rem;
-  border: 3px solid #555555;
-  text-transform: uppercase;
+  && {
+    display: inline-block;
+    text-decoration: none;
+    letter-spacing: 3px;
+    color: #323232;
+    background: #cfcfcf;
+    min-height: 15px;
+    padding: 0.4rem 0.9rem;
+    border: 3px solid #555555;
+    text-transform: uppercase;
 
-  ${({ $isSendingData }) => ($isSendingData ? btnDisabled : btnActive)}
+    ${({ $isSendingData }) => ($isSendingData ? btnDisabled : btnActive)}
+  }
 `;

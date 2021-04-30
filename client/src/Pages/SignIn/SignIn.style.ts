@@ -1,9 +1,15 @@
 import styled, { css } from 'styled-components';
 import { Box, ButtonBase } from '@material-ui/core';
+import { ReactComponent as LoadingSpinnerIcon } from '../../media/icons/BtnSpinner.svg';
 
 interface ButtonProps {
   $isLoading: boolean;
 }
+
+export const LoadingSpinner = styled(LoadingSpinnerIcon)`
+  display: block;
+  width: 20px;
+`;
 
 export const StyledWrapper = styled.div`
   width: 400px;
@@ -86,7 +92,6 @@ const btnSpinner = css`
   && {
     background-repeat: no-repeat;
     background-position: top center;
-    background-image: url('../../media/icons/BtnSpinner.svg');
     background-size: 25px 25px;
     height: 33px;
     background-color: #ffe55e;
