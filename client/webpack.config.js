@@ -48,7 +48,25 @@ module.exports = {
         loader: 'awesome-typescript-loader',
       },
       {
-        test: /\.(png|svg|jpg|gif)$/i,
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: '@svgr/webpack',
+          },
+          {
+            loader: 'file-loader',
+            options: {
+              name: isDevelopment ? '[name]__[contenthash].[ext]' : '[contenthash].[ext]',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(png|jpg|gif)$/i,
         use: [
           {
             loader: 'file-loader',
@@ -69,7 +87,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: path.join(__dirname, 'src', 'index.html'),
       firebaseApiKey: process.env.FIREBASE_API_KEY,
     }),
     new webpack.DefinePlugin(envKeys),
