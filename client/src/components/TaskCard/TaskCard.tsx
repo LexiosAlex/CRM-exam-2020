@@ -27,6 +27,9 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
   onOpenDialog,
   onOpenHistory,
 }) => {
+  const handleOpenDialog = () => onOpenDialog();
+  const handleOpenHistory = () => onOpenHistory();
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -41,10 +44,10 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
               </Typography>
             </StyledCardContent>
             <StyledCardActions>
-              <IconButton onClick={() => onOpenDialog()}>
+              <IconButton onClick={handleOpenDialog}>
                 <EditIcon fontSize="small" />
               </IconButton>
-              <IconButton onClick={() => onOpenHistory()}>
+              <IconButton onClick={handleOpenHistory}>
                 <AccessTimeIcon fontSize="small" />
               </IconButton>
             </StyledCardActions>
