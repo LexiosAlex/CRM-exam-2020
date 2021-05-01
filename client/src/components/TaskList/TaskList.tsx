@@ -8,7 +8,7 @@ import TaskCard from '../TaskCard';
 import { TITLE_STATUS_MAP } from '../../utils/activities';
 import { FormType } from '../Editor/common';
 
-interface TaskListInterface {
+interface TaskListProps {
   status: string;
   statusOnly: boolean;
   tasks: IActivity[];
@@ -18,7 +18,7 @@ interface TaskListInterface {
   onOpenHistory: Function;
 }
 
-export const TaskList: React.FC<TaskListInterface> = ({
+export const TaskList: React.FC<TaskListProps> = ({
   status,
   statusOnly,
   tasks,

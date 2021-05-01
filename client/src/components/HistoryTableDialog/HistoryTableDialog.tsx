@@ -7,11 +7,11 @@ import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
 
 import {
-  styledFlexContainer,
   StyledTableCell,
   StyledHeader,
   CloseButton,
   StyledDialogHeader,
+  StyledMuiDialogContent,
 } from './HistoryTableDialog.style';
 
 import { IActivity, IActivityHistory } from 'common/types';
@@ -81,48 +81,47 @@ const getHistoryList = (history: { [id: string]: IActivityHistory }) =>
 export const HistoryTableDialog: React.FC<DialogProps> = ({ open, onClose, activity }) => {
   const { history, address } = activity;
   const historyList = getHistoryList(history);
+  console.log(historyList);
+
   return (
-    <>
-      <Dialog maxWidth="lg" open={open} onClose={onClose}>
-        <StyledDialogHeader>
-          <div>
-            <h4>{address}</h4>
-          </div>
-          <CloseButton aria-label="close" onClick={onClose}>
-            <CloseIcon />
-          </CloseButton>
-        </StyledDialogHeader>
-        <MuiDialogContent>
-          <Paper style={{ height: 700, width: 900 }}>
-            <AutoSizer>
-              {({ height, width }) => (
-                <Table
-                  rowGetter={({ index }) => historyList[index]}
-                  height={height}
-                  width={width}
-                  rowHeight={50}
-                  gridStyle={{
-                    direction: 'inherit',
-                  }}
-                  headerHeight={75}
-                  rowCount={historyList.length}
-                  rowClassName={`${styledFlexContainer}`}
-                >
-                  {columns.map(({ dataKey, label }, index) => (
-                    <Column
-                      key={dataKey}
-                      headerRenderer={() => renderHeader({ label })}
-                      cellRenderer={renderCell}
-                      dataKey={dataKey}
-                      width={225}
-                    />
-                  ))}
-                </Table>
-              )}
-            </AutoSizer>
-          </Paper>
-        </MuiDialogContent>
-      </Dialog>
-    </>
+    <Dialog maxWidth="lg" open={open} onClose={onClose}>
+      <StyledDialogHeader>
+        <div>
+          <h4>{address.description}</h4>
+        </div>
+        <CloseButton aria-label="close" onClick={onClose}>
+          <CloseIcon />
+        </CloseButton>
+      </StyledDialogHeader>
+      <StyledMuiDialogContent>
+        <Paper style={{ height: 700, width: 900 }}>
+          <AutoSizer>
+            {({ height, width }) => (
+              <Table
+                rowGetter={({ index }) => historyList[index]}
+                height={height}
+                width={width}
+                rowHeight={50}
+                gridStyle={{
+                  direction: 'inherit',
+                }}
+                headerHeight={75}
+                rowCount={historyList.length}
+              >
+                {columns.map(({ dataKey, label }) => (
+                  <Column
+                    key={dataKey}
+                    headerRenderer={() => renderHeader({ label })}
+                    cellRenderer={renderCell}
+                    dataKey={dataKey}
+                    width={225}
+                  />
+                ))}
+              </Table>
+            )}
+          </AutoSizer>
+        </Paper>
+      </StyledMuiDialogContent>
+    </Dialog>
   );
 };
