@@ -36,7 +36,7 @@ export const Sidenav: React.FC = () => {
                 <DashboardIcon />
               </ListItemIcon>
             </Link>
-            {!open ?? <ListItemText primary={'Dashboard'} />}
+            <ListItemText primary={'Dashboard'} />
           </StyledListItem>
           <StyledListItem button>
             <Link to={navPaths.USERS}>
@@ -44,7 +44,7 @@ export const Sidenav: React.FC = () => {
                 <GroupIcon />
               </ListItemIcon>
             </Link>
-            {!open ?? <ListItemText primary={'Users'} />}
+            <ListItemText primary={'Users'} />
           </StyledListItem>
           <StyledListItem button>
             <Link to={navPaths.TASKS}>
@@ -52,16 +52,12 @@ export const Sidenav: React.FC = () => {
                 <ViewColumnIcon />
               </ListItemIcon>
             </Link>
-            {!open ?? <ListItemText primary={'Task Lists'} />}
+            <ListItemText primary={'Task Lists'} />
           </StyledListItem>
         </StyledList>
         <Divider />
         <Box display="flex" alignItems="center" justifyContent="flex-end" padding="8px">
           {!open ? (
-            <IconButton onClick={handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
-          ) : (
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -69,6 +65,10 @@ export const Sidenav: React.FC = () => {
               edge="start"
             >
               <MenuIcon />
+            </IconButton>
+          ) : (
+            <IconButton onClick={handleDrawerClose}>
+              <ChevronLeftIcon />
             </IconButton>
           )}
           <Divider />
