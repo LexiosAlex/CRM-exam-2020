@@ -18,6 +18,7 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 module.exports = {
+  mode: isDevelopment ? 'development' : 'production',
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx', '.css', '.scss', '.sass'],
     plugins: [new TsconfigPathsPlugin({})],
