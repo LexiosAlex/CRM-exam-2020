@@ -1,6 +1,5 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import MuiDialogContent from '@material-ui/core/DialogContent';
 import CloseIcon from '@material-ui/icons/Close';
 import { AutoSizer, Column, Table, TableCellRenderer } from 'react-virtualized';
 import Paper from '@material-ui/core/Paper';
