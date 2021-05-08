@@ -7,7 +7,7 @@ interface DrawerProps {
   $isOpen: boolean;
 }
 
-interface IsListItemActive {
+interface StyledListItemProps {
   $isActive: boolean;
 }
 
@@ -28,11 +28,13 @@ export const StyledDrawer = styled(Drawer)<DrawerProps>`
   white-space: nowrap;
   ${({ $isOpen }) => ($isOpen ? drawerOpen : drawerClose)}
 `;
-export const StyledListItem = styled(ListItem)<IsListItemActive>`
+
+export const StyledListItem = styled(ListItem)<StyledListItemProps>`
   display: flex;
   width: 100%;
   text-decoration: none;
   color: inherit;
+
   && {
     background-color: ${({ $isActive }) => ($isActive ? '#3232321A' : 'inherit')};
   }
@@ -43,7 +45,15 @@ export const StyledListItem = styled(ListItem)<IsListItemActive>`
 `;
 
 export const StyledList = styled(List)<DrawerProps>`
-  margin-top: 140px !important;
-  margin-bottom: 60px !important;
+  && {
+    margin-top: 140px;
+    margin-bottom: 60px;
+
+    a {
+      text-decoration: none;
+      color: #323232;
+    }
+  }
+
   ${({ $isOpen }) => ($isOpen ? drawerOpen : drawerClose)}
 `;

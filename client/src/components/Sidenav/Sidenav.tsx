@@ -30,30 +30,32 @@ export const Sidenav: React.FC = () => {
     <>
       <StyledDrawer variant="permanent" $isOpen={open}>
         <StyledList $isOpen={open}>
-          <StyledListItem button $isActive={pathname === navPaths.STATS}>
-            <Link to={navPaths.STATS}>
+          <Link to={navPaths.STATS}>
+            <StyledListItem button $isActive={pathname === navPaths.STATS}>
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
-            </Link>
-            <ListItemText primary={'Dashboard'} />
-          </StyledListItem>
-          <StyledListItem button $isActive={pathname === navPaths.USERS}>
-            <Link to={navPaths.USERS}>
+              <ListItemText primary={'Dashboard'} />
+            </StyledListItem>
+          </Link>
+
+          <Link to={navPaths.USERS}>
+            <StyledListItem button $isActive={pathname === navPaths.USERS}>
               <ListItemIcon>
                 <GroupIcon />
               </ListItemIcon>
-            </Link>
-            <ListItemText primary={'Users'} />
-          </StyledListItem>
-          <StyledListItem button $isActive={pathname === navPaths.TASKS}>
-            <Link to={navPaths.TASKS}>
+              <ListItemText primary={'Users'} />
+            </StyledListItem>
+          </Link>
+
+          <Link to={navPaths.TASKS}>
+            <StyledListItem button $isActive={pathname === navPaths.TASKS}>
               <ListItemIcon>
                 <ViewColumnIcon />
               </ListItemIcon>
-            </Link>
-            <ListItemText primary={'Task Lists'} />
-          </StyledListItem>
+              <ListItemText primary={'Task Lists'} />
+            </StyledListItem>
+          </Link>
         </StyledList>
         <Divider />
         <Box display="flex" alignItems="center" justifyContent="flex-end" padding="8px">
