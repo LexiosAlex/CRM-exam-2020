@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import MaterialTable, { Column, Icons } from 'material-table';
-import { connect, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -45,17 +45,6 @@ const tableIcons: Icons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-interface TableState {
-  columns: Array<Column<ITypedUser>>;
-  data: ITypedUser[];
-}
-
-interface UsersTableProps {
-  employees: ITypedUser[];
-  isLoading: boolean;
-  editUser: Function;
-}
-
 const columns: Column<ITypedUser>[] = [
   { title: 'Name', field: 'name', editable: 'never' },
   {
@@ -66,12 +55,15 @@ const columns: Column<ITypedUser>[] = [
   },
 ];
 
-const UsersTable: React.FC<UsersTableProps> = ({ employees, isLoading, editUser }) => {
+export const UsersTable: React.FC = () => {
   const dispatch = useDispatch();
-  const [state, setState] = React.useState<TableState>({
-    columns,
-    data: employees,
-  });
+  const isLoading = useSelector((state: IAppState) => selectors.employees.isLoading(state));
+  const employees = useSelector((state: IAppState) => selectors.employees.userList(state));
+
+  const handleEditUser = (id: string, type: EmployeeType) => {
+    dispatch(editUser(id, type));
+    return Promise.resolve();
+  };
 
   return (
     <Box marginLeft="50px" marginRight="50px" marginTop="50px">
@@ -80,25 +72,12 @@ const UsersTable: React.FC<UsersTableProps> = ({ employees, isLoading, editUser 
         isLoading={isLoading}
         icons={tableIcons}
         title="Users"
-        columns={state.columns}
-        data={state.data}
+        columns={columns}
+        data={employees}
         editable={{
-          onRowUpdate: ({ id, type }) => editUser(id, type),
+          onRowUpdate: ({ id, type }) => handleEditUser(id, type),
         }}
       />
     </Box>
   );
 };
-
-export const WrappedUsersTable = connect(
-  (state: IAppState) => ({
-    employees: selectors.employees.userList(state),
-    isLoading: selectors.employees.isLoading(state),
-  }),
-  (dispatch) => ({
-    editUser: (id: string, type: EmployeeType) => {
-      dispatch(editUser(id, type));
-      return Promise.resolve();
-    },
-  }),
-)(UsersTable);
