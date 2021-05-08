@@ -8,14 +8,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { StyledDrawer, StyledListItem, StyledList } from './Sidenav.style';
 import * as navPaths from '../../utils/router';
 import { Box } from '@material-ui/core';
 
-//TODO: refactor this, get out of display none
 export const Sidenav: React.FC = () => {
+  const { pathname } = useLocation();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -30,7 +30,7 @@ export const Sidenav: React.FC = () => {
     <>
       <StyledDrawer variant="permanent" $isOpen={open}>
         <StyledList $isOpen={open}>
-          <StyledListItem button>
+          <StyledListItem button $isActive={pathname === navPaths.STATS}>
             <Link to={navPaths.STATS}>
               <ListItemIcon>
                 <DashboardIcon />
@@ -38,7 +38,7 @@ export const Sidenav: React.FC = () => {
             </Link>
             <ListItemText primary={'Dashboard'} />
           </StyledListItem>
-          <StyledListItem button>
+          <StyledListItem button $isActive={pathname === navPaths.USERS}>
             <Link to={navPaths.USERS}>
               <ListItemIcon>
                 <GroupIcon />
@@ -46,7 +46,7 @@ export const Sidenav: React.FC = () => {
             </Link>
             <ListItemText primary={'Users'} />
           </StyledListItem>
-          <StyledListItem button>
+          <StyledListItem button $isActive={pathname === navPaths.TASKS}>
             <Link to={navPaths.TASKS}>
               <ListItemIcon>
                 <ViewColumnIcon />
