@@ -1,17 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import Box from '@material-ui/core/Box';
-import Tab from '@material-ui/core/Tab';
-import { PieChart, Pie, Sector, Tooltip, Cell } from 'recharts';
-import TabPanel from '../../components/TabPanel';
-import { StyledTabsPaper, StyledTabs } from './Stats.style';
-
-interface ChartData {
-  name: string;
-  value: number;
-  textColor?: string;
-}
-
-type TimeChartData = ChartData[];
+import { PieChart, Pie, Sector, Cell } from 'recharts';
+import { StyledContainer, StyledChartPaper } from './Stats.style';
+import Typography from '@material-ui/core/Typography';
+import { TimeChartData } from '../../interfaces/statistics';
+import { useSelector } from 'react-redux';
+import { IAppState } from '../../interfaces/state';
+import selectors from '../../selectors';
 
 interface PieChartComponentProps {
   TimeChartData;
@@ -112,34 +107,50 @@ const PieChartComponent: React.FC<PieChartComponentProps> = ({ TimeChartData }) 
   );
 };
 
-//TODO: refactor it
 export const Stats: React.FC = () => {
-  const [activeTabIndex, setActiveTabIndex] = useState(0);
-  const handleChangeTab = (_: React.ChangeEvent<{}>, tabIndex: number) => {
-    setActiveTabIndex(tabIndex);
-  };
+  const dayActivities: TimeChartData = useSelector((state: IAppState) =>
+    selectors.statistics.getActivitiesByDay(state),
+  );
+  const weekActivities: TimeChartData = useSelector((state: IAppState) =>
+    selectors.statistics.getActivitiesByWeek(state),
+  );
+  const monthActivities: TimeChartData = useSelector((state: IAppState) =>
+    selectors.statistics.getActivitiesByMonth(state),
+  );
+
+  console.log(dayActivities);
 
   return (
-    <Box marginTop="1rem" marginLeft="50px" marginRight="50px">
-      <Box display="flex" flexDirection="column" width="100%">
-        <StyledTabsPaper>
-          <StyledTabs value={activeTabIndex} onChange={handleChangeTab} centered>
-            <Tab label="Activities today" />
-            <Tab label="Activities this week" />
-            <Tab label="Activities this month" />
-          </StyledTabs>
-        </StyledTabsPaper>
-        <h2>Statistics</h2>
-        <TabPanel value={activeTabIndex} index={0}>
-          <PieChartComponent TimeChartData={tasksData[0]} />
-        </TabPanel>
-        <TabPanel value={activeTabIndex} index={1}>
-          <PieChartComponent TimeChartData={tasksData[1]} />
-        </TabPanel>
-        <TabPanel value={activeTabIndex} index={2}>
-          <PieChartComponent TimeChartData={tasksData[2]} />
-        </TabPanel>
+    <StyledContainer
+      marginTop="50px"
+      marginLeft="50px"
+      marginRight="50px"
+      display="flex"
+      flexDirection="column"
+      width="100%"
+    >
+      <Typography variant="h2">Statistics</Typography>
+      <Box
+        display="flex"
+        flexDirection="row"
+        width="100%"
+        maxWidth="650px"
+        justifyContent="space-between"
+        flexWrap="wrap"
+      >
+        <StyledChartPaper>
+          <PieChartComponent TimeChartData={dayActivities} />
+          <Typography variant="h3">Activities today</Typography>
+        </StyledChartPaper>
+        <StyledChartPaper>
+          <PieChartComponent TimeChartData={weekActivities} />
+          <Typography variant="h3">Activities this week</Typography>
+        </StyledChartPaper>
+        <StyledChartPaper>
+          <PieChartComponent TimeChartData={monthActivities} />
+          <Typography variant="h3">Activities this month</Typography>
+        </StyledChartPaper>
       </Box>
-    </Box>
+    </StyledContainer>
   );
 };

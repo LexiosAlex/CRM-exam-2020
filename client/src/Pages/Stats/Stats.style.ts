@@ -1,26 +1,25 @@
 import styled from 'styled-components';
 import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
+import Box from '@material-ui/core/Box';
 
-export const StyledCounter = styled.div`
-  margin-right: 2.5rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  width: 150px;
-  border-radius: 5px;
-  background-color: #f5f5f6;
-  span {
+export const StyledContainer = styled(Box)`
+  && h3 {
+    margin: 1rem 0;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  && h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
     font-weight: bold;
   }
 `;
 
-export const StyledTabsPaper = styled(Paper)`
-  flex-grow: 1;
-`;
-
-export const StyledTabs = styled(Tabs)`
-  && .MuiTabs-indicator {
-    background-color: #ffe55e;
-  }
+export const StyledChartPaper = styled(Paper)`
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
