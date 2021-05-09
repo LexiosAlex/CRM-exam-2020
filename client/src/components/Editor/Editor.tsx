@@ -225,7 +225,7 @@ const Editor: React.FC<EditorProps> = ({
                       disabled={formType === FormType.statusOnly}
                     />
                   </Box>
-                  <div>
+                  <Box>
                     <h5>Description</h5>
                     <Field
                       customValue={formState.values.description}
@@ -234,7 +234,7 @@ const Editor: React.FC<EditorProps> = ({
                       component={renderTextArea}
                       disabled={formType === FormType.statusOnly}
                     />
-                  </div>
+                  </Box>
                 </Box>
                 <Box flexDirection="column" display="flex">
                   <Box flexDirection="column" display="flex">
@@ -273,7 +273,18 @@ const Editor: React.FC<EditorProps> = ({
                       disabled={formType === FormType.statusOnly}
                     />
                   </Box>
-                  <div>
+                  <Box flexDirection="column" display="flex">
+                    <label htmlFor="bounty">Bounty ($)</label>
+                    <Field
+                      customValue={formState.values.bounty}
+                      id="bounty"
+                      name="bounty"
+                      type="number"
+                      component={renderDefaultInput}
+                      disabled={formType === FormType.statusOnly}
+                    />
+                  </Box>
+                  <Box>
                     <h5>Assignee</h5>
                     <Field
                       customValue={formState.values.assignee}
@@ -283,8 +294,8 @@ const Editor: React.FC<EditorProps> = ({
                       options={volunteers}
                       disabled={formType === FormType.statusOnly || isNew}
                     />
-                  </div>
-                  <div>
+                  </Box>
+                  <Box>
                     <h5>Operator</h5>
                     <Field
                       customValue={formState.values.operator}
@@ -296,7 +307,7 @@ const Editor: React.FC<EditorProps> = ({
                         formType === FormType.statusOnly || employeeType === EmployeeType.Operator
                       }
                     />
-                  </div>
+                  </Box>
                 </Box>
               </>
             )}
@@ -353,6 +364,7 @@ const InitializedFormEditor = reduxForm<IActivity, ActivityFormProps>({
     address: void 0,
     estimation: void 0,
     description: void 0,
+    bounty: void 0,
   },
 })(Editor);
 
