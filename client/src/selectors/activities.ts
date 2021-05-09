@@ -13,7 +13,7 @@ const getFormAsyncState = createSelector([getActivities], (activities) => activi
 
 const isEmpty = createSelector(
   [getActivities],
-  (activities) => !Object.keys(activities.heap).length
+  (activities) => !Object.keys(activities.heap).length,
 );
 
 const getFilteredHeap = createSelector(
@@ -24,8 +24,8 @@ const getFilteredHeap = createSelector(
         ...acc,
         ...(statusList.indexOf(activity.status) >= 0 ? { [key]: activity } : {}),
       }),
-      {} as any
-    )
+      {} as any,
+    ),
 );
 
 const getLists = createSelector(
@@ -36,8 +36,8 @@ const getLists = createSelector(
         ...acc,
         [activity.status]: [...acc[activity.status], { ...activity, id }],
       }),
-      statusList.reduce((acc, status) => ({ ...acc, [status]: [] }), {} as any)
-    )
+      statusList.reduce((acc, status) => ({ ...acc, [status]: [] }), {} as any),
+    ),
 );
 
 const getStatusState = createSelector([getActivities], (activities) => activities.status);
@@ -48,10 +48,11 @@ const getAllowedStatuses = createSelector([getStatusState], (statusState) => sta
 const getStatusAsyncState = createSelector([getActivities], (activities) => activities.statusAsync);
 const isStatusPending = createSelector(
   [getStatusAsyncState],
-  (statusAsyncState) => statusAsyncState.pending
+  (statusAsyncState) => statusAsyncState.pending,
 );
 
 export default {
+  getHeap,
   getLists,
   isEmpty,
   getIsDragging,
