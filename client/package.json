@@ -66,7 +66,7 @@
     "@types/redux-form": "^8.2.5",
     "final-form": "^4.19.1",
     "firebase": "^7.14.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "material-table": "^1.58.2",
     "moment": "^2.26.0",
     "notistack": "^0.9.11",
