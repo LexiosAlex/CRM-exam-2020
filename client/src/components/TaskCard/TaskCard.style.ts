@@ -19,13 +19,14 @@ export const StyledCardContainer = styled(Card)`
 `;
 
 export const StyledCardContent = styled(CardContent)`
-  .root {
-    padding: 1rem 2rem !important;
+  && {
+    padding: 1rem 2rem;
+    width: 200px;
     & .h3 {
       font-size: 1rem;
     }
     & .h4 {
-      font-size: 0.75rem !important;
+      font-size: 0.75rem;
       color: #555555;
     }
   }

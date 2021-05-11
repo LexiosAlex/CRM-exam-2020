@@ -17,26 +17,25 @@ const getStatistic = (heap: IActivitiesHeapState, timeStamp: number): TimeChartD
   let canceled = 0;
 
   Object.entries(heap).map(([_, activityProps]) => {
-    const firstHistoryObject = Object.keys(activityProps.history)[0];
-    const createdData = activityProps.history[firstHistoryObject];
-    if (createdData.time >= timeStamp) {
-      switch (createdData.status) {
-        case ActivityStatus.New:
+    const activityHistory = Object.entries(activityProps.history);
+
+    activityHistory.map(([key, { time, status }], index) => {
+      const isLastItem = index === activityHistory.length - 1;
+
+      if (time >= timeStamp) {
+        if (index === 0 && ActivityStatus.New === status) {
           created += 1;
-          return;
+        }
 
-        case ActivityStatus.Canceled:
+        if (isLastItem && ActivityStatus.Canceled === status) {
           canceled += 1;
-          return;
+        }
 
-        case ActivityStatus.Done:
+        if (isLastItem && ActivityStatus.Done === status) {
           done += 1;
-          return;
-
-        default:
-          return;
+        }
       }
-    }
+    });
   });
 
   return [

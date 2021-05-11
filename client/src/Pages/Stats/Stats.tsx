@@ -12,25 +12,7 @@ interface PieChartComponentProps {
   TimeChartData;
 }
 
-const tasksData: TimeChartData[] = [
-  [
-    { name: 'Created', value: 16, textColor: '#323232' },
-    { name: 'Done', value: 10 },
-    { name: 'Canceled', value: 3 },
-  ],
-  [
-    { name: 'Created', value: 100, textColor: '#323232' },
-    { name: 'Done', value: 70 },
-    { name: 'Canceled', value: 20 },
-  ],
-  [
-    { name: 'Created', value: 800, textColor: '#323232' },
-    { name: 'Done', value: 540 },
-    { name: 'Canceled', value: 137 },
-  ],
-];
-
-const COLORS = ['#ffe55e', '#4BB543', '#ff0033'];
+const COLORS = ['#ffe55e', '#ff0033', '#4BB543'];
 
 const renderActiveShape = (props: any) => {
   const {
@@ -118,8 +100,6 @@ export const Stats: React.FC = () => {
     selectors.statistics.getActivitiesByMonth(state),
   );
 
-  console.log(dayActivities);
-
   return (
     <StyledContainer
       marginTop="50px"
@@ -127,7 +107,6 @@ export const Stats: React.FC = () => {
       marginRight="50px"
       display="flex"
       flexDirection="column"
-      width="100%"
     >
       <Typography variant="h2">Statistics</Typography>
       <Box
