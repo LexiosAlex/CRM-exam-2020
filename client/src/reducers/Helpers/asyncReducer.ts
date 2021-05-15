@@ -7,10 +7,10 @@ const initialState = {
 };
 
 export const createAsyncStateReducer = (
-  requestedAction,
-  succeedAction,
-  failedAction,
-  resetAction = 'ASYNC_STATE/RESET'
+  requestedAction: string,
+  succeedAction: string,
+  failedAction: string,
+  resetAction = 'ASYNC_STATE/RESET',
 ) => (state: IAsyncReducer = initialState, { type, payload }): IAsyncReducer => {
   switch (type) {
     case requestedAction:

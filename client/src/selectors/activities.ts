@@ -9,7 +9,11 @@ const getActivities = (state: IAppState): IActivitiesState => state.activities;
 
 const getHeap = createSelector([getActivities], (activities) => activities.heap);
 
-const getFormAsyncState = createSelector([getActivities], (activities) => activities.formAsync);
+const getFormAsyncState = createSelector([getActivities], ({ formCreateAsync, formEditAsync }) => ({
+  pending: formCreateAsync.pending || formEditAsync.pending,
+  loaded: formCreateAsync.loaded || formEditAsync.loaded,
+  error: formCreateAsync.error || formEditAsync.error,
+}));
 
 const isEmpty = createSelector(
   [getActivities],

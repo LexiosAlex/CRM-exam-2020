@@ -63,10 +63,17 @@ const statusReducer = (state = initialStatusState, { type, payload }) => {
   }
 };
 
-const activitiesFormAsyncReducer = createAsyncStateReducer(
-  CHANGE_ACTIVITY_REQUEST_PENDING || ADD_ACTIVITY_REQUEST_PENDING,
-  CHANGE_ACTIVITY_REQUEST_DONE || ADD_ACTIVITY_REQUEST_DONE,
-  CHANGE_ACTIVITY_REQUEST_FAIL || ADD_ACTIVITY_REQUEST_FAIL,
+const activitiesFormEditAsyncReducer = createAsyncStateReducer(
+  CHANGE_ACTIVITY_REQUEST_PENDING,
+  CHANGE_ACTIVITY_REQUEST_DONE,
+  CHANGE_ACTIVITY_REQUEST_FAIL,
+  ACTIVITY_FORM_RESET,
+);
+
+const activitiesFormCreateReducer = createAsyncStateReducer(
+  ADD_ACTIVITY_REQUEST_PENDING,
+  ADD_ACTIVITY_REQUEST_DONE,
+  ADD_ACTIVITY_REQUEST_FAIL,
   ACTIVITY_FORM_RESET,
 );
 
@@ -87,5 +94,6 @@ export default combineReducers({
   status: statusReducer,
   fetchAsync: fetchAsyncReducer,
   statusAsync: changeStatusAsyncReducer,
-  formAsync: activitiesFormAsyncReducer,
+  formCreateAsync: activitiesFormCreateReducer,
+  formEditAsync: activitiesFormEditAsyncReducer,
 });
