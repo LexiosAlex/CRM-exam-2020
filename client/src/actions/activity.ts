@@ -7,7 +7,6 @@ import {
   ADD_ACTIVITY_REQUEST_PENDING,
   addActivityRequestPending,
   changeActivityRequestPending,
-  changeStatusRequestPending,
   ACTIVITY_FORM_RESET,
 } from '../interfaces/actions/activities';
 import { ActivityStatus, EmployeeType, IRawActivity, IDraftActivity } from 'common/index';
@@ -29,7 +28,7 @@ export const dragEnd = (id: string, status: ActivityStatus): dragActivitiesActio
 
 export const changeActivity = (
   id: string,
-  activity: IDraftActivity
+  activity: IDraftActivity,
 ): changeActivityRequestPending => ({
   type: CHANGE_ACTIVITY_REQUEST_PENDING,
   payload: { id, activity },

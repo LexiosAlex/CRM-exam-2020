@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const _env = dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const env = _env.parsed;
@@ -13,8 +15,10 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
   prev[`process.env.${next}`] = JSON.stringify(env[next]);
   return prev;
 }, {});
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 module.exports = {
+  mode: isDevelopment ? 'development' : 'production',
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx', '.css', '.scss', '.sass'],
     plugins: [new TsconfigPathsPlugin({})],
@@ -24,8 +28,9 @@ module.exports = {
     compress: true,
     port: env.DEV_SERVER_PORT || 3000,
     historyApiFallback: true,
+    open: true,
   },
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   entry: path.resolve(__dirname, 'src', 'index.tsx'),
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -44,44 +49,52 @@ module.exports = {
         loader: 'awesome-typescript-loader',
       },
       {
-        test: /\.css$/,
-        include: path.join(__dirname, 'src'),
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.svg$/,
         use: [
-          'style-loader',
           {
-            loader: 'typings-for-css-modules-loader',
+            loader: '@svgr/webpack',
+          },
+          {
+            loader: 'file-loader',
             options: {
-              modules: true,
-              namedExport: true,
+              name: isDevelopment ? '[name]__[contenthash].[ext]' : '[contenthash].[ext]',
             },
           },
         ],
       },
       {
-        test: /\.scss$/,
+        test: /\.(png|jpg|gif)$/i,
         use: [
-          { loader: 'style-loader' },
-          { loader: 'css-modules-typescript-loader' },
-          { loader: 'css-loader', options: { modules: true } },
-          { loader: 'sass-loader' },
+          {
+            loader: 'file-loader',
+            options: {
+              name: isDevelopment ? '[name]__[contenthash].[ext]' : '[contenthash].[ext]',
+            },
+          },
         ],
       },
       {
-        test: /\.(png|svg|jpg|gif)$/i,
-        use: ['file-loader'],
-      },
-      {
-        enforce: 'pre',
-        test: /\.js$/,
-        loader: 'source-map-loader',
+        test: /\.(woff|woff2)$/,
+        use: {
+          loader: 'url-loader',
+        },
       },
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: path.join(__dirname, 'src', 'index.html'),
       firebaseApiKey: process.env.FIREBASE_API_KEY,
     }),
     new webpack.DefinePlugin(envKeys),
+    new MiniCssExtractPlugin({
+      filename: isDevelopment ? '[name].css' : '[name].[hash].css',
+      chunkFilename: isDevelopment ? '[id].css' : '[id].[hash].css',
+    }),
   ],
 };

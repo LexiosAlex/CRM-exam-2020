@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 
 import '../env';
-import { ActivityStatus, ActivityType, EmployeeType, IUser } from 'common/index';
+import { ActivityStatus, ActivityType, EmployeeType, IRawActivity, IUser } from 'common/index';
 import { firebaseConfig, DB_RESET_CONFIG, REFS } from './config';
 
 const getRandomEnumValue = <T>(anEnum: T): T[keyof T] => {
@@ -9,8 +9,7 @@ const getRandomEnumValue = <T>(anEnum: T): T[keyof T] => {
     .map((n) => Number.parseInt(n))
     .filter((n) => !Number.isNaN(n)) as unknown) as T[keyof T][];
   const randomIndex = Math.floor(Math.random() * enumValues.length);
-  const randomEnumValue = enumValues[randomIndex];
-  return randomEnumValue;
+  return enumValues[randomIndex];
 };
 
 const getRandomArrayValue = (array: any[]) => array[~~(array.length * Math.random())];
@@ -112,21 +111,19 @@ const createActivities = () => {
         status !== ActivityStatus.ReadyForAssignment && status !== ActivityStatus.New
           ? getRandomArrayValue(users[EmployeeType.Volunteer])
           : null;
-      await admin
-        .database()
-        .ref(`${REFS.ACTIVITIES}`)
-        .push()
-        .set({
-          type: getRandomEnumValue(ActivityType),
-          description: `Activity description ${i}`,
-          address: { description: `Activity address ${i}`, coords: { lat: 60, lng: 50 } },
-          //Need to refactor it somehow
-          estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
-          operator: getRandomArrayValue(users[EmployeeType.Operator]),
-          status,
-          assignee,
-          history: [],
-        });
+      const activity: IRawActivity = {
+        type: getRandomEnumValue(ActivityType),
+        description: `Activity description ${i}`,
+        address: { description: `Activity address ${i}`, coords: { lat: 60, lng: 50 } },
+        estimation: Math.floor(Math.random() * Math.floor(11)) + 1,
+        operator: getRandomArrayValue(users[EmployeeType.Operator]),
+        status,
+        assignee,
+        history: {},
+        bounty: Math.floor(Math.random() * 1000),
+      };
+
+      await admin.database().ref(`${REFS.ACTIVITIES}`).push().set(activity);
     })
   );
 };

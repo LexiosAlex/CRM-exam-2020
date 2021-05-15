@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { IAppUser, ITypedUser, EmployeeType } from 'common/index';
-import { IAppState, IUsersHeapState, IUsersState } from '../interfaces/state';
+import { IAppState, IUsersState } from '../interfaces/state';
 import userSelectors from './user';
 
 const getUsers = (state: IAppState): IUsersState => state.users;
@@ -12,7 +12,7 @@ const isEmpty = createSelector([getUsers], (users) => !Object.keys(users.heap).l
 
 const isLoading = createSelector(
   [getUsers],
-  (users) => users.editAsync.pending || users.fetchAsync.pending
+  (users) => users.editAsync.pending || users.fetchAsync.pending,
 );
 
 const getTypedUser = (id: string, user: IAppUser): ITypedUser => ({
@@ -24,7 +24,7 @@ const getTypedUser = (id: string, user: IAppUser): ITypedUser => ({
 const userList = createSelector([getHeap], (heap) =>
   Object.entries(heap).reduce((acc: ITypedUser[], [key, employee]) => {
     return [...acc, ...(employee.type !== EmployeeType.Admin ? [getTypedUser(key, employee)] : [])];
-  }, [])
+  }, []),
 );
 
 const operators = createSelector([getHeap, userSelectors.getEmployeeType], (heap, employeeType) =>
@@ -34,9 +34,9 @@ const operators = createSelector([getHeap, userSelectors.getEmployeeType], (heap
           ...acc,
           ...(employee.type === EmployeeType.Operator ? [getTypedUser(key, employee)] : []),
         ],
-        []
+        [],
       )
-    : []
+    : [],
 );
 
 const volunteers = createSelector(
@@ -48,7 +48,7 @@ const volunteers = createSelector(
             ...acc,
             ...(employee.type === EmployeeType.Volunteer ? [getTypedUser(key, employee)] : []),
           ],
-          []
+          [],
         )
       : [
           {
@@ -56,7 +56,7 @@ const volunteers = createSelector(
             name: authProfile.displayName as string,
             type: EmployeeType.Volunteer,
           },
-        ]
+        ],
 );
 
 export default {

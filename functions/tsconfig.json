@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "lib": ["es2015", "es6", "es2017", "es7", "dom", "dom.iterable", "esnext"],
     "module": "commonjs",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
@@ -9,6 +10,5 @@
     "strict": true,
     "target": "es2017"
   },
-  "compileOnSave": true,
-  "include": ["src"]
+  "compileOnSave": true
 }
