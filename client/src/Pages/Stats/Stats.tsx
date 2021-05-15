@@ -9,7 +9,7 @@ import { IAppState } from '../../interfaces/state';
 import selectors from '../../selectors';
 
 interface PieChartComponentProps {
-  TimeChartData;
+  TimeChartData: TimeChartData | null;
 }
 
 const COLORS = ['#ffe55e', '#ff0033', '#4BB543'];
@@ -66,7 +66,7 @@ const PieChartComponent: React.FC<PieChartComponentProps> = ({ TimeChartData }) 
     [setActiveIndex],
   );
 
-  return (
+  return TimeChartData ? (
     <PieChart width={300} height={300}>
       <Pie
         activeIndex={activeIndex}
@@ -86,17 +86,21 @@ const PieChartComponent: React.FC<PieChartComponentProps> = ({ TimeChartData }) 
         ))}
       </Pie>
     </PieChart>
+  ) : (
+    <Box display="flex" justifyContent="center" alignItems="center" minWidth="300px">
+      No data available
+    </Box>
   );
 };
 
 export const Stats: React.FC = () => {
-  const dayActivities: TimeChartData = useSelector((state: IAppState) =>
+  const dayActivities: TimeChartData | null = useSelector((state: IAppState) =>
     selectors.statistics.getActivitiesByDay(state),
   );
-  const weekActivities: TimeChartData = useSelector((state: IAppState) =>
+  const weekActivities: TimeChartData | null = useSelector((state: IAppState) =>
     selectors.statistics.getActivitiesByWeek(state),
   );
-  const monthActivities: TimeChartData = useSelector((state: IAppState) =>
+  const monthActivities: TimeChartData | null = useSelector((state: IAppState) =>
     selectors.statistics.getActivitiesByMonth(state),
   );
 

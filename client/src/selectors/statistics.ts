@@ -11,7 +11,7 @@ const DAY_TIME = TIME_NOW - DAY_TIMESTAMP;
 const WEEK_TIME = TIME_NOW - DAY_TIMESTAMP * 7;
 const MONTH_TIME = TIME_NOW - DAY_TIMESTAMP * 30;
 
-const getStatistic = (heap: IActivitiesHeapState, timeStamp: number): TimeChartData => {
+const getStatistic = (heap: IActivitiesHeapState, timeStamp: number): TimeChartData | null => {
   let done = 0;
   let created = 0;
   let canceled = 0;
@@ -37,6 +37,9 @@ const getStatistic = (heap: IActivitiesHeapState, timeStamp: number): TimeChartD
       }
     });
   });
+  if (!created && !canceled && !done) {
+    return null;
+  }
 
   return [
     { name: TITLE_STATUS_MAP[ActivityStatus.New], value: created, textColor: '#323232' },
