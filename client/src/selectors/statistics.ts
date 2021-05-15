@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
-import { TimeChartData } from '../interfaces/statistics';
+import { IAllTimeData, TimeChartData } from '../interfaces/statistics';
 import activitiesSelector from './activities';
-import { ActivityStatus } from 'common/index';
+import employeesSelector from './employees';
+import { ActivityStatus, EmployeeType } from 'common/index';
 import { TITLE_STATUS_MAP } from '../utils/activities';
 import { IActivitiesHeapState } from '../interfaces/state';
 
@@ -48,6 +49,35 @@ const getStatistic = (heap: IActivitiesHeapState, timeStamp: number): TimeChartD
   ];
 };
 
+const getAllTimeStats = createSelector(
+  [activitiesSelector.getHeap, employeesSelector.userList],
+  (heap, users) =>
+    Object.entries(heap).reduce(
+      (acc: IAllTimeData, [id, activity]) => ({
+        ...acc,
+        earn:
+          activity.status === ActivityStatus.Archived
+            ? acc.earn + (activity.bounty ?? 0)
+            : acc.earn,
+        paid:
+          activity.status === ActivityStatus.Archived
+            ? acc.paid + Math.round((activity.bounty ?? 0) * 0.7)
+            : acc.paid,
+        profit:
+          activity.status === ActivityStatus.Archived
+            ? acc.profit + Math.round((activity.bounty ?? 0) * 0.3)
+            : acc.profit,
+      }),
+      {
+        activities: Object.entries(heap).length,
+        volunteers: users.filter((user) => user.type === EmployeeType.Volunteer).length,
+        earn: 0,
+        paid: 0,
+        profit: 0,
+      },
+    ),
+);
+
 const getActivitiesByDay = createSelector([activitiesSelector.getHeap], (heap) =>
   getStatistic(heap, DAY_TIME),
 );
@@ -64,4 +94,5 @@ export default {
   getActivitiesByDay,
   getActivitiesByWeek,
   getActivitiesByMonth,
+  getAllTimeStats,
 };

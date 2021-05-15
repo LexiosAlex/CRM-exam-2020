@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import Box from '@material-ui/core/Box';
 import { PieChart, Pie, Sector, Cell } from 'recharts';
-import { StyledContainer, StyledChartPaper } from './Stats.style';
 import Typography from '@material-ui/core/Typography';
-import { TimeChartData } from '../../interfaces/statistics';
+import { IAllTimeData, TimeChartData } from '../../interfaces/statistics';
 import { useSelector } from 'react-redux';
 import { IAppState } from '../../interfaces/state';
 import selectors from '../../selectors';
+import { StyledContainer, StyledChartPaper, StyledAllStatsPaper } from './Stats.style';
 
 interface PieChartComponentProps {
   TimeChartData: TimeChartData | null;
@@ -87,9 +87,7 @@ const PieChartComponent: React.FC<PieChartComponentProps> = ({ TimeChartData }) 
       </Pie>
     </PieChart>
   ) : (
-    <Box display="flex" justifyContent="center" alignItems="center" minWidth="300px">
-      No data available
-    </Box>
+    <Typography variant="body1">No data available</Typography>
   );
 };
 
@@ -102,6 +100,10 @@ export const Stats: React.FC = () => {
   );
   const monthActivities: TimeChartData | null = useSelector((state: IAppState) =>
     selectors.statistics.getActivitiesByMonth(state),
+  );
+
+  const AllTimeData: IAllTimeData = useSelector((state: IAppState) =>
+    selectors.statistics.getAllTimeStats(state),
   );
 
   return (
@@ -133,6 +135,36 @@ export const Stats: React.FC = () => {
           <PieChartComponent TimeChartData={monthActivities} />
           <Typography variant="h3">Activities this month</Typography>
         </StyledChartPaper>
+        <StyledAllStatsPaper>
+          <ul>
+            <li>
+              <Typography variant="body1">
+                Total activities: <span>{AllTimeData.activities}</span>
+              </Typography>
+            </li>
+            <li>
+              <Typography variant="body1">
+                Total volunteers: <span>{AllTimeData.volunteers}</span>
+              </Typography>
+            </li>
+            <li>
+              <Typography variant="body1">
+                Total earnings: <span>{AllTimeData.earn} $</span>
+              </Typography>
+            </li>
+            <li>
+              <Typography variant="body1">
+                Total paid: <span>{AllTimeData.paid} $</span>
+              </Typography>
+            </li>
+            <li>
+              <Typography variant="body1">
+                Total profit: <span>{AllTimeData.profit} $</span>
+              </Typography>
+            </li>
+          </ul>
+          <Typography variant="h3">All time</Typography>
+        </StyledAllStatsPaper>
       </Box>
     </StyledContainer>
   );
