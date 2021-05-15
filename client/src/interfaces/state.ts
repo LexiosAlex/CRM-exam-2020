@@ -30,7 +30,8 @@ export interface IActivitiesState {
   status: IActivitiesStatusState;
   fetchAsync: IAsyncReducer;
   statusAsync: IAsyncReducer;
-  formAsync: IAsyncReducer;
+  formCreateAsync: IAsyncReducer;
+  formEditAsync: IAsyncReducer;
 }
 
 export interface INotificationsState {

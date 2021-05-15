@@ -1,59 +1,171 @@
-import React from 'react';
-import { Box } from '@material-ui/core';
-import { StyledCounter } from './Stats.style';
+import React, { useCallback, useState } from 'react';
+import Box from '@material-ui/core/Box';
+import { PieChart, Pie, Sector, Cell } from 'recharts';
+import Typography from '@material-ui/core/Typography';
+import { IAllTimeData, TimeChartData } from '../../interfaces/statistics';
+import { useSelector } from 'react-redux';
+import { IAppState } from '../../interfaces/state';
+import selectors from '../../selectors';
+import { StyledContainer, StyledChartPaper, StyledAllStatsPaper } from './Stats.style';
 
-//TODO: refactor it
-export const Stats: React.FC = () => {
+interface PieChartComponentProps {
+  TimeChartData: TimeChartData | null;
+}
+
+const COLORS = ['#ffe55e', '#ff0033', '#4BB543'];
+
+const renderActiveShape = (props: any) => {
+  const {
+    cx,
+    cy,
+    innerRadius,
+    outerRadius,
+    startAngle,
+    endAngle,
+    fill,
+    payload,
+    percent,
+    value,
+    textColor,
+  } = props;
   return (
-    <Box marginTop="1rem" marginLeft="50px" marginRight="50px">
-      <h2>Statistics</h2>
-      <Box display="flex" flexDirection="row" width="100%">
-        <div>
-          <h3>Activities today</h3>
-          <StyledCounter>
-            <span>10</span>
-            <p>Done</p>
-          </StyledCounter>
-          <StyledCounter>
-            <span>3</span>
-            <p>Canceled</p>
-          </StyledCounter>
-          <StyledCounter>
-            <span>10</span>
-            <p>Created</p>
-          </StyledCounter>
-        </div>
-        <div>
-          <h3>Activities this week</h3>
-          <StyledCounter>
-            <span>16</span>
-            <p>Done</p>
-          </StyledCounter>
-          <StyledCounter>
-            <span>5</span>
-            <p>Canceled</p>
-          </StyledCounter>
-          <StyledCounter>
-            <span>15</span>
-            <p>Created</p>
-          </StyledCounter>
-        </div>
-        <div>
-          <h3>Activities this month</h3>
-          <StyledCounter>
-            <span>16</span>
-            <p>Done</p>
-          </StyledCounter>
-          <StyledCounter>
-            <span>5</span>
-            <p>Canceled</p>
-          </StyledCounter>
-          <StyledCounter>
-            <span>15</span>
-            <p>Created</p>
-          </StyledCounter>
-        </div>
+    <g>
+      <text x={cx} y={cy - 10} dy={0} textAnchor="middle" fill={textColor ?? fill}>
+        <tspan x={cx}>{payload.name}</tspan>
+        <tspan x={cx} dy="1.2em">{`Total: ${value}`}</tspan>
+        <tspan x={cx} dy="1.2em">{`It's (${(percent * 100).toFixed(2)}%)`}</tspan>
+      </text>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+      />
+      <Sector
+        cx={cx}
+        cy={cy}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius + 10}
+        fill={fill}
+      />
+    </g>
+  );
+};
+
+const PieChartComponent: React.FC<PieChartComponentProps> = ({ TimeChartData }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const onPieEnter = useCallback(
+    (_, index) => {
+      setActiveIndex(index);
+    },
+    [setActiveIndex],
+  );
+
+  return TimeChartData ? (
+    <PieChart width={300} height={300}>
+      <Pie
+        activeIndex={activeIndex}
+        activeShape={renderActiveShape}
+        data={TimeChartData}
+        cx={150}
+        cy={150}
+        innerRadius={90}
+        outerRadius={120}
+        fill="#8884d8"
+        dataKey="value"
+        onMouseEnter={onPieEnter}
+        isAnimationActive={false}
+      >
+        {TimeChartData.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        ))}
+      </Pie>
+    </PieChart>
+  ) : (
+    <Typography variant="body1">No data available</Typography>
+  );
+};
+
+export const Stats: React.FC = () => {
+  const dayActivities: TimeChartData | null = useSelector((state: IAppState) =>
+    selectors.statistics.getActivitiesByDay(state),
+  );
+  const weekActivities: TimeChartData | null = useSelector((state: IAppState) =>
+    selectors.statistics.getActivitiesByWeek(state),
+  );
+  const monthActivities: TimeChartData | null = useSelector((state: IAppState) =>
+    selectors.statistics.getActivitiesByMonth(state),
+  );
+
+  const AllTimeData: IAllTimeData = useSelector((state: IAppState) =>
+    selectors.statistics.getAllTimeStats(state),
+  );
+
+  return (
+    <StyledContainer
+      marginTop="50px"
+      marginLeft="50px"
+      marginRight="50px"
+      display="flex"
+      flexDirection="column"
+    >
+      <Typography variant="h2">Statistics</Typography>
+      <Box
+        display="flex"
+        flexDirection="row"
+        width="100%"
+        maxWidth="650px"
+        justifyContent="space-between"
+        flexWrap="wrap"
+      >
+        <StyledChartPaper>
+          <PieChartComponent TimeChartData={dayActivities} />
+          <Typography variant="h3">Activities today</Typography>
+        </StyledChartPaper>
+        <StyledChartPaper>
+          <PieChartComponent TimeChartData={weekActivities} />
+          <Typography variant="h3">Activities this week</Typography>
+        </StyledChartPaper>
+        <StyledChartPaper>
+          <PieChartComponent TimeChartData={monthActivities} />
+          <Typography variant="h3">Activities this month</Typography>
+        </StyledChartPaper>
+        <StyledAllStatsPaper>
+          <ul>
+            <li>
+              <Typography variant="body1">
+                Total activities: <span>{AllTimeData.activities}</span>
+              </Typography>
+            </li>
+            <li>
+              <Typography variant="body1">
+                Total volunteers: <span>{AllTimeData.volunteers}</span>
+              </Typography>
+            </li>
+            <li>
+              <Typography variant="body1">
+                Total earnings: <span>{AllTimeData.earn} $</span>
+              </Typography>
+            </li>
+            <li>
+              <Typography variant="body1">
+                Total paid: <span>{AllTimeData.paid} $</span>
+              </Typography>
+            </li>
+            <li>
+              <Typography variant="body1">
+                Total profit: <span>{AllTimeData.profit} $</span>
+              </Typography>
+            </li>
+          </ul>
+          <Typography variant="h3">All time</Typography>
+        </StyledAllStatsPaper>
       </Box>
-    </Box>
+    </StyledContainer>
   );
 };

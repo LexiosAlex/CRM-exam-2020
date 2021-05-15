@@ -8,14 +8,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { StyledDrawer, StyledListItem, StyledList } from './Sidenav.style';
 import * as navPaths from '../../utils/router';
 import { Box } from '@material-ui/core';
 
-//TODO: refactor this, get out of display none
 export const Sidenav: React.FC = () => {
+  const { pathname } = useLocation();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -30,30 +30,32 @@ export const Sidenav: React.FC = () => {
     <>
       <StyledDrawer variant="permanent" $isOpen={open}>
         <StyledList $isOpen={open}>
-          <StyledListItem button>
-            <Link to={navPaths.STATS}>
+          <Link to={navPaths.STATS}>
+            <StyledListItem button $isActive={pathname === navPaths.STATS}>
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
-            </Link>
-            <ListItemText primary={'Dashboard'} />
-          </StyledListItem>
-          <StyledListItem button>
-            <Link to={navPaths.USERS}>
+              <ListItemText primary={'Dashboard'} />
+            </StyledListItem>
+          </Link>
+
+          <Link to={navPaths.USERS}>
+            <StyledListItem button $isActive={pathname === navPaths.USERS}>
               <ListItemIcon>
                 <GroupIcon />
               </ListItemIcon>
-            </Link>
-            <ListItemText primary={'Users'} />
-          </StyledListItem>
-          <StyledListItem button>
-            <Link to={navPaths.TASKS}>
+              <ListItemText primary={'Users'} />
+            </StyledListItem>
+          </Link>
+
+          <Link to={navPaths.TASKS}>
+            <StyledListItem button $isActive={pathname === navPaths.TASKS}>
               <ListItemIcon>
                 <ViewColumnIcon />
               </ListItemIcon>
-            </Link>
-            <ListItemText primary={'Task Lists'} />
-          </StyledListItem>
+              <ListItemText primary={'Task Lists'} />
+            </StyledListItem>
+          </Link>
         </StyledList>
         <Divider />
         <Box display="flex" alignItems="center" justifyContent="flex-end" padding="8px">

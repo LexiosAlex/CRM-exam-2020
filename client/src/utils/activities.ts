@@ -1,7 +1,7 @@
 import { ActivityStatus, ActivityType } from 'common/index';
 
 export const TITLE_STATUS_MAP = {
-  [ActivityStatus.New]: 'Recently added',
+  [ActivityStatus.New]: 'Created',
   [ActivityStatus.ReadyForAssignment]: 'Backlog',
   [ActivityStatus.Assigned]: 'Assigned',
   [ActivityStatus.InProgress]: 'In Progress',

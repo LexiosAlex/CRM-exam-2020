@@ -95,7 +95,7 @@ const SignIn: React.FC = (props: any) => {
                   <LoadingSpinner />
                 </Box>
               ) : (
-                <span> Sign Up</span>
+                <span> Sign In</span>
               )}
             </StyledButtonPrimary>
             <Link to={navPaths.SIGN_UP}>Dont have account? create one</Link>

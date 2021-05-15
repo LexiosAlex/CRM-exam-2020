@@ -1,3 +1,3 @@
-import { WrappedUsersTable } from './UsersTable';
+import { UsersTable } from './UsersTable';
 
-export default WrappedUsersTable;
+export default UsersTable;
