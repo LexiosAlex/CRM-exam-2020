@@ -33,7 +33,7 @@ const changeStatusStart = (payload): changeStatusRequestActions => ({
 const changeStatusFail = (
   error: string,
   id: string,
-  status: ActivityStatus
+  status: ActivityStatus,
 ): changeStatusRequestActions => ({
   type: CHANGE_STATUS_REQUEST_FAIL,
   payload: { error, id, status },
@@ -47,12 +47,12 @@ const changeStatusDone = (payload): changeStatusRequestDone => ({
 const onChangeStatusLocalDone = (action$: ActionsObservable<dragActivityDone>) =>
   action$.pipe(
     filter(isOfType(DRAG_ACTIVITY_DONE)),
-    map((action) => changeStatusStart(action.payload))
+    map((action) => changeStatusStart(action.payload)),
   );
 
 const changeStatusAsync = (
   action$: ActionsObservable<changeStatusRequestPending>,
-  state$: StateObservable<IAppState>
+  state$: StateObservable<IAppState>,
 ) =>
   action$.pipe(
     filter(isOfType(CHANGE_STATUS_REQUEST_PENDING)),
@@ -61,15 +61,15 @@ const changeStatusAsync = (
       updateActivityStatus(action.payload)
         .then((data) => changeStatusDone(action.payload))
         .catch((error) =>
-          changeStatusFail(error.code, state.activities.status.id, state.activities.status.from)
-        )
-    )
+          changeStatusFail(error.code, state.activities.status.id, state.activities.status.from),
+        ),
+    ),
   );
 
 const onChangeStatusAsyncError = (action$: ActionsObservable<changeStatusRequestFail>) =>
   action$.pipe(
     filter(isOfType(CHANGE_STATUS_REQUEST_FAIL)),
-    map((action) => notify(`Can't change status. Code: ${action.payload.error}`))
+    map((action) => notify(`Can't change status. Code: ${action.payload.error}`)),
   );
 
 export default [onChangeStatusLocalDone, changeStatusAsync, onChangeStatusAsyncError];

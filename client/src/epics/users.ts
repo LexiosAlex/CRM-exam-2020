@@ -45,7 +45,7 @@ const startFetchUsers = (action$: ActionsObservable<Action>, state$: StateObserv
     ofType(`${firebasePrefix}/SET_PROFILE`),
     withLatestFrom(state$),
     filter(([action, state$]) => selectors.user.getEmployeeType(state$) !== EmployeeType.Volunteer),
-    map(() => fetchDataRequested())
+    map(() => fetchDataRequested()),
   );
 
 const fetchUsers = (action$: ActionsObservable<Action>, state$: StateObservable<IAppState>) =>
@@ -56,16 +56,16 @@ const fetchUsers = (action$: ActionsObservable<Action>, state$: StateObservable<
     switchMap(([action, state]) =>
       getQuery(state.firebase)
         .then((data) => fetchDataFulfilled(data.val() || {}))
-        .catch((error) => fetchDataFailed({ error: error.code }))
-    )
+        .catch((error) => fetchDataFailed({ error: error.code })),
+    ),
   );
 
 const onFetchDataError = (action$: ActionsObservable<getUsersFail>) =>
   action$.pipe(
     filter(isOfType(GET_USERS_FAIL)),
     map((action) =>
-      notify(`Unexpected error while loading usersData. Code: ${action.payload.error}`)
-    )
+      notify(`Unexpected error while loading usersData. Code: ${action.payload.error}`),
+    ),
   );
 
 export default [startFetchUsers, fetchUsers, onFetchDataError];
