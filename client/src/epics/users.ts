@@ -14,6 +14,7 @@ import { filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { IAppState } from '../interfaces/state';
 import { notify } from './notification';
 import selectors from '../selectors';
+import i18n from '../i18n';
 
 const firebasePrefix: string = '@@reactReduxFirebase';
 
@@ -63,9 +64,7 @@ const fetchUsers = (action$: ActionsObservable<Action>, state$: StateObservable<
 const onFetchDataError = (action$: ActionsObservable<getUsersFail>) =>
   action$.pipe(
     filter(isOfType(GET_USERS_FAIL)),
-    map((action) =>
-      notify(`Unexpected error while loading usersData. Code: ${action.payload.error}`),
-    ),
+    map((action) => notify(i18n.t('notifications.usersDataError', { code: action.payload.error }))),
   );
 
 export default [startFetchUsers, fetchUsers, onFetchDataError];

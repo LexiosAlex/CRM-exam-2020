@@ -1,0 +1,18 @@
+{
+  "en": {
+    "translation": {
+      "loginPage": {
+        "signIn": "Sign in",
+        "signUp": "Sign up"
+      },
+      "notifications": {
+        "activitiesError": "Can't get activities",
+        "statusError": "Can't change status. Code: {{code}}",
+        "activityEditError": "Can't change activity. Code: {{code}}",
+        "activityAddError": "Can't add activity. Code: {{code}}",
+        "usersDataError": "Unexpected error while loading usersData. Code: {{code}}",
+        "usersTableError": "Cant change user permission. Code: {{code}}"
+      }
+    }
+  }
+}

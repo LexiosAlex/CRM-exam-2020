@@ -19,13 +19,15 @@ import {
 
 import { REFS } from '../utils/refs';
 import { notify } from './notification';
-import { ActivityStatus } from 'common/constants';
 import { IAppState } from '../interfaces/state';
+import i18n from '../i18n';
 
 const onChangeAsyncError = (action$: ActionsObservable<changeActivityRequestFail>) =>
   action$.pipe(
     filter(isOfType(CHANGE_ACTIVITY_REQUEST_FAIL)),
-    map((action) => notify(`Can't change activity. Code: ${action.payload.error}`))
+    map((action) =>
+      notify(i18n.t('notifications.activityEditError', { code: action.payload.error })),
+    ),
   );
 
 const onChangeError = (error): changeActivityRequestFail => ({
@@ -45,7 +47,7 @@ const changeActivity = ({ id, activity }): Promise<firebase.database.DataSnapsho
 
 const changeActivityAsync = (
   action$: ActionsObservable<changeActivityRequestPending>,
-  state$: StateObservable<IAppState>
+  state$: StateObservable<IAppState>,
 ) =>
   action$.pipe(
     filter(isOfType(CHANGE_ACTIVITY_REQUEST_PENDING)),
@@ -53,8 +55,8 @@ const changeActivityAsync = (
     switchMap(([action, state]) =>
       changeActivity(action.payload)
         .then((data) => changeActivityDone(action.payload))
-        .catch((error) => onChangeError(error.code))
-    )
+        .catch((error) => onChangeError(error.code)),
+    ),
   );
 
 const addActivityDone = ({ id, activity }) => ({
@@ -78,7 +80,7 @@ const addActivity = async ({ activity }): Promise<any> => {
 
 const onAddActivityDone = (
   action$: ActionsObservable<addActivityRequestPending>,
-  state$: StateObservable<IAppState>
+  state$: StateObservable<IAppState>,
 ) =>
   action$.pipe(
     filter(isOfType(ADD_ACTIVITY_REQUEST_PENDING)),
@@ -86,8 +88,8 @@ const onAddActivityDone = (
     switchMap(([action, state]) =>
       addActivity(action.payload)
         .then((data) => addActivityDone(data))
-        .catch((error) => onAddError(error.code))
-    )
+        .catch((error) => onAddError(error.code)),
+    ),
   );
 
 const onAddError = (error): addActivityRequestFail => ({
@@ -98,7 +100,9 @@ const onAddError = (error): addActivityRequestFail => ({
 const onAddAsyncError = (action$: ActionsObservable<addActivityRequestFail>) =>
   action$.pipe(
     filter(isOfType(ADD_ACTIVITY_REQUEST_FAIL)),
-    map((action) => notify(`Can't add activity. Code: ${action.payload.error}`))
+    map((action) =>
+      notify(i18n.t('notifications.activityAddError', { code: action.payload.error })),
+    ),
   );
 
 export default [changeActivityAsync, onChangeAsyncError, onAddActivityDone, onAddAsyncError];

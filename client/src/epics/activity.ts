@@ -18,6 +18,7 @@ import { REFS } from '../utils/refs';
 import { notify } from './notification';
 import { ActivityStatus } from 'common/index';
 import { IAppState } from '../interfaces/state';
+import i18n from '../i18n';
 
 const updateActivityStatus = (payload): Promise<firebase.database.DataSnapshot> => {
   const { id, status } = payload;
@@ -69,7 +70,9 @@ const changeStatusAsync = (
 const onChangeStatusAsyncError = (action$: ActionsObservable<changeStatusRequestFail>) =>
   action$.pipe(
     filter(isOfType(CHANGE_STATUS_REQUEST_FAIL)),
-    map((action) => notify(`Can't change status. Code: ${action.payload.error}`)),
+    map((action) =>
+      notify(i18n.t('notifications.activitiesError', { code: action.payload.error })),
+    ),
   );
 
 export default [onChangeStatusLocalDone, changeStatusAsync, onChangeStatusAsyncError];
