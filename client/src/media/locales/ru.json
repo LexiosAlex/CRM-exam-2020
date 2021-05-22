@@ -12,6 +12,14 @@
         "email": "Электронная почта",
         "logOut": "Выйти"
       },
+      "historyTable": {
+        "operator": "Оператор",
+        "assignee": "Волонтер",
+        "time": "Время",
+        "status": "Статус"
+      },
+      "loading": "Идет загрузка",
+      "networkDetector": "Обнаружены проблемы с сетью, для сохранения изменений возобновите соединение",
       "notifications": {
         "activitiesError": "Не удалось загрузить задачи.",
         "statusError": "Не удалось изменить статус. Код ошибки: {{code}}",
@@ -38,6 +46,16 @@
         "addActivity": "Добавить",
         "saveChanges": "Сохранить изменения",
         "cancel": "Отмена"
+      },
+      "navigation": {
+        "dashboard": "Статистика",
+        "users": "Пользователи",
+        "taskLists": "Списки Задач"
+      },
+      "taskList": {
+        "noData": "Нет доступных задач",
+        "titlePlaceholder": "Введите название задачи",
+        "addCard": "Добавить задачу"
       },
       "statuses": {
         "created": "Создано",

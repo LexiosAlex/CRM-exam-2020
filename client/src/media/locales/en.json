@@ -12,6 +12,14 @@
         "email": "Email",
         "logOut": "LogOut"
       },
+      "historyTable": {
+        "operator": "Operator",
+        "assignee": "Assignee",
+        "time": "Time",
+        "status": "Status"
+      },
+      "loading": "Loading",
+      "networkDetector": "Internet connection lost, no changes will be saved, please stand by",
       "notifications": {
         "activitiesError": "Can't get activities",
         "statusError": "Can't change status. Code: {{code}}",
@@ -38,6 +46,16 @@
         "addActivity": "Add activity",
         "saveChanges": "Save changes",
         "cancel": "Cancel"
+      },
+      "navigation": {
+        "dashboard": "DashBoard",
+        "users": "Users",
+        "taskLists": "Task Lists"
+      },
+      "taskList": {
+        "noData": "There are no cards available",
+        "titlePlaceholder": "Enter title for this card",
+        "addCard": "Add card"
       },
       "statuses": {
         "created": "Created",

@@ -12,6 +12,7 @@ import {
   StyledDialogHeader,
   StyledMuiDialogContent,
 } from './HistoryTableDialog.style';
+import i18n from '../../i18n';
 
 import { IActivity, IActivityHistory } from 'common/types';
 import { TITLE_STATUS_MAP } from '../../utils/activities';
@@ -31,19 +32,19 @@ interface IHistoryTableItem {
 
 const columns = [
   {
-    label: 'Operator',
+    label: i18n.t('historyTable.operator'),
     dataKey: 'operatorName',
   },
   {
-    label: 'Assignee',
+    label: i18n.t('historyTable.assignee'),
     dataKey: 'assigneeName',
   },
   {
-    label: 'Time',
+    label: i18n.t('historyTable.time'),
     dataKey: 'time',
   },
   {
-    label: 'Status',
+    label: i18n.t('historyTable.status'),
     dataKey: 'status',
   },
 ];

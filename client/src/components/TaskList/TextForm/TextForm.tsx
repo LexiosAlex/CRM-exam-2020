@@ -3,6 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { Box } from '@material-ui/core';
 import { StyledTextArea, StyledAddButton, StyledTextAreaContainer } from './TextForm.style';
+import { useTranslation } from 'react-i18next';
 
 interface TextFormProps {
   onClose(): void;
@@ -10,6 +11,7 @@ interface TextFormProps {
 
 export const TextForm: React.FC<TextFormProps> = ({ onClose }) => {
   const [textInputValue, setInputValue] = useState<string>('');
+  const { t } = useTranslation('taskList');
 
   const onChangeInputVal = (event: React.FormEvent<HTMLTextAreaElement>) => {
     setInputValue(event.currentTarget.value);
@@ -19,7 +21,7 @@ export const TextForm: React.FC<TextFormProps> = ({ onClose }) => {
       <StyledTextAreaContainer>
         <StyledTextArea
           autoFocus
-          placeholder="Enter title for this card"
+          placeholder={t('titlePlaceholder')}
           onBlur={onClose}
           onChange={onChangeInputVal}
           value={textInputValue}
@@ -32,7 +34,7 @@ export const TextForm: React.FC<TextFormProps> = ({ onClose }) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <StyledAddButton>Add card</StyledAddButton>
+        <StyledAddButton>{t('addCard')}</StyledAddButton>
         <IconButton onClick={onClose}>
           <CloseIcon />
         </IconButton>
