@@ -3,7 +3,15 @@
     "translation": {
       "loginPage": {
         "signIn": "Sign in",
-        "signUp": "Sign up"
+        "signUp": "Sign up",
+        "email": "Email",
+        "name": "Name",
+        "namePlaceholder": "Your name",
+        "password": "Password",
+        "passwordPlaceholder": "Password",
+        "forgotPassword": "Forgot password",
+        "alreadyRegistered": "Already have an account?",
+        "dontHaveAccount": "Dont have account? create one"
       },
       "header": {
         "siteLogo": "Site logo",

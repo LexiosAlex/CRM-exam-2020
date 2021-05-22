@@ -3,7 +3,15 @@
     "translation": {
       "loginPage": {
         "signIn": "Войти",
-        "signUp": "Зарегистрироваться"
+        "signUp": "Зарегистрироваться",
+        "email": "Адрес электронной почты",
+        "name": "Имя",
+        "namePlaceholder": "Ваше имя",
+        "password": "Великий пароль",
+        "passwordPlaceholder": "Пароль",
+        "forgotPassword": "Забыл пароль",
+        "alreadyRegistered": "Зарегестрированы?",
+        "dontHaveAccount": "Не зарегестрированы? создайте аккаунт"
       },
       "header": {
         "siteLogo": "Логотип сайта",

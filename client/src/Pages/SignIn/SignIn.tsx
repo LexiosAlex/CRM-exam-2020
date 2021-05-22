@@ -14,6 +14,7 @@ import {
   StyledWrapper,
   LoadingSpinner,
 } from './SignIn.style';
+import { useTranslation } from 'react-i18next';
 
 interface User {
   email: string;
@@ -27,6 +28,7 @@ enum FormInputType {
 
 const SignIn: React.FC = (props: any) => {
   const { authError } = props;
+  const { t } = useTranslation('loginPage');
   const [emailValue, setEmail] = useState<string>('');
   const [passwordValue, setPassword] = useState<string>('');
 
@@ -55,10 +57,10 @@ const SignIn: React.FC = (props: any) => {
     <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center">
       <StyledWrapper>
         <form onSubmit={handleSubmitForm} noValidate>
-          <StyledHead>Sign In</StyledHead>
+          <StyledHead>{t('signIn')}</StyledHead>
           {authError ? <StyledErrorMsg>{authError.message}</StyledErrorMsg> : null}
           <StyledInputWrapper>
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t('email')}</label>
             <input
               type="email"
               placeholder="example@mail.com"
@@ -69,10 +71,10 @@ const SignIn: React.FC = (props: any) => {
             />
           </StyledInputWrapper>
           <StyledInputWrapper>
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t('password')}</label>
             <input
               type="password"
-              placeholder="password"
+              placeholder={t('passwordPlaceholder')}
               name="password"
               formNoValidate
               onChange={(event) => onChange[FormInputType.password](event.target.value)}
@@ -95,11 +97,11 @@ const SignIn: React.FC = (props: any) => {
                   <LoadingSpinner />
                 </Box>
               ) : (
-                <span> Sign In</span>
+                <span>{t('signIn')}</span>
               )}
             </StyledButtonPrimary>
-            <Link to={navPaths.SIGN_UP}>Dont have account? create one</Link>
-            <Link to={navPaths.PASSWORD_FORGET}>Forgot password</Link>
+            <Link to={navPaths.SIGN_UP}>{t('dontHaveAccount')}</Link>
+            <Link to={navPaths.PASSWORD_FORGET}>{t('forgotPassword')}</Link>
           </StyledActionsContainer>
         </form>
       </StyledWrapper>

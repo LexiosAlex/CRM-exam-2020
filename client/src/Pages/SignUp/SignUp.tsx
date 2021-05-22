@@ -14,6 +14,7 @@ import {
   StyledWrapper,
   LoadingSpinner,
 } from './SignUp.style';
+import { useTranslation } from 'react-i18next';
 
 enum FormInputType {
   email,
@@ -23,6 +24,7 @@ enum FormInputType {
 
 const SignUp: React.FC = (props: any) => {
   const { authError } = props;
+  const { t } = useTranslation('loginPage');
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -48,13 +50,13 @@ const SignUp: React.FC = (props: any) => {
     <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center">
       <StyledWrapper>
         <form onSubmit={handleSubmitForm} noValidate>
-          <StyledHead>Sign Up</StyledHead>
+          <StyledHead>{t('signUp')}</StyledHead>
           {authError ? <StyledErrorMsg>{authError.message}</StyledErrorMsg> : null}
           <StyledInputWrapper>
-            <label htmlFor="name">name</label>
+            <label htmlFor="name">{t('name')}</label>
             <input
               type="text"
-              placeholder="Your name"
+              placeholder={t('namePlaceholder')}
               name="name"
               formNoValidate
               onChange={(event) => onChange[FormInputType.name](event.target.value)}
@@ -62,7 +64,7 @@ const SignUp: React.FC = (props: any) => {
             />
           </StyledInputWrapper>
           <StyledInputWrapper>
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t('email')}</label>
             <input
               type="email"
               placeholder="example@mail.com"
@@ -73,10 +75,10 @@ const SignUp: React.FC = (props: any) => {
             />
           </StyledInputWrapper>
           <StyledInputWrapper>
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t('password')}</label>
             <input
               type="password"
-              placeholder="password"
+              placeholder={t('passwordPlaceholder')}
               name="password"
               formNoValidate
               onChange={(event) => onChange[FormInputType.password](event.target.value)}
@@ -99,11 +101,11 @@ const SignUp: React.FC = (props: any) => {
                   <LoadingSpinner />
                 </Box>
               ) : (
-                <span> Sign Up</span>
+                <span>{t('signUp')}</span>
               )}
             </StyledButtonPrimary>
-            <Link to={navPaths.SIGN_IN}>Already registered</Link>
-            <Link to={navPaths.PASSWORD_FORGET}>Forgot password</Link>
+            <Link to={navPaths.SIGN_IN}>{t('alreadyRegistered')}</Link>
+            <Link to={navPaths.PASSWORD_FORGET}>{t('forgotPassword')}</Link>
           </StyledActionsContainer>
         </form>
       </StyledWrapper>
