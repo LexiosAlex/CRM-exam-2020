@@ -1,7 +1,7 @@
 import i18next, { InitOptions } from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import ru from './utils/locales/ru.json';
-import en from './utils/locales/en.json';
+import ru from './media/locales/ru.json';
+import en from './media/locales/en.json';
 import { Language } from 'common/constants';
 
 const options: InitOptions = {
