@@ -5,6 +5,13 @@
         "signIn": "Sign in",
         "signUp": "Sign up"
       },
+      "header": {
+        "siteLogo": "Site logo",
+        "name": "Name",
+        "role": "Role",
+        "email": "Email",
+        "logOut": "LogOut"
+      },
       "notifications": {
         "activitiesError": "Can't get activities",
         "statusError": "Can't change status. Code: {{code}}",
@@ -48,7 +55,8 @@
         "shopping": "Shopping"
       },
       "error": {
-        "errorCode": "Error code: {{code}}"
+        "errorCode": "Error code: {{code}}",
+        "BadEmployee": "Bad Employee type ({{type}})"
       }
     }
   }

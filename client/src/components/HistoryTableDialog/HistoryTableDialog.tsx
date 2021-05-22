@@ -80,7 +80,6 @@ const getHistoryList = (history: { [id: string]: IActivityHistory }) =>
 export const HistoryTableDialog: React.FC<DialogProps> = ({ open, onClose, activity }) => {
   const { history, address } = activity;
   const historyList = getHistoryList(history);
-  console.log(historyList);
 
   return (
     <Dialog maxWidth="lg" open={open} onClose={onClose}>

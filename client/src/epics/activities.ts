@@ -59,7 +59,7 @@ const getQuery = (firebaseState) =>
         );
 
       default:
-        return fail(`Bad Employee type (${type})`);
+        return fail(i18n.t('error.BadEmployee', { type }));
     }
   });
 
