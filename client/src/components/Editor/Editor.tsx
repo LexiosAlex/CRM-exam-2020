@@ -40,6 +40,7 @@ import {
   LoadingSpinner,
 } from './Editor.styles';
 import PlacesAutoSuggest from './PlacesAutoSuggest';
+import { useTranslation } from 'react-i18next';
 
 const renderAutoComplete = (params) => {
   const { input, children, required, customValue, options, ...custom } = params;
@@ -139,6 +140,7 @@ const Editor: React.FC<EditorProps> = ({
   const isNew = formType === FormType.create;
   const { uid, displayName } = authProfile;
   const isLoadingData: boolean = !formState;
+  const { t } = useTranslation();
 
   useEffect(() => {
     const data =
@@ -185,7 +187,7 @@ const Editor: React.FC<EditorProps> = ({
         <StyledDialogForm onSubmit={handleSubmit} noValidate>
           <StyledFormHeader>
             <div>
-              <h4>{isNew ? 'Add new activity' : 'Edit activity'}</h4>
+              <h4>{isNew ? t('editor.addNewActivity') : t('editor.EditActivity')}</h4>
             </div>
             <StyledCloseButton aria-label="close" onClick={onClose}>
               <CloseIcon />
@@ -198,7 +200,7 @@ const Editor: React.FC<EditorProps> = ({
               <>
                 <Box flexDirection="column" display="flex">
                   <Box flexDirection="column" display="flex">
-                    <label htmlFor="type">Type</label>
+                    <label htmlFor="type">{t('inputs.type')}</label>
                     <Field
                       customValue={formState.values.type}
                       name="type"
@@ -215,7 +217,7 @@ const Editor: React.FC<EditorProps> = ({
                     </Field>
                   </Box>
                   <Box flexDirection="column" display="flex">
-                    <label htmlFor="address">Address</label>
+                    <label htmlFor="address">{t('inputs.address')}</label>
                     <Field
                       customValue={formState.values.address}
                       name="address"
@@ -226,7 +228,7 @@ const Editor: React.FC<EditorProps> = ({
                     />
                   </Box>
                   <Box>
-                    <h5>Description</h5>
+                    <h5>{t('inputs.description')}</h5>
                     <Field
                       customValue={formState.values.description}
                       id="description"
@@ -238,7 +240,7 @@ const Editor: React.FC<EditorProps> = ({
                 </Box>
                 <Box flexDirection="column" display="flex">
                   <Box flexDirection="column" display="flex">
-                    <label htmlFor="status">Status</label>
+                    <label htmlFor="status">{t('inputs.status')}</label>
                     <Field
                       customValue={formState.values.status}
                       name="status"
@@ -249,7 +251,7 @@ const Editor: React.FC<EditorProps> = ({
                       parse={(value) => Number(value)}
                     >
                       {isNew ? (
-                        <option value={ActivityStatus.New}>New</option>
+                        <option value={ActivityStatus.New}>{t('inputs.new')}</option>
                       ) : (
                         getAllowedStatuses(
                           employeeType,
@@ -263,7 +265,7 @@ const Editor: React.FC<EditorProps> = ({
                     </Field>
                   </Box>
                   <Box flexDirection="column" display="flex">
-                    <label htmlFor="estimation">Estimation in hours</label>
+                    <label htmlFor="estimation">{t('inputs.estimation')}</label>
                     <Field
                       customValue={formState.values.estimation}
                       id="estimation"
@@ -274,7 +276,7 @@ const Editor: React.FC<EditorProps> = ({
                     />
                   </Box>
                   <Box flexDirection="column" display="flex">
-                    <label htmlFor="bounty">Bounty ($)</label>
+                    <label htmlFor="bounty">{t('inputs.bounty')}</label>
                     <Field
                       customValue={formState.values.bounty}
                       id="bounty"
@@ -285,7 +287,7 @@ const Editor: React.FC<EditorProps> = ({
                     />
                   </Box>
                   <Box>
-                    <h5>Assignee</h5>
+                    <h5>{t('inputs.assignee')}</h5>
                     <Field
                       customValue={formState.values.assignee}
                       name="assignee"
@@ -296,7 +298,7 @@ const Editor: React.FC<EditorProps> = ({
                     />
                   </Box>
                   <Box>
-                    <h5>Operator</h5>
+                    <h5>{t('inputs.operator')}</h5>
                     <Field
                       customValue={formState.values.operator}
                       name="operator"
@@ -333,7 +335,7 @@ const Editor: React.FC<EditorProps> = ({
                     <LoadingSpinner />
                   </Box>
                 ) : (
-                  <span>{`${isNew ? 'Add activity' : 'Save changes'}`}</span>
+                  <span>{`${isNew ? t('editor.addActivity') : t('editor.saveChanges')}`}</span>
                 )}
               </StyledSubmitButton>
               <StyledBtnCancel
@@ -344,7 +346,7 @@ const Editor: React.FC<EditorProps> = ({
                 $isSendingData={isSendingData}
                 disabled={isSendingData}
               >
-                cancel
+                {t('editor.cancel')}
               </StyledBtnCancel>
             </Box>
           </MuiDialogActions>

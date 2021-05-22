@@ -12,6 +12,43 @@
         "activityAddError": "Can't add activity. Code: {{code}}",
         "usersDataError": "Unexpected error while loading usersData. Code: {{code}}",
         "usersTableError": "Cant change user permission. Code: {{code}}"
+      },
+      "inputs": {
+        "localCity": "Saint Petersburg",
+        "type": "Type",
+        "address": "Address",
+        "description": "Description",
+        "status": "Status",
+        "new": "New",
+        "estimation": "Estimation (hours)",
+        "bounty": "Bounty (points)",
+        "assignee": "Assignee",
+        "operator": "Operator"
+      },
+      "editor": {
+        "addNewActivity": "Add new activity",
+        "EditActivity": "Edit activity",
+        "addActivity": "Add activity",
+        "saveChanges": "Save changes",
+        "cancel": "Cancel"
+      },
+      "statuses": {
+        "created": "Created",
+        "backlog": "Backlog",
+        "assigned": "Assigned",
+        "inProgress": "In progress",
+        "canceled": "Canceled",
+        "done": "Done",
+        "archived": "Archived"
+      },
+      "types": {
+        "delivery": "Delivery",
+        "homeCare": "Home care",
+        "other": "Other",
+        "shopping": "Shopping"
+      },
+      "error": {
+        "errorCode": "Error code: {{code}}"
       }
     }
   }

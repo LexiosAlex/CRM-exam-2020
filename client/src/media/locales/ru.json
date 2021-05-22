@@ -12,6 +12,43 @@
         "activityAddError": "Не удалось добавить задачу. Код ошибки: {{code}}",
         "usersDataError": "Во время загрузки пользователей произошла ошибка. Код ошибки: {{code}}",
         "usersTableError": "Не удалось изменить права пользователя. Код ошибки: {{code}}"
+      },
+      "inputs": {
+        "localCity": "Санкт-Петербург",
+        "type": "Тип",
+        "address": "Адрес",
+        "description": "Описание",
+        "status": "Статус",
+        "new": "Новая",
+        "estimation": "Время на выполнение (В часах)",
+        "bounty": "Награда (Очков за выполнение)",
+        "assignee": "Волонтер",
+        "operator": "Оператор"
+      },
+      "editor": {
+        "addNewActivity": "Добавить новую задачу",
+        "EditActivity": "Изменить задачу",
+        "addActivity": "Добавить",
+        "saveChanges": "Сохранить изменения",
+        "cancel": "Отмена"
+      },
+      "statuses": {
+        "created": "Создано",
+        "backlog": "Доступно",
+        "assigned": "Назначено на волонтера",
+        "inProgress": "В прогрессе",
+        "canceled": "Отменено",
+        "done": "Сделанно",
+        "archived": "В архиве"
+      },
+      "types": {
+        "delivery": "Доставка",
+        "homeCare": "Домашние обязанности",
+        "other": "Другое",
+        "shopping": "Поход в магазин"
+      },
+      "error": {
+        "errorCode": "Код ошибки: {{code}}"
       }
     }
   }
