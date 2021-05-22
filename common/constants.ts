@@ -54,3 +54,8 @@ export const VISIBLE_STATUSES: { [key in EmployeeType]: ActivityStatus[] } = {
 export const ACTIVITY_TYPES: ActivityType[] = Object.entries(ActivityType)
   .filter(([key, value]) => isNaN(Number(key)))
   .map(([key, value]) => value as ActivityType);
+
+export const enum Language {
+  EN = 'en',
+  RU = 'ru',
+}
