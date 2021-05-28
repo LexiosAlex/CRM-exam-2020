@@ -26,7 +26,20 @@
         "time": "Время",
         "status": "Статус"
       },
-      "loading": "Идет загрузка",
+      "loading": "Загрузка",
+      "statistics": {
+        "noData": "Нет данных",
+        "statistics": "Статистика",
+        "activitiesToday": "Задач за сегодня",
+        "activitiesWeek": "Задач за неделю",
+        "activitiesMonth": "Задач за месяц",
+        "activitiesAllTime": "Всего выполнено задач:",
+        "volunteersTotal": "Всего волонтеров:",
+        "totalHours": "Всего потрачено часов:",
+        "allTime": "За все время",
+        "totalDiagram": "Всего: {{value}}",
+        "percentDiagram": "Это ({{value}}%)"
+      },
       "networkDetector": "Обнаружены проблемы с сетью, для сохранения изменений возобновите соединение",
       "notifications": {
         "activitiesError": "Не удалось загрузить задачи.",

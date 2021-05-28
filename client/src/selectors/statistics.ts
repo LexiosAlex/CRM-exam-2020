@@ -55,25 +55,15 @@ const getAllTimeStats = createSelector(
     Object.entries(heap).reduce(
       (acc: IAllTimeData, [id, activity]) => ({
         ...acc,
-        earn:
+        totalHours:
           activity.status === ActivityStatus.Archived
-            ? acc.earn + (activity.bounty ?? 0)
-            : acc.earn,
-        paid:
-          activity.status === ActivityStatus.Archived
-            ? acc.paid + Math.round((activity.bounty ?? 0) * 0.7)
-            : acc.paid,
-        profit:
-          activity.status === ActivityStatus.Archived
-            ? acc.profit + Math.round((activity.bounty ?? 0) * 0.3)
-            : acc.profit,
+            ? acc.totalHours + activity.estimation
+            : acc.totalHours,
       }),
       {
         activities: Object.entries(heap).length,
         volunteers: users.filter((user) => user.type === EmployeeType.Volunteer).length,
-        earn: 0,
-        paid: 0,
-        profit: 0,
+        totalHours: 0,
       },
     ),
 );

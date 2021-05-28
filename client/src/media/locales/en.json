@@ -27,6 +27,19 @@
         "status": "Status"
       },
       "loading": "Loading",
+      "statistics": {
+        "noData": "No data available",
+        "statistics": "Statistics",
+        "activitiesToday": "Activities today",
+        "activitiesWeek": "Activities this week",
+        "activitiesMonth": "Activities this month",
+        "activitiesAllTime": "Total activities:",
+        "volunteersTotal": "Total volunteers:",
+        "totalHours": "Total hours spent",
+        "allTime": "All time",
+        "totalDiagram": "Total: {{value}}",
+        "percentDiagram": "It's ({{value}}%)"
+      },
       "networkDetector": "Internet connection lost, no changes will be saved, please stand by",
       "notifications": {
         "activitiesError": "Can't get activities",
