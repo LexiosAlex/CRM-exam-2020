@@ -49,6 +49,11 @@
         "usersDataError": "Unexpected error while loading usersData. Code: {{code}}",
         "usersTableError": "Cant change user permission. Code: {{code}}"
       },
+      "usersTable": {
+        "name": "Name",
+        "role": "Role",
+        "usersManagement": "Users management"
+      },
       "inputs": {
         "localCity": "Saint Petersburg",
         "type": "Type",

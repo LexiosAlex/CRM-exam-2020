@@ -17,13 +17,15 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import Box from '@material-ui/core/Box';
 
 import { EmployeeType, ITypedUser } from 'common/index';
 import { IAppState } from '../../interfaces/state';
 import { editUser } from '../../actions/users';
 import selectors from '../../selectors/index';
 import { TITLE_USER_TYPE_MAP } from '../../utils/users';
-import { Box } from '@material-ui/core';
+import i18n from '../../i18n';
+import { useTranslation } from 'react-i18next';
 
 const tableIcons: Icons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -46,9 +48,9 @@ const tableIcons: Icons = {
 };
 
 const columns: Column<ITypedUser>[] = [
-  { title: 'Name', field: 'name', editable: 'never' },
+  { title: i18n.t('usersTable.name'), field: 'name', editable: 'never' },
   {
-    title: 'Role',
+    title: i18n.t('usersTable.role'),
     field: 'type',
     lookup: TITLE_USER_TYPE_MAP,
     editable: 'onUpdate',
@@ -57,6 +59,7 @@ const columns: Column<ITypedUser>[] = [
 
 export const UsersTable: React.FC = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation('usersTable');
   const isLoading = useSelector((state: IAppState) => selectors.employees.isLoading(state));
   const employees = useSelector((state: IAppState) => selectors.employees.userList(state));
 
@@ -67,7 +70,7 @@ export const UsersTable: React.FC = () => {
 
   return (
     <Box marginLeft="50px" marginRight="50px" marginTop="50px">
-      <h2>Users management</h2>
+      <h2>{t('usersManagement')}</h2>
       <MaterialTable
         isLoading={isLoading}
         icons={tableIcons}
