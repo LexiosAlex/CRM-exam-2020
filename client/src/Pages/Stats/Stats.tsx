@@ -8,6 +8,7 @@ import { IAppState } from '../../interfaces/state';
 import selectors from '../../selectors';
 import { StyledContainer, StyledChartPaper, StyledAllStatsPaper } from './Stats.style';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 interface PieChartComponentProps {
   TimeChartData: TimeChartData | null;
@@ -30,17 +31,15 @@ const renderActiveShape = (props: any) => {
     textColor,
   } = props;
 
-  const { t } = useTranslation('statistics');
-
   return (
     <g>
       <text x={cx} y={cy - 10} dy={0} textAnchor="middle" fill={textColor ?? fill}>
         <tspan x={cx}>{payload.name}</tspan>
         <tspan x={cx} dy="1.2em">
-          {t('totalDiagram', { value: value })}
+          {i18n.t('statistics.totalDiagram', { value: value })}
         </tspan>
         <tspan x={cx} dy="1.2em">
-          {t('percentDiagram', { value: (percent * 100).toFixed(2) })}
+          {i18n.t('statistics.percentDiagram', { value: (percent * 100).toFixed(2) })}
         </tspan>
       </text>
       <Sector
@@ -66,7 +65,7 @@ const renderActiveShape = (props: any) => {
 };
 
 const PieChartComponent: React.FC<PieChartComponentProps> = ({ TimeChartData }) => {
-  const { t } = useTranslation('statistics');
+  const { t } = useTranslation();
 
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
@@ -97,12 +96,12 @@ const PieChartComponent: React.FC<PieChartComponentProps> = ({ TimeChartData }) 
       </Pie>
     </PieChart>
   ) : (
-    <Typography variant="body1">{t('noData')}</Typography>
+    <Typography variant="body1">{t('statistics.noData')}</Typography>
   );
 };
 
 export const Stats: React.FC = () => {
-  const { t } = useTranslation('statistics');
+  const { t } = useTranslation();
 
   const dayActivities: TimeChartData | null = useSelector((state: IAppState) =>
     selectors.statistics.getActivitiesByDay(state),
@@ -126,7 +125,7 @@ export const Stats: React.FC = () => {
       display="flex"
       flexDirection="column"
     >
-      <Typography variant="h2">{t('statistics')}</Typography>
+      <Typography variant="h2">{t('statistics.statistics')}</Typography>
       <Box
         display="flex"
         flexDirection="row"
@@ -137,35 +136,35 @@ export const Stats: React.FC = () => {
       >
         <StyledChartPaper>
           <PieChartComponent TimeChartData={dayActivities} />
-          <Typography variant="h3">{t('activitiesToday')}</Typography>
+          <Typography variant="h3">{t('statistics.activitiesToday')}</Typography>
         </StyledChartPaper>
         <StyledChartPaper>
           <PieChartComponent TimeChartData={weekActivities} />
-          <Typography variant="h3">{t('activitiesWeek')}</Typography>
+          <Typography variant="h3">{t('statistics.activitiesWeek')}</Typography>
         </StyledChartPaper>
         <StyledChartPaper>
           <PieChartComponent TimeChartData={monthActivities} />
-          <Typography variant="h3">{t('activitiesMonth')}</Typography>
+          <Typography variant="h3">{t('statistics.activitiesMonth')}</Typography>
         </StyledChartPaper>
         <StyledAllStatsPaper>
           <ul>
             <li>
               <Typography variant="body1">
-                {t('activitiesAllTime')} <span>{AllTimeData.activities}</span>
+                {t('statistics.activitiesAllTime')} <span>{AllTimeData.activities}</span>
               </Typography>
             </li>
             <li>
               <Typography variant="body1">
-                {t('volunteersTotal')} <span>{AllTimeData.volunteers}</span>
+                {t('statistics.volunteersTotal')} <span>{AllTimeData.volunteers}</span>
               </Typography>
             </li>
             <li>
               <Typography variant="body1">
-                {t('totalHours')} <span>{AllTimeData.totalHours}</span>
+                {t('statistics.totalHours')} <span>{AllTimeData.totalHours}</span>
               </Typography>
             </li>
           </ul>
-          <Typography variant="h3">{t('allTime')}</Typography>
+          <Typography variant="h3">{t('statistics.allTime')}</Typography>
         </StyledAllStatsPaper>
       </Box>
     </StyledContainer>

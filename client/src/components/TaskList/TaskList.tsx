@@ -28,14 +28,16 @@ export const TaskList: React.FC<TaskListProps> = ({
   onOpenDialog,
   onOpenHistory,
 }) => {
-  const { t } = useTranslation('taskList');
+  const { t } = useTranslation();
 
   return (
     <StyledContainer $isDropEnabled={canDrop} $isDragging={isDragging}>
       <StyledAddNewCardContainer>
         <h2>{TITLE_STATUS_MAP[status]}</h2>
         {TITLE_STATUS_MAP[status] === TITLE_STATUS_MAP[0] ? (
-          <StyledAddButton onClick={() => onOpenDialog(FormType.create)}>New</StyledAddButton>
+          <StyledAddButton onClick={() => onOpenDialog(FormType.create)}>
+            {t('tasks.new')}
+          </StyledAddButton>
         ) : null}
       </StyledAddNewCardContainer>
       <Droppable droppableId={status} isDropDisabled={!canDrop}>
@@ -56,7 +58,7 @@ export const TaskList: React.FC<TaskListProps> = ({
                 />
               ))
             ) : (
-              <p>{t('noData')}</p>
+              <p>{t('taskList.noData')}</p>
             )}
             {provided.placeholder}
           </div>

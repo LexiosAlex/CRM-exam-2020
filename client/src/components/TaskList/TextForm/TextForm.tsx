@@ -11,7 +11,7 @@ interface TextFormProps {
 
 export const TextForm: React.FC<TextFormProps> = ({ onClose }) => {
   const [textInputValue, setInputValue] = useState<string>('');
-  const { t } = useTranslation('taskList');
+  const { t } = useTranslation();
 
   const onChangeInputVal = (event: React.FormEvent<HTMLTextAreaElement>) => {
     setInputValue(event.currentTarget.value);
@@ -34,7 +34,7 @@ export const TextForm: React.FC<TextFormProps> = ({ onClose }) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <StyledAddButton>{t('addCard')}</StyledAddButton>
+        <StyledAddButton>{t('taskList.addCard')}</StyledAddButton>
         <IconButton onClick={onClose}>
           <CloseIcon />
         </IconButton>

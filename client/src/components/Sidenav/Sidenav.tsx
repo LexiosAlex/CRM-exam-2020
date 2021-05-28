@@ -17,7 +17,7 @@ import { Box } from '@material-ui/core';
 
 export const Sidenav: React.FC = () => {
   const { pathname } = useLocation();
-  const { t } = useTranslation('navigation');
+  const { t } = useTranslation();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -37,7 +37,7 @@ export const Sidenav: React.FC = () => {
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary={t('dashboard')} />
+              <ListItemText primary={t('navigation.dashboard')} />
             </StyledListItem>
           </Link>
 
@@ -46,7 +46,7 @@ export const Sidenav: React.FC = () => {
               <ListItemIcon>
                 <GroupIcon />
               </ListItemIcon>
-              <ListItemText primary={t('users')} />
+              <ListItemText primary={t('navigation.users')} />
             </StyledListItem>
           </Link>
 
@@ -55,7 +55,7 @@ export const Sidenav: React.FC = () => {
               <ListItemIcon>
                 <ViewColumnIcon />
               </ListItemIcon>
-              <ListItemText primary={t('taskLists')} />
+              <ListItemText primary={t('navigation.taskLists')} />
             </StyledListItem>
           </Link>
         </StyledList>

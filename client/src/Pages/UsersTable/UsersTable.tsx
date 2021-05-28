@@ -59,7 +59,7 @@ const columns: Column<ITypedUser>[] = [
 
 export const UsersTable: React.FC = () => {
   const dispatch = useDispatch();
-  const { t } = useTranslation('usersTable');
+  const { t } = useTranslation();
   const isLoading = useSelector((state: IAppState) => selectors.employees.isLoading(state));
   const employees = useSelector((state: IAppState) => selectors.employees.userList(state));
 
@@ -70,7 +70,7 @@ export const UsersTable: React.FC = () => {
 
   return (
     <Box marginLeft="50px" marginRight="50px" marginTop="50px">
-      <h2>{t('usersManagement')}</h2>
+      <h2>{t('usersTable.usersManagement')}</h2>
       <MaterialTable
         isLoading={isLoading}
         icons={tableIcons}

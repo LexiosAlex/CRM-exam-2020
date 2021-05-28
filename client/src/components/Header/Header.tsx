@@ -16,32 +16,36 @@ import {
 } from './Header.style';
 import logo from '../../media/logo/spiral.svg';
 import { useTranslation } from 'react-i18next';
+import LanguageSelect from '../LanguageSelect';
 
 const AppHeader: React.FC = (props: any) => {
   const { email } = props.auth;
   const { name, type } = props.profile;
   const firebase = useFirebase();
-  const { t } = useTranslation('header');
+  const { t } = useTranslation();
 
   const logOutHandler = () => firebase.logout();
 
   return (
     <StyledHeader>
       <StyledLogo>
-        <img src={logo} alt={t('siteLogo')} />
+        <img src={logo} alt={t('header.siteLogo')} />
         <p>volunteer</p>
       </StyledLogo>
       <StyledAccount>
         <Box alignSelf="flex-end">
-          <StyledUserName>{`${t('name')}: ${name}`}</StyledUserName>
+          <LanguageSelect />
+        </Box>
+        <Box alignSelf="flex-end">
+          <StyledUserName>{`${t('header.name')}: ${name}`}</StyledUserName>
           <StyledInfoContainer>
-            <p>{`${t('Role')}: ${TITLE_USER_TYPE_MAP[type]}`}</p>
-            <p>{`${t('email')}: ${email}`}</p>
+            <p>{`${t('header.role')}: ${TITLE_USER_TYPE_MAP[type]}`}</p>
+            <p>{`${t('header.email')}: ${email}`}</p>
           </StyledInfoContainer>
         </Box>
         <Box alignSelf="flex-end">
           <IconButton onClick={logOutHandler}>
-            <ExitToAppIcon>{t('logOut')}</ExitToAppIcon>
+            <ExitToAppIcon>{t('header.logOut')}</ExitToAppIcon>
           </IconButton>
         </Box>
       </StyledAccount>

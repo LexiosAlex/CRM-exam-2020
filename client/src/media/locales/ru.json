@@ -54,6 +54,11 @@
         "role": "Роль",
         "usersManagement": "Управление пользователями"
       },
+      "language": {
+        "language": "Язык",
+        "ru": "Русский",
+        "en": "English"
+      },
       "inputs": {
         "localCity": "Санкт-Петербург",
         "type": "Тип",
@@ -70,13 +75,13 @@
         "addNewActivity": "Добавить новую задачу",
         "EditActivity": "Изменить задачу",
         "addActivity": "Добавить",
-        "saveChanges": "Сохранить изменения",
+        "saveChanges": "Сохранить",
         "cancel": "Отмена"
       },
       "navigation": {
         "dashboard": "Статистика",
         "users": "Пользователи",
-        "taskLists": "Списки Задач"
+        "taskLists": "Список задач"
       },
       "taskList": {
         "noData": "Нет доступных задач",
@@ -97,6 +102,11 @@
         "homeCare": "Домашние обязанности",
         "other": "Другое",
         "shopping": "Поход в магазин"
+      },
+      "tasks": {
+        "tasks": "Список задач",
+        "error": "Произошла ошибка во время загрузки",
+        "new": "Новая"
       },
       "error": {
         "errorCode": "Код ошибки: {{code}}",

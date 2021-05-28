@@ -54,6 +54,11 @@
         "role": "Role",
         "usersManagement": "Users management"
       },
+      "language": {
+        "language": "Language",
+        "ru": "Русский",
+        "en": "English"
+      },
       "inputs": {
         "localCity": "Saint Petersburg",
         "type": "Type",
@@ -74,7 +79,7 @@
         "cancel": "Cancel"
       },
       "navigation": {
-        "dashboard": "DashBoard",
+        "dashboard": "Dashboard",
         "users": "Users",
         "taskLists": "Task Lists"
       },
@@ -97,6 +102,11 @@
         "homeCare": "Home care",
         "other": "Other",
         "shopping": "Shopping"
+      },
+      "tasks": {
+        "tasks": "Задачи",
+        "error": "Произошла ошибка во время загрузки",
+        "new": "New"
       },
       "error": {
         "errorCode": "Error code: {{code}}",

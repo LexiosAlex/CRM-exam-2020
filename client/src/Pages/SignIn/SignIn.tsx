@@ -28,7 +28,7 @@ enum FormInputType {
 
 const SignIn: React.FC = (props: any) => {
   const { authError } = props;
-  const { t } = useTranslation('loginPage');
+  const { t } = useTranslation();
   const [emailValue, setEmail] = useState<string>('');
   const [passwordValue, setPassword] = useState<string>('');
 
@@ -57,10 +57,10 @@ const SignIn: React.FC = (props: any) => {
     <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center">
       <StyledWrapper>
         <form onSubmit={handleSubmitForm} noValidate>
-          <StyledHead>{t('signIn')}</StyledHead>
+          <StyledHead>{t('loginPage.signIn')}</StyledHead>
           {authError ? <StyledErrorMsg>{authError.message}</StyledErrorMsg> : null}
           <StyledInputWrapper>
-            <label htmlFor="email">{t('email')}</label>
+            <label htmlFor="email">{t('loginPage.email')}</label>
             <input
               type="email"
               placeholder="example@mail.com"
@@ -71,10 +71,10 @@ const SignIn: React.FC = (props: any) => {
             />
           </StyledInputWrapper>
           <StyledInputWrapper>
-            <label htmlFor="password">{t('password')}</label>
+            <label htmlFor="password">{t('loginPage.password')}</label>
             <input
               type="password"
-              placeholder={t('passwordPlaceholder')}
+              placeholder={t('loginPage.passwordPlaceholder')}
               name="password"
               formNoValidate
               onChange={(event) => onChange[FormInputType.password](event.target.value)}
@@ -97,11 +97,11 @@ const SignIn: React.FC = (props: any) => {
                   <LoadingSpinner />
                 </Box>
               ) : (
-                <span>{t('signIn')}</span>
+                <span>{t('loginPage.signIn')}</span>
               )}
             </StyledButtonPrimary>
-            <Link to={navPaths.SIGN_UP}>{t('dontHaveAccount')}</Link>
-            <Link to={navPaths.PASSWORD_FORGET}>{t('forgotPassword')}</Link>
+            <Link to={navPaths.SIGN_UP}>{t('loginPage.dontHaveAccount')}</Link>
+            <Link to={navPaths.PASSWORD_FORGET}>{t('loginPage.forgotPassword')}</Link>
           </StyledActionsContainer>
         </form>
       </StyledWrapper>

@@ -24,7 +24,7 @@ enum FormInputType {
 
 const SignUp: React.FC = (props: any) => {
   const { authError } = props;
-  const { t } = useTranslation('loginPage');
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -50,13 +50,13 @@ const SignUp: React.FC = (props: any) => {
     <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center">
       <StyledWrapper>
         <form onSubmit={handleSubmitForm} noValidate>
-          <StyledHead>{t('signUp')}</StyledHead>
+          <StyledHead>{t('loginPage.signUp')}</StyledHead>
           {authError ? <StyledErrorMsg>{authError.message}</StyledErrorMsg> : null}
           <StyledInputWrapper>
             <label htmlFor="name">{t('name')}</label>
             <input
               type="text"
-              placeholder={t('namePlaceholder')}
+              placeholder={t('loginPage.namePlaceholder')}
               name="name"
               formNoValidate
               onChange={(event) => onChange[FormInputType.name](event.target.value)}
@@ -64,7 +64,7 @@ const SignUp: React.FC = (props: any) => {
             />
           </StyledInputWrapper>
           <StyledInputWrapper>
-            <label htmlFor="email">{t('email')}</label>
+            <label htmlFor="email">{t('loginPage.email')}</label>
             <input
               type="email"
               placeholder="example@mail.com"
@@ -75,10 +75,10 @@ const SignUp: React.FC = (props: any) => {
             />
           </StyledInputWrapper>
           <StyledInputWrapper>
-            <label htmlFor="password">{t('password')}</label>
+            <label htmlFor="password">{t('loginPage.password')}</label>
             <input
               type="password"
-              placeholder={t('passwordPlaceholder')}
+              placeholder={t('loginPage.passwordPlaceholder')}
               name="password"
               formNoValidate
               onChange={(event) => onChange[FormInputType.password](event.target.value)}
@@ -101,11 +101,11 @@ const SignUp: React.FC = (props: any) => {
                   <LoadingSpinner />
                 </Box>
               ) : (
-                <span>{t('signUp')}</span>
+                <span>{t('loginPage.signUp')}</span>
               )}
             </StyledButtonPrimary>
-            <Link to={navPaths.SIGN_IN}>{t('alreadyRegistered')}</Link>
-            <Link to={navPaths.PASSWORD_FORGET}>{t('forgotPassword')}</Link>
+            <Link to={navPaths.SIGN_IN}>{t('loginPage.alreadyRegistered')}</Link>
+            <Link to={navPaths.PASSWORD_FORGET}>{t('loginPage.forgotPassword')}</Link>
           </StyledActionsContainer>
         </form>
       </StyledWrapper>
