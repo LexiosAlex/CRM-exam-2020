@@ -32,10 +32,10 @@ const AppHeader: React.FC = (props: any) => {
         <img src={logo} alt={t('header.siteLogo')} />
         <p>volunteer</p>
       </StyledLogo>
+      <Box marginLeft="56px" marginRight="auto">
+        <LanguageSelect />
+      </Box>
       <StyledAccount>
-        <Box alignSelf="flex-end">
-          <LanguageSelect />
-        </Box>
         <Box alignSelf="flex-end">
           <StyledUserName>{`${t('header.name')}: ${name}`}</StyledUserName>
           <StyledInfoContainer>
