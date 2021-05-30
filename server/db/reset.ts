@@ -1,7 +1,14 @@
 import * as admin from 'firebase-admin';
 
 import '../env';
-import { ActivityStatus, ActivityType, EmployeeType, IRawActivity, IUser } from 'common/index';
+import {
+  ActivityPriority,
+  ActivityStatus,
+  ActivityType,
+  EmployeeType,
+  IRawActivity,
+  IUser,
+} from 'common/index';
 import { firebaseConfig, DB_RESET_CONFIG, REFS } from './config';
 
 const getRandomEnumValue = <T>(anEnum: T): T[keyof T] => {
@@ -120,7 +127,7 @@ const createActivities = () => {
         status,
         assignee,
         history: {},
-        bounty: Math.floor(Math.random() * 1000),
+        priority: getRandomEnumValue(ActivityPriority),
       };
 
       await admin.database().ref(`${REFS.ACTIVITIES}`).push().set(activity);

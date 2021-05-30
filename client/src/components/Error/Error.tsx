@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ErrorContainer, ErrorMsg } from './Error.style';
+import { useTranslation } from 'react-i18next';
 
 interface ErrorProps {
   className?: string;
@@ -9,10 +10,12 @@ interface ErrorProps {
 }
 
 export const Error: React.FC<ErrorProps> = ({ className = '', errorCode = '', errorMessage }) => {
+  const { t } = useTranslation();
+
   return (
     <ErrorContainer className={className}>
       <ErrorMsg>{errorMessage}</ErrorMsg>
-      {errorCode && <p>{`Error code: ${errorCode}`}</p>}
+      {errorCode && <p>{t('error.errorCode', { code: errorCode })}</p>}
     </ErrorContainer>
   );
 };

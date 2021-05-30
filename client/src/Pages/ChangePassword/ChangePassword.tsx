@@ -22,6 +22,7 @@ export const ChangePassword: React.FC = () => {
     }
   };
 
+  //TODO: not working for now
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };

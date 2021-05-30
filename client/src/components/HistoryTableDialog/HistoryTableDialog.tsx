@@ -12,6 +12,7 @@ import {
   StyledDialogHeader,
   StyledMuiDialogContent,
 } from './HistoryTableDialog.style';
+import i18n from '../../i18n';
 
 import { IActivity, IActivityHistory } from 'common/types';
 import { TITLE_STATUS_MAP } from '../../utils/activities';
@@ -31,19 +32,19 @@ interface IHistoryTableItem {
 
 const columns = [
   {
-    label: 'Operator',
+    label: i18n.t('historyTable.operator'),
     dataKey: 'operatorName',
   },
   {
-    label: 'Assignee',
+    label: i18n.t('historyTable.assignee'),
     dataKey: 'assigneeName',
   },
   {
-    label: 'Time',
+    label: i18n.t('historyTable.time'),
     dataKey: 'time',
   },
   {
-    label: 'Status',
+    label: i18n.t('historyTable.status'),
     dataKey: 'status',
   },
 ];
@@ -68,7 +69,7 @@ const getHistoryItem = (record: IActivityHistory): IHistoryTableItem => ({
   operatorName: record.operator ? record.operator.name : 'no data provided',
   assigneeName: record.assignee ? record.assignee.name : 'no data provided',
   time: moment(record.time).format('LLL'),
-  status: TITLE_STATUS_MAP[record.status],
+  status: i18n.t(TITLE_STATUS_MAP[record.status]),
 });
 
 const getHistoryList = (history: { [id: string]: IActivityHistory }) =>
@@ -80,7 +81,6 @@ const getHistoryList = (history: { [id: string]: IActivityHistory }) =>
 export const HistoryTableDialog: React.FC<DialogProps> = ({ open, onClose, activity }) => {
   const { history, address } = activity;
   const historyList = getHistoryList(history);
-  console.log(historyList);
 
   return (
     <Dialog maxWidth="lg" open={open} onClose={onClose}>

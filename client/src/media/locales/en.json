@@ -1,0 +1,127 @@
+{
+  "en": {
+    "translation": {
+      "loginPage": {
+        "signIn": "Sign in",
+        "signUp": "Sign up",
+        "email": "Email",
+        "name": "Name",
+        "namePlaceholder": "Your name",
+        "password": "Password",
+        "passwordPlaceholder": "Password",
+        "forgotPassword": "Forgot password",
+        "alreadyRegistered": "Already have an account?",
+        "dontHaveAccount": "Dont have account? create one"
+      },
+      "header": {
+        "siteLogo": "Site logo",
+        "name": "Name",
+        "role": "Role",
+        "email": "Email",
+        "logOut": "LogOut"
+      },
+      "historyTable": {
+        "operator": "Operator",
+        "assignee": "Assignee",
+        "time": "Time",
+        "status": "Status"
+      },
+      "loading": "Loading",
+      "statistics": {
+        "noData": "No data available",
+        "statistics": "Statistics",
+        "activitiesToday": "Activities today",
+        "activitiesWeek": "Activities this week",
+        "activitiesMonth": "Activities this month",
+        "activitiesAllTime": "Total activities:",
+        "volunteersTotal": "Total volunteers:",
+        "totalHours": "Total hours spent",
+        "allTime": "All time",
+        "totalDiagram": "Total: {{value}}",
+        "percentDiagram": "It's ({{value}}%)"
+      },
+      "networkDetector": "Internet connection lost, no changes will be saved, please stand by",
+      "notifications": {
+        "activitiesError": "Can't get activities",
+        "statusError": "Can't change status. Code: {{code}}",
+        "activityEditError": "Can't change activity. Code: {{code}}",
+        "activityAddError": "Can't add activity. Code: {{code}}",
+        "usersDataError": "Unexpected error while loading usersData. Code: {{code}}",
+        "usersTableError": "Cant change user permission. Code: {{code}}"
+      },
+      "usersTable": {
+        "name": "Name",
+        "role": "Role",
+        "users": "Users",
+        "usersManagement": "Users management"
+      },
+      "language": {
+        "language": "Select language:",
+        "ru": "Русский",
+        "en": "English"
+      },
+      "inputs": {
+        "localCity": "Saint Petersburg",
+        "type": "Type",
+        "address": "Address",
+        "description": "Description",
+        "status": "Status",
+        "new": "New",
+        "estimation": "Estimation (hours)",
+        "bounty": "Priority",
+        "assignee": "Assignee",
+        "operator": "Operator"
+      },
+      "editor": {
+        "addNewActivity": "Add new activity",
+        "EditActivity": "Edit activity",
+        "addActivity": "Add activity",
+        "saveChanges": "Save changes",
+        "cancel": "Cancel"
+      },
+      "navigation": {
+        "dashboard": "Dashboard",
+        "users": "Users",
+        "taskLists": "Task Lists"
+      },
+      "taskList": {
+        "noData": "There are no cards available",
+        "titlePlaceholder": "Enter title for this card",
+        "addCard": "Add card"
+      },
+      "statuses": {
+        "created": "Created",
+        "backlog": "Backlog",
+        "assigned": "Assigned",
+        "inProgress": "In progress",
+        "canceled": "Canceled",
+        "done": "Done",
+        "archived": "Archived"
+      },
+      "priority": {
+        "low": "Low",
+        "middle": "Middle",
+        "high": "High"
+      },
+      "types": {
+        "hospital": "Hospital",
+        "disabledPeople": "Home for the disabled",
+        "orphanage": "Orphanage",
+        "homeCare": "Home care",
+        "shoppingDelivery": "Shopping & Delivery",
+        "eco": "Ecology",
+        "events": "Events",
+        "other": "Other"
+      },
+      "tasks": {
+        "tasks": "Activities",
+        "error": "Произошла ошибка во время загрузки",
+        "new": "New"
+      },
+      "error": {
+        "errorCode": "Error code: {{code}}",
+        "BadEmployee": "Bad Employee type ({{type}})"
+      }
+    }
+  }
+}

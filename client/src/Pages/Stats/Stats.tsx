@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux';
 import { IAppState } from '../../interfaces/state';
 import selectors from '../../selectors';
 import { StyledContainer, StyledChartPaper, StyledAllStatsPaper } from './Stats.style';
+import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 interface PieChartComponentProps {
   TimeChartData: TimeChartData | null;
@@ -28,12 +30,17 @@ const renderActiveShape = (props: any) => {
     value,
     textColor,
   } = props;
+
   return (
     <g>
       <text x={cx} y={cy - 10} dy={0} textAnchor="middle" fill={textColor ?? fill}>
-        <tspan x={cx}>{payload.name}</tspan>
-        <tspan x={cx} dy="1.2em">{`Total: ${value}`}</tspan>
-        <tspan x={cx} dy="1.2em">{`It's (${(percent * 100).toFixed(2)}%)`}</tspan>
+        <tspan x={cx}>{i18n.t(payload.name)}</tspan>
+        <tspan x={cx} dy="1.2em">
+          {i18n.t('statistics.totalDiagram', { value: value })}
+        </tspan>
+        <tspan x={cx} dy="1.2em">
+          {i18n.t('statistics.percentDiagram', { value: (percent * 100).toFixed(2) })}
+        </tspan>
       </text>
       <Sector
         cx={cx}
@@ -58,6 +65,8 @@ const renderActiveShape = (props: any) => {
 };
 
 const PieChartComponent: React.FC<PieChartComponentProps> = ({ TimeChartData }) => {
+  const { t } = useTranslation();
+
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
     (_, index) => {
@@ -87,11 +96,13 @@ const PieChartComponent: React.FC<PieChartComponentProps> = ({ TimeChartData }) 
       </Pie>
     </PieChart>
   ) : (
-    <Typography variant="body1">No data available</Typography>
+    <Typography variant="body1">{t('statistics.noData')}</Typography>
   );
 };
 
 export const Stats: React.FC = () => {
+  const { t } = useTranslation();
+
   const dayActivities: TimeChartData | null = useSelector((state: IAppState) =>
     selectors.statistics.getActivitiesByDay(state),
   );
@@ -114,7 +125,7 @@ export const Stats: React.FC = () => {
       display="flex"
       flexDirection="column"
     >
-      <Typography variant="h2">Statistics</Typography>
+      <Typography variant="h2">{t('statistics.statistics')}</Typography>
       <Box
         display="flex"
         flexDirection="row"
@@ -125,45 +136,35 @@ export const Stats: React.FC = () => {
       >
         <StyledChartPaper>
           <PieChartComponent TimeChartData={dayActivities} />
-          <Typography variant="h3">Activities today</Typography>
+          <Typography variant="h3">{t('statistics.activitiesToday')}</Typography>
         </StyledChartPaper>
         <StyledChartPaper>
           <PieChartComponent TimeChartData={weekActivities} />
-          <Typography variant="h3">Activities this week</Typography>
+          <Typography variant="h3">{t('statistics.activitiesWeek')}</Typography>
         </StyledChartPaper>
         <StyledChartPaper>
           <PieChartComponent TimeChartData={monthActivities} />
-          <Typography variant="h3">Activities this month</Typography>
+          <Typography variant="h3">{t('statistics.activitiesMonth')}</Typography>
         </StyledChartPaper>
         <StyledAllStatsPaper>
           <ul>
             <li>
               <Typography variant="body1">
-                Total activities: <span>{AllTimeData.activities}</span>
+                {t('statistics.activitiesAllTime')} <span>{AllTimeData.activities}</span>
               </Typography>
             </li>
             <li>
               <Typography variant="body1">
-                Total volunteers: <span>{AllTimeData.volunteers}</span>
+                {t('statistics.volunteersTotal')} <span>{AllTimeData.volunteers}</span>
               </Typography>
             </li>
             <li>
               <Typography variant="body1">
-                Total earnings: <span>{AllTimeData.earn} $</span>
-              </Typography>
-            </li>
-            <li>
-              <Typography variant="body1">
-                Total paid: <span>{AllTimeData.paid} $</span>
-              </Typography>
-            </li>
-            <li>
-              <Typography variant="body1">
-                Total profit: <span>{AllTimeData.profit} $</span>
+                {t('statistics.totalHours')} <span>{AllTimeData.totalHours}</span>
               </Typography>
             </li>
           </ul>
-          <Typography variant="h3">All time</Typography>
+          <Typography variant="h3">{t('statistics.allTime')}</Typography>
         </StyledAllStatsPaper>
       </Box>
     </StyledContainer>

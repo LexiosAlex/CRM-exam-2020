@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import throttle from 'lodash/throttle';
+import { useTranslation } from 'react-i18next';
 
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -21,7 +22,7 @@ interface PlaceType {
       {
         offset: number;
         length: number;
-      }
+      },
     ];
   };
 }
@@ -50,6 +51,7 @@ interface PlacesAutoSuggestProps {
 const autocompleteService: IAutocompleteService = { current: null };
 
 const PlacesAutoSuggest: React.FC<PlacesAutoSuggestProps> = (params) => {
+  const { t } = useTranslation();
   const { customValue, input } = params;
 
   const [inputValue, setInputValue] = useState<string>(customValue ? customValue.description : '');
@@ -60,7 +62,7 @@ const PlacesAutoSuggest: React.FC<PlacesAutoSuggestProps> = (params) => {
       throttle((request: AutoSuggestQuery, callback: (results?: PlaceType[]) => void) => {
         (autocompleteService.current as any).getPlacePredictions(request, callback);
       }, 300),
-    []
+    [],
   );
 
   useEffect(() => {
@@ -80,7 +82,7 @@ const PlacesAutoSuggest: React.FC<PlacesAutoSuggestProps> = (params) => {
 
     doSuggest(
       {
-        input: `Saint Petersburg,${inputValue}`,
+        input: `${t('inputs.localCity')},${inputValue}`,
         componentRestrictions: { country: ['ru'] },
       } as AutoSuggestQuery,
       (results?: PlaceType[]) => {
@@ -95,7 +97,7 @@ const PlacesAutoSuggest: React.FC<PlacesAutoSuggestProps> = (params) => {
 
           setOptions(newOptions);
         }
-      }
+      },
     );
 
     return () => {

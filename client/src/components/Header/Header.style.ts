@@ -21,6 +21,7 @@ export const StyledHeader = styled.header`
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  align-items: center;
   min-width: 1250px;
   z-index: 1300;
   position: fixed;

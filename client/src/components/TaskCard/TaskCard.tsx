@@ -9,6 +9,7 @@ import { ActivityType } from 'common/index';
 import { TITLE_TYPE_MAP } from '../../utils/activities';
 
 import { StyledCardContainer, StyledCardActions, StyledCardContent } from './TaskCard.style';
+import { useTranslation } from 'react-i18next';
 
 interface ITaskCardProps {
   id: string;
@@ -29,6 +30,7 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
 }) => {
   const handleOpenDialog = () => onOpenDialog();
   const handleOpenHistory = () => onOpenHistory();
+  const { t } = useTranslation();
 
   return (
     <Draggable draggableId={id} index={index}>
@@ -37,7 +39,7 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
           <StyledCardContainer>
             <StyledCardContent>
               <Typography component="h3" gutterBottom>
-                {TITLE_TYPE_MAP[type]}
+                {t(TITLE_TYPE_MAP[type])}
               </Typography>
               <Typography component="h4" gutterBottom>
                 {address}

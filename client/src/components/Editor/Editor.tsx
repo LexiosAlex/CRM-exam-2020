@@ -14,6 +14,7 @@ import { FormType } from './common';
 import { IAppState } from '../../interfaces/state';
 import Loading from '../Loading';
 import {
+  ACTIVITY_PRIORITIES,
   ACTIVITY_TYPES,
   ActivityStatus,
   EmployeeType,
@@ -23,7 +24,7 @@ import {
   ITypedUser,
 } from 'common/index';
 import selectors from '../../selectors';
-import { TITLE_STATUS_MAP, TITLE_TYPE_MAP } from '../../utils/activities';
+import { PRIORITY_TYPE_MAP, TITLE_STATUS_MAP, TITLE_TYPE_MAP } from '../../utils/activities';
 import { changeActivity, addActivity, resetFormState } from '../../actions/activity';
 
 import {
@@ -40,6 +41,7 @@ import {
   LoadingSpinner,
 } from './Editor.styles';
 import PlacesAutoSuggest from './PlacesAutoSuggest';
+import { useTranslation } from 'react-i18next';
 
 const renderAutoComplete = (params) => {
   const { input, children, required, customValue, options, ...custom } = params;
@@ -139,6 +141,7 @@ const Editor: React.FC<EditorProps> = ({
   const isNew = formType === FormType.create;
   const { uid, displayName } = authProfile;
   const isLoadingData: boolean = !formState;
+  const { t } = useTranslation();
 
   useEffect(() => {
     const data =
@@ -185,7 +188,7 @@ const Editor: React.FC<EditorProps> = ({
         <StyledDialogForm onSubmit={handleSubmit} noValidate>
           <StyledFormHeader>
             <div>
-              <h4>{isNew ? 'Add new activity' : 'Edit activity'}</h4>
+              <h4>{isNew ? t('editor.addNewActivity') : t('editor.EditActivity')}</h4>
             </div>
             <StyledCloseButton aria-label="close" onClick={onClose}>
               <CloseIcon />
@@ -198,7 +201,7 @@ const Editor: React.FC<EditorProps> = ({
               <>
                 <Box flexDirection="column" display="flex">
                   <Box flexDirection="column" display="flex">
-                    <label htmlFor="type">Type</label>
+                    <label htmlFor="type">{t('inputs.type')}</label>
                     <Field
                       customValue={formState.values.type}
                       name="type"
@@ -209,13 +212,13 @@ const Editor: React.FC<EditorProps> = ({
                       <option aria-label="None" value="" />
                       {ACTIVITY_TYPES.map((type) => (
                         <option key={type} value={type}>
-                          {TITLE_TYPE_MAP[type]}
+                          {t(TITLE_TYPE_MAP[type])}
                         </option>
                       ))}
                     </Field>
                   </Box>
                   <Box flexDirection="column" display="flex">
-                    <label htmlFor="address">Address</label>
+                    <label htmlFor="address">{t('inputs.address')}</label>
                     <Field
                       customValue={formState.values.address}
                       name="address"
@@ -226,7 +229,7 @@ const Editor: React.FC<EditorProps> = ({
                     />
                   </Box>
                   <Box>
-                    <h5>Description</h5>
+                    <h5>{t('inputs.description')}</h5>
                     <Field
                       customValue={formState.values.description}
                       id="description"
@@ -238,7 +241,7 @@ const Editor: React.FC<EditorProps> = ({
                 </Box>
                 <Box flexDirection="column" display="flex">
                   <Box flexDirection="column" display="flex">
-                    <label htmlFor="status">Status</label>
+                    <label htmlFor="status">{t('inputs.status')}</label>
                     <Field
                       customValue={formState.values.status}
                       name="status"
@@ -249,21 +252,21 @@ const Editor: React.FC<EditorProps> = ({
                       parse={(value) => Number(value)}
                     >
                       {isNew ? (
-                        <option value={ActivityStatus.New}>New</option>
+                        <option value={ActivityStatus.New}>{t('inputs.new')}</option>
                       ) : (
                         getAllowedStatuses(
                           employeeType,
                           activity ? activity.status : formState.values.status,
                         ).map((key) => (
                           <option key={key} value={key}>
-                            {TITLE_STATUS_MAP[key]}
+                            {t(TITLE_STATUS_MAP[key])}
                           </option>
                         ))
                       )}
                     </Field>
                   </Box>
                   <Box flexDirection="column" display="flex">
-                    <label htmlFor="estimation">Estimation in hours</label>
+                    <label htmlFor="estimation">{t('inputs.estimation')}</label>
                     <Field
                       customValue={formState.values.estimation}
                       id="estimation"
@@ -274,18 +277,24 @@ const Editor: React.FC<EditorProps> = ({
                     />
                   </Box>
                   <Box flexDirection="column" display="flex">
-                    <label htmlFor="bounty">Bounty ($)</label>
+                    <label htmlFor="priority">{t('inputs.priority')}</label>
                     <Field
-                      customValue={formState.values.bounty}
-                      id="bounty"
-                      name="bounty"
-                      type="number"
-                      component={renderDefaultInput}
+                      customValue={formState.values.priority}
+                      name="priority"
+                      id="priority"
+                      component={renderSelect}
                       disabled={formType === FormType.statusOnly}
-                    />
+                    >
+                      <option aria-label="None" value="" />
+                      {ACTIVITY_PRIORITIES.map((priority) => (
+                        <option key={priority} value={priority}>
+                          {t(PRIORITY_TYPE_MAP[priority])}
+                        </option>
+                      ))}
+                    </Field>
                   </Box>
                   <Box>
-                    <h5>Assignee</h5>
+                    <h5>{t('inputs.assignee')}</h5>
                     <Field
                       customValue={formState.values.assignee}
                       name="assignee"
@@ -296,7 +305,7 @@ const Editor: React.FC<EditorProps> = ({
                     />
                   </Box>
                   <Box>
-                    <h5>Operator</h5>
+                    <h5>{t('inputs.operator')}</h5>
                     <Field
                       customValue={formState.values.operator}
                       name="operator"
@@ -333,7 +342,7 @@ const Editor: React.FC<EditorProps> = ({
                     <LoadingSpinner />
                   </Box>
                 ) : (
-                  <span>{`${isNew ? 'Add activity' : 'Save changes'}`}</span>
+                  <span>{`${isNew ? t('editor.addActivity') : t('editor.saveChanges')}`}</span>
                 )}
               </StyledSubmitButton>
               <StyledBtnCancel
@@ -344,7 +353,7 @@ const Editor: React.FC<EditorProps> = ({
                 $isSendingData={isSendingData}
                 disabled={isSendingData}
               >
-                cancel
+                {t('editor.cancel')}
               </StyledBtnCancel>
             </Box>
           </MuiDialogActions>
@@ -364,7 +373,7 @@ const InitializedFormEditor = reduxForm<IActivity, ActivityFormProps>({
     address: void 0,
     estimation: void 0,
     description: void 0,
-    bounty: void 0,
+    priority: void 0,
   },
 })(Editor);
 
