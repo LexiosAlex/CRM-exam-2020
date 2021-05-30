@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { useFirebase } from 'react-redux-firebase';
 import { Box } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import * as navPaths from '../../utils/router';
 import WithAuth from '../../Hocs/WithAuth';
+import LanguageSelect from '../../components/LanguageSelect';
 import {
   StyledButtonPrimary,
   StyledInputWrapper,
@@ -14,7 +16,6 @@ import {
   StyledWrapper,
   LoadingSpinner,
 } from './SignUp.style';
-import { useTranslation } from 'react-i18next';
 
 enum FormInputType {
   email,
@@ -85,7 +86,7 @@ const SignUp: React.FC = (props: any) => {
               value={password}
             />
           </StyledInputWrapper>
-          <StyledActionsContainer
+          <Box
             width="100%"
             display="flex"
             flexDirection="column"
@@ -104,10 +105,24 @@ const SignUp: React.FC = (props: any) => {
                 <span>{t('loginPage.signUp')}</span>
               )}
             </StyledButtonPrimary>
-            <Link to={navPaths.SIGN_IN}>{t('loginPage.alreadyRegistered')}</Link>
-            <Link to={navPaths.PASSWORD_FORGET}>{t('loginPage.forgotPassword')}</Link>
-          </StyledActionsContainer>
+          </Box>
         </form>
+        <StyledActionsContainer
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          marginLeft="auto"
+          marginRight="auto"
+          marginTop="0.5rem"
+          marginBottom="0.5rem"
+        >
+          <Link to={navPaths.SIGN_IN}>{t('loginPage.alreadyRegistered')}</Link>
+          <Link to={navPaths.PASSWORD_FORGET}>{t('loginPage.forgotPassword')}</Link>
+          <Box paddingTop="8px">
+            <LanguageSelect />
+          </Box>
+        </StyledActionsContainer>
       </StyledWrapper>
     </Box>
   );

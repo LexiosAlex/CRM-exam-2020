@@ -74,7 +74,7 @@ export const UsersTable: React.FC = () => {
       <MaterialTable
         isLoading={isLoading}
         icons={tableIcons}
-        title="Users"
+        title={t('usersTable.users')}
         columns={columns}
         data={employees}
         editable={{

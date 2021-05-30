@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Box } from '@material-ui/core';
 import { withRouter } from 'react-router';
 import * as navPaths from '../../utils/router';
 import { useFirebase } from 'react-redux-firebase';
 import WithAuth from '../../Hocs/WithAuth';
-import { Box } from '@material-ui/core';
+import LanguageSelect from '../../components/LanguageSelect';
 import {
   StyledButtonPrimary,
   StyledInputWrapper,
@@ -81,7 +82,7 @@ const SignIn: React.FC = (props: any) => {
               value={passwordValue}
             />
           </StyledInputWrapper>
-          <StyledActionsContainer
+          <Box
             width="100%"
             display="flex"
             flexDirection="column"
@@ -100,10 +101,24 @@ const SignIn: React.FC = (props: any) => {
                 <span>{t('loginPage.signIn')}</span>
               )}
             </StyledButtonPrimary>
-            <Link to={navPaths.SIGN_UP}>{t('loginPage.dontHaveAccount')}</Link>
-            <Link to={navPaths.PASSWORD_FORGET}>{t('loginPage.forgotPassword')}</Link>
-          </StyledActionsContainer>
+          </Box>
         </form>
+        <StyledActionsContainer
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          marginLeft="auto"
+          marginRight="auto"
+          marginTop="0.5rem"
+          marginBottom="0.5rem"
+        >
+          <Link to={navPaths.SIGN_UP}>{t('loginPage.dontHaveAccount')}</Link>
+          <Link to={navPaths.PASSWORD_FORGET}>{t('loginPage.forgotPassword')}</Link>
+          <Box paddingTop="8px">
+            <LanguageSelect />
+          </Box>
+        </StyledActionsContainer>
       </StyledWrapper>
     </Box>
   );

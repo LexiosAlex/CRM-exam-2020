@@ -7,7 +7,7 @@
         "email": "Адрес электронной почты",
         "name": "Имя",
         "namePlaceholder": "Ваше имя",
-        "password": "Великий пароль",
+        "password": "Пароль",
         "passwordPlaceholder": "Пароль",
         "forgotPassword": "Забыл пароль",
         "alreadyRegistered": "Зарегестрированы?",
@@ -52,6 +52,7 @@
       "usersTable": {
         "name": "Имя",
         "role": "Роль",
+        "users": "Users",
         "usersManagement": "Управление пользователями"
       },
       "language": {
@@ -109,7 +110,7 @@
         "homeCare": "Помощь по дому",
         "shoppingDelivery": "Покупка & Доставка",
         "eco": "Экология",
-        "events": "Events",
+        "events": "События",
         "other": "Другое"
       },
       "tasks": {

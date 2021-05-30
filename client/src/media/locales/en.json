@@ -52,6 +52,7 @@
       "usersTable": {
         "name": "Name",
         "role": "Role",
+        "users": "Users",
         "usersManagement": "Users management"
       },
       "language": {
