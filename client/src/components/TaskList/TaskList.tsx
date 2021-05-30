@@ -33,7 +33,7 @@ export const TaskList: React.FC<TaskListProps> = ({
   return (
     <StyledContainer $isDropEnabled={canDrop} $isDragging={isDragging}>
       <StyledAddNewCardContainer>
-        <h2>{TITLE_STATUS_MAP[status]}</h2>
+        <h2>{t(TITLE_STATUS_MAP[status])}</h2>
         {TITLE_STATUS_MAP[status] === TITLE_STATUS_MAP[0] ? (
           <StyledAddButton onClick={() => onOpenDialog(FormType.create)}>
             {t('tasks.new')}

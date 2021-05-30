@@ -34,7 +34,7 @@ const renderActiveShape = (props: any) => {
   return (
     <g>
       <text x={cx} y={cy - 10} dy={0} textAnchor="middle" fill={textColor ?? fill}>
-        <tspan x={cx}>{payload.name}</tspan>
+        <tspan x={cx}>{i18n.t(payload.name)}</tspan>
         <tspan x={cx} dy="1.2em">
           {i18n.t('statistics.totalDiagram', { value: value })}
         </tspan>

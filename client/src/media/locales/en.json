@@ -55,7 +55,7 @@
         "usersManagement": "Users management"
       },
       "language": {
-        "language": "Language",
+        "language": "Select language:",
         "ru": "Русский",
         "en": "English"
       },
@@ -67,7 +67,7 @@
         "status": "Status",
         "new": "New",
         "estimation": "Estimation (hours)",
-        "bounty": "Bounty (points)",
+        "bounty": "Priority",
         "assignee": "Assignee",
         "operator": "Operator"
       },
@@ -97,14 +97,23 @@
         "done": "Done",
         "archived": "Archived"
       },
+      "priority": {
+        "low": "Low",
+        "middle": "Middle",
+        "high": "High"
+      },
       "types": {
-        "delivery": "Delivery",
+        "hospital": "Hospital",
+        "disabledPeople": "Home for the disabled",
+        "orphanage": "Orphanage",
         "homeCare": "Home care",
-        "other": "Other",
-        "shopping": "Shopping"
+        "shoppingDelivery": "Shopping & Delivery",
+        "eco": "Ecology",
+        "events": "Events",
+        "other": "Other"
       },
       "tasks": {
-        "tasks": "Задачи",
+        "tasks": "Activities",
         "error": "Произошла ошибка во время загрузки",
         "new": "New"
       },

@@ -14,6 +14,7 @@ import { FormType } from './common';
 import { IAppState } from '../../interfaces/state';
 import Loading from '../Loading';
 import {
+  ACTIVITY_PRIORITIES,
   ACTIVITY_TYPES,
   ActivityStatus,
   EmployeeType,
@@ -23,7 +24,7 @@ import {
   ITypedUser,
 } from 'common/index';
 import selectors from '../../selectors';
-import { TITLE_STATUS_MAP, TITLE_TYPE_MAP } from '../../utils/activities';
+import { PRIORITY_TYPE_MAP, TITLE_STATUS_MAP, TITLE_TYPE_MAP } from '../../utils/activities';
 import { changeActivity, addActivity, resetFormState } from '../../actions/activity';
 
 import {
@@ -211,7 +212,7 @@ const Editor: React.FC<EditorProps> = ({
                       <option aria-label="None" value="" />
                       {ACTIVITY_TYPES.map((type) => (
                         <option key={type} value={type}>
-                          {TITLE_TYPE_MAP[type]}
+                          {t(TITLE_TYPE_MAP[type])}
                         </option>
                       ))}
                     </Field>
@@ -258,7 +259,7 @@ const Editor: React.FC<EditorProps> = ({
                           activity ? activity.status : formState.values.status,
                         ).map((key) => (
                           <option key={key} value={key}>
-                            {TITLE_STATUS_MAP[key]}
+                            {t(TITLE_STATUS_MAP[key])}
                           </option>
                         ))
                       )}
@@ -276,15 +277,21 @@ const Editor: React.FC<EditorProps> = ({
                     />
                   </Box>
                   <Box flexDirection="column" display="flex">
-                    <label htmlFor="bounty">{t('inputs.bounty')}</label>
+                    <label htmlFor="priority">{t('inputs.priority')}</label>
                     <Field
-                      customValue={formState.values.bounty}
-                      id="bounty"
-                      name="bounty"
-                      type="number"
-                      component={renderDefaultInput}
+                      customValue={formState.values.priority}
+                      name="priority"
+                      id="priority"
+                      component={renderSelect}
                       disabled={formType === FormType.statusOnly}
-                    />
+                    >
+                      <option aria-label="None" value="" />
+                      {ACTIVITY_PRIORITIES.map((priority) => (
+                        <option key={priority} value={priority}>
+                          {t(PRIORITY_TYPE_MAP[priority])}
+                        </option>
+                      ))}
+                    </Field>
                   </Box>
                   <Box>
                     <h5>{t('inputs.assignee')}</h5>
@@ -366,7 +373,7 @@ const InitializedFormEditor = reduxForm<IActivity, ActivityFormProps>({
     address: void 0,
     estimation: void 0,
     description: void 0,
-    bounty: void 0,
+    priority: void 0,
   },
 })(Editor);
 

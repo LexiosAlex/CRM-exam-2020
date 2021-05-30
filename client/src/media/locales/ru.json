@@ -55,7 +55,7 @@
         "usersManagement": "Управление пользователями"
       },
       "language": {
-        "language": "Язык",
+        "language": "Выбрать язык:",
         "ru": "Русский",
         "en": "English"
       },
@@ -67,7 +67,7 @@
         "status": "Статус",
         "new": "Новая",
         "estimation": "Время на выполнение (В часах)",
-        "bounty": "Награда (Очков за выполнение)",
+        "priority": "Приоритет задачи",
         "assignee": "Волонтер",
         "operator": "Оператор"
       },
@@ -97,11 +97,20 @@
         "done": "Сделанно",
         "archived": "В архиве"
       },
+      "priority": {
+        "low": "Низкий",
+        "middle": "Средний",
+        "high": "Высокий"
+      },
       "types": {
-        "delivery": "Доставка",
-        "homeCare": "Домашние обязанности",
-        "other": "Другое",
-        "shopping": "Поход в магазин"
+        "hospital": "Больница",
+        "disabledPeople": "Дом инвалидов",
+        "orphanage": "Детский дом",
+        "homeCare": "Помощь по дому",
+        "shoppingDelivery": "Покупка & Доставка",
+        "eco": "Экология",
+        "events": "Events",
+        "other": "Другое"
       },
       "tasks": {
         "tasks": "Список задач",

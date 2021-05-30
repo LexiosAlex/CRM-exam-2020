@@ -69,7 +69,7 @@ const getHistoryItem = (record: IActivityHistory): IHistoryTableItem => ({
   operatorName: record.operator ? record.operator.name : 'no data provided',
   assigneeName: record.assignee ? record.assignee.name : 'no data provided',
   time: moment(record.time).format('LLL'),
-  status: TITLE_STATUS_MAP[record.status],
+  status: i18n.t(TITLE_STATUS_MAP[record.status]),
 });
 
 const getHistoryList = (history: { [id: string]: IActivityHistory }) =>

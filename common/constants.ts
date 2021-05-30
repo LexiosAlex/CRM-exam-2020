@@ -1,8 +1,12 @@
 export enum ActivityType {
   Other = 0,
-  Delivery,
-  Shopping,
+  shoppingDelivery,
   HomeCare,
+  eco,
+  hospital,
+  disabledPeople,
+  orphanage,
+  events,
 }
 
 export enum ActivityStatus {
@@ -13,6 +17,12 @@ export enum ActivityStatus {
   Canceled,
   Done,
   Archived,
+}
+
+export enum ActivityPriority {
+  Low = 0,
+  Middle,
+  High,
 }
 
 export enum EmployeeType {
@@ -54,6 +64,10 @@ export const VISIBLE_STATUSES: { [key in EmployeeType]: ActivityStatus[] } = {
 export const ACTIVITY_TYPES: ActivityType[] = Object.entries(ActivityType)
   .filter(([key, value]) => isNaN(Number(key)))
   .map(([key, value]) => value as ActivityType);
+
+export const ACTIVITY_PRIORITIES: ActivityPriority[] = Object.entries(ActivityPriority)
+  .filter(([key, value]) => isNaN(Number(key)))
+  .map(([key, value]) => value as ActivityPriority);
 
 export const enum Language {
   EN = 'en',
