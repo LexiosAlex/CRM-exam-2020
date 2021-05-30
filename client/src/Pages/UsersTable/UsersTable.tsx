@@ -72,6 +72,10 @@ export const UsersTable: React.FC = () => {
     <Box marginLeft="50px" marginRight="50px" marginTop="50px">
       <h2>{t('usersTable.usersManagement')}</h2>
       <MaterialTable
+        localization={{
+          header: { actions: t('usersTable.actions') },
+          pagination: { labelRowsPerPage: t('usersTable.rows') },
+        }}
         isLoading={isLoading}
         icons={tableIcons}
         title={t('usersTable.users')}

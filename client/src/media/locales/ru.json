@@ -52,7 +52,9 @@
       "usersTable": {
         "name": "Имя",
         "role": "Роль",
-        "users": "Users",
+        "users": "Пользователи",
+        "actions": "Действия",
+        "rows": "строк",
         "usersManagement": "Управление пользователями"
       },
       "language": {

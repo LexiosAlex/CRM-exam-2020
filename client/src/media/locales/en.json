@@ -53,6 +53,8 @@
         "name": "Name",
         "role": "Role",
         "users": "Users",
+        "actions": "actions",
+        "rows": "rows",
         "usersManagement": "Users management"
       },
       "language": {
