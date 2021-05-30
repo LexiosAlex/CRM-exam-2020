@@ -29,7 +29,7 @@ export interface IRawActivity {
   assignee?: IUser; // who is assignee (volunteer id)
   status: ActivityStatus;
   history: { [id: string]: IActivityHistory };
-  bounty?: number;
+  priority: number;
 }
 
 export interface IDraftActivity extends Partial<IRawActivity> {}

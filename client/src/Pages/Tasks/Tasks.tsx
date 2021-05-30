@@ -14,6 +14,7 @@ import { dragCancel, dragEnd, dragStart, resetFormState } from '../../actions/ac
 import Editor from '../../components/Editor';
 import { FormType } from '../../components/Editor/common';
 import HistoryTableDialog from '../../components/HistoryTableDialog';
+import { useTranslation } from 'react-i18next';
 
 interface ITasksProps {
   lists: ActivityLists;
@@ -40,12 +41,7 @@ const Tasks: React.FC<ITasksProps> = ({
   dragEnd,
   resetEditForm,
 }) => {
-  if (pending) {
-    return <Loading />;
-  }
-  if (error) {
-    return <Error errorMessage={'An error occupied while loading component'} errorCode={error} />;
-  }
+  const { t } = useTranslation();
 
   const [editorDialogOpened, setEditorDialogOpened] = useState<boolean>(false);
   const [historyDialogOpened, setHistoryDialogOpened] = useState<boolean>(false);
@@ -53,6 +49,13 @@ const Tasks: React.FC<ITasksProps> = ({
   const [formType, setFormType] = useState<FormType>(FormType.create);
   const [editorActivity, setEditorActivity] = useState<IActivity | null>(null);
   const statusOnly = userType === EmployeeType.Volunteer;
+
+  if (pending) {
+    return <Loading />;
+  }
+  if (error) {
+    return <Error errorMessage={t('tasks.error')} errorCode={error} />;
+  }
 
   const onDragEnd = ({ destination, draggableId }: DropResult) => {
     if (destination) {
@@ -74,7 +77,7 @@ const Tasks: React.FC<ITasksProps> = ({
     <>
       <DragDropContext onDragEnd={onDragEnd} onDragUpdate={onDragUpdate} onDragStart={onDragStart}>
         <Box marginLeft="50px" marginRight="50px">
-          <h2>Tasks</h2>
+          <h2>{t('tasks.tasks')}</h2>
           <Box display="flex" flexDirection="row">
             {Object.entries(lists).map(([status, list], index) => (
               <TaskList

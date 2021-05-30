@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { useFirebase } from 'react-redux-firebase';
 import { Box } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import * as navPaths from '../../utils/router';
 import WithAuth from '../../Hocs/WithAuth';
+import LanguageSelect from '../../components/LanguageSelect';
 import {
   StyledButtonPrimary,
   StyledInputWrapper,
@@ -23,6 +25,7 @@ enum FormInputType {
 
 const SignUp: React.FC = (props: any) => {
   const { authError } = props;
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -48,13 +51,13 @@ const SignUp: React.FC = (props: any) => {
     <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center">
       <StyledWrapper>
         <form onSubmit={handleSubmitForm} noValidate>
-          <StyledHead>Sign Up</StyledHead>
+          <StyledHead>{t('loginPage.signUp')}</StyledHead>
           {authError ? <StyledErrorMsg>{authError.message}</StyledErrorMsg> : null}
           <StyledInputWrapper>
-            <label htmlFor="name">name</label>
+            <label htmlFor="name">{t('name')}</label>
             <input
               type="text"
-              placeholder="Your name"
+              placeholder={t('loginPage.namePlaceholder')}
               name="name"
               formNoValidate
               onChange={(event) => onChange[FormInputType.name](event.target.value)}
@@ -62,7 +65,7 @@ const SignUp: React.FC = (props: any) => {
             />
           </StyledInputWrapper>
           <StyledInputWrapper>
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t('loginPage.email')}</label>
             <input
               type="email"
               placeholder="example@mail.com"
@@ -73,17 +76,17 @@ const SignUp: React.FC = (props: any) => {
             />
           </StyledInputWrapper>
           <StyledInputWrapper>
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t('loginPage.password')}</label>
             <input
               type="password"
-              placeholder="password"
+              placeholder={t('loginPage.passwordPlaceholder')}
               name="password"
               formNoValidate
               onChange={(event) => onChange[FormInputType.password](event.target.value)}
               value={password}
             />
           </StyledInputWrapper>
-          <StyledActionsContainer
+          <Box
             width="100%"
             display="flex"
             flexDirection="column"
@@ -99,13 +102,27 @@ const SignUp: React.FC = (props: any) => {
                   <LoadingSpinner />
                 </Box>
               ) : (
-                <span> Sign Up</span>
+                <span>{t('loginPage.signUp')}</span>
               )}
             </StyledButtonPrimary>
-            <Link to={navPaths.SIGN_IN}>Already registered</Link>
-            <Link to={navPaths.PASSWORD_FORGET}>Forgot password</Link>
-          </StyledActionsContainer>
+          </Box>
         </form>
+        <StyledActionsContainer
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          marginLeft="auto"
+          marginRight="auto"
+          marginTop="0.5rem"
+          marginBottom="0.5rem"
+        >
+          <Link to={navPaths.SIGN_IN}>{t('loginPage.alreadyRegistered')}</Link>
+          <Link to={navPaths.PASSWORD_FORGET}>{t('loginPage.forgotPassword')}</Link>
+          <Box paddingTop="8px">
+            <LanguageSelect />
+          </Box>
+        </StyledActionsContainer>
       </StyledWrapper>
     </Box>
   );

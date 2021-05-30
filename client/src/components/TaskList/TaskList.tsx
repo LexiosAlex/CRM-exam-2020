@@ -1,5 +1,6 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
 
 import { IActivity } from 'common/index';
 import { StyledContainer, StyledAddNewCardContainer, StyledAddButton } from './TaskList.styles';
@@ -27,12 +28,16 @@ export const TaskList: React.FC<TaskListProps> = ({
   onOpenDialog,
   onOpenHistory,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <StyledContainer $isDropEnabled={canDrop} $isDragging={isDragging}>
       <StyledAddNewCardContainer>
-        <h2>{TITLE_STATUS_MAP[status]}</h2>
+        <h2>{t(TITLE_STATUS_MAP[status])}</h2>
         {TITLE_STATUS_MAP[status] === TITLE_STATUS_MAP[0] ? (
-          <StyledAddButton onClick={() => onOpenDialog(FormType.create)}>New</StyledAddButton>
+          <StyledAddButton onClick={() => onOpenDialog(FormType.create)}>
+            {t('tasks.new')}
+          </StyledAddButton>
         ) : null}
       </StyledAddNewCardContainer>
       <Droppable droppableId={status} isDropDisabled={!canDrop}>
@@ -53,7 +58,7 @@ export const TaskList: React.FC<TaskListProps> = ({
                 />
               ))
             ) : (
-              <p>There are no cards available</p>
+              <p>{t('taskList.noData')}</p>
             )}
             {provided.placeholder}
           </div>

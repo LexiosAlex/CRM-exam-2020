@@ -7,9 +7,7 @@ export interface IChartData {
 export interface IAllTimeData {
   activities: number;
   volunteers: number;
-  earn: number;
-  paid: number;
-  profit: number;
+  totalHours: number;
 }
 
 export type TimeChartData = IChartData[];

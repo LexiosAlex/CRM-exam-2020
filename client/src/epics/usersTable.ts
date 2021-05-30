@@ -15,11 +15,14 @@ import {
 import { REFS } from '../utils/refs';
 import { notify } from './notification';
 import { IAppState } from '../interfaces/state';
+import i18n from '../i18n';
 
 const onChangeAsyncError = (action$: ActionsObservable<editUserFail>) =>
   action$.pipe(
     filter(isOfType(EDIT_USER_FAIL)),
-    map((action) => notify(`Cant change user permission. Code: ${action.payload.error}`))
+    map((action) =>
+      notify(i18n.t('notifications.usersTableError', { code: action.payload.error })),
+    ),
   );
 
 const changeUserType = ({ id, type }): Promise<firebase.database.DataSnapshot> => {
@@ -39,7 +42,7 @@ const changeUserPermissionDone = ({ id, type }): editUserDone => ({
 
 const onChangeUserPermission = (
   action$: ActionsObservable<editUserPending>,
-  state$: StateObservable<IAppState>
+  state$: StateObservable<IAppState>,
 ) =>
   action$.pipe(
     filter(isOfType(EDIT_USER_PENDING)),
@@ -47,8 +50,8 @@ const onChangeUserPermission = (
     switchMap(([action, state]) =>
       changeUserType(action.payload)
         .then((data) => changeUserPermissionDone(action.payload))
-        .catch((error) => onChangeError(error.code))
-    )
+        .catch((error) => onChangeError(error.code)),
+    ),
   );
 
 export default [onChangeUserPermission, onChangeAsyncError];

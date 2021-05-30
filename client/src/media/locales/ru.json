@@ -1,0 +1,127 @@
+{
+  "ru": {
+    "translation": {
+      "loginPage": {
+        "signIn": "Войти",
+        "signUp": "Зарегистрироваться",
+        "email": "Адрес электронной почты",
+        "name": "Имя",
+        "namePlaceholder": "Ваше имя",
+        "password": "Пароль",
+        "passwordPlaceholder": "Пароль",
+        "forgotPassword": "Забыл пароль",
+        "alreadyRegistered": "Зарегестрированы?",
+        "dontHaveAccount": "Не зарегестрированы? создайте аккаунт"
+      },
+      "header": {
+        "siteLogo": "Логотип сайта",
+        "name": "Имя пользователя",
+        "role": "Роль",
+        "email": "Электронная почта",
+        "logOut": "Выйти"
+      },
+      "historyTable": {
+        "operator": "Оператор",
+        "assignee": "Волонтер",
+        "time": "Время",
+        "status": "Статус"
+      },
+      "loading": "Загрузка",
+      "statistics": {
+        "noData": "Нет данных",
+        "statistics": "Статистика",
+        "activitiesToday": "Задач за сегодня",
+        "activitiesWeek": "Задач за неделю",
+        "activitiesMonth": "Задач за месяц",
+        "activitiesAllTime": "Всего выполнено задач:",
+        "volunteersTotal": "Всего волонтеров:",
+        "totalHours": "Всего потрачено часов:",
+        "allTime": "За все время",
+        "totalDiagram": "Всего: {{value}}",
+        "percentDiagram": "Это ({{value}}%)"
+      },
+      "networkDetector": "Обнаружены проблемы с сетью, для сохранения изменений возобновите соединение",
+      "notifications": {
+        "activitiesError": "Не удалось загрузить задачи.",
+        "statusError": "Не удалось изменить статус. Код ошибки: {{code}}",
+        "activityEditError": "Не удалось изменить задачу. Код ошибки: {{code}}",
+        "activityAddError": "Не удалось добавить задачу. Код ошибки: {{code}}",
+        "usersDataError": "Во время загрузки пользователей произошла ошибка. Код ошибки: {{code}}",
+        "usersTableError": "Не удалось изменить права пользователя. Код ошибки: {{code}}"
+      },
+      "usersTable": {
+        "name": "Имя",
+        "role": "Роль",
+        "users": "Users",
+        "usersManagement": "Управление пользователями"
+      },
+      "language": {
+        "language": "Выбрать язык:",
+        "ru": "Русский",
+        "en": "English"
+      },
+      "inputs": {
+        "localCity": "Санкт-Петербург",
+        "type": "Тип",
+        "address": "Адрес",
+        "description": "Описание",
+        "status": "Статус",
+        "new": "Новая",
+        "estimation": "Время на выполнение (В часах)",
+        "priority": "Приоритет задачи",
+        "assignee": "Волонтер",
+        "operator": "Оператор"
+      },
+      "editor": {
+        "addNewActivity": "Добавить новую задачу",
+        "EditActivity": "Изменить задачу",
+        "addActivity": "Добавить",
+        "saveChanges": "Сохранить",
+        "cancel": "Отмена"
+      },
+      "navigation": {
+        "dashboard": "Статистика",
+        "users": "Пользователи",
+        "taskLists": "Список задач"
+      },
+      "taskList": {
+        "noData": "Нет доступных задач",
+        "titlePlaceholder": "Введите название задачи",
+        "addCard": "Добавить задачу"
+      },
+      "statuses": {
+        "created": "Создано",
+        "backlog": "Доступно",
+        "assigned": "Назначено на волонтера",
+        "inProgress": "В прогрессе",
+        "canceled": "Отменено",
+        "done": "Сделанно",
+        "archived": "В архиве"
+      },
+      "priority": {
+        "low": "Низкий",
+        "middle": "Средний",
+        "high": "Высокий"
+      },
+      "types": {
+        "hospital": "Больница",
+        "disabledPeople": "Дом инвалидов",
+        "orphanage": "Детский дом",
+        "homeCare": "Помощь по дому",
+        "shoppingDelivery": "Покупка & Доставка",
+        "eco": "Экология",
+        "events": "События",
+        "other": "Другое"
+      },
+      "tasks": {
+        "tasks": "Список задач",
+        "error": "Произошла ошибка во время загрузки",
+        "new": "Новая"
+      },
+      "error": {
+        "errorCode": "Код ошибки: {{code}}",
+        "BadEmployee": "Указана неверная роль сотрудника ({{type}})"
+      }
+    }
+  }
+}

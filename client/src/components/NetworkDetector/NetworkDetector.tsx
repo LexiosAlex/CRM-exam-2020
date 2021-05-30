@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 import { StyledStatusContainer } from './NetworkDetector.style';
+import { useTranslation } from 'react-i18next';
 
 export const NetworkDetector: React.FC = () => {
   const [isOnline, setOnlineStatus] = useState<boolean>(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     window.addEventListener('online', () => {
@@ -24,7 +26,7 @@ export const NetworkDetector: React.FC = () => {
 
   return !isOnline ? (
     <StyledStatusContainer>
-      <p>Internet connection lost, no changes will be saved, please stand by</p>
+      <p>{t('networkDetector')}</p>
     </StyledStatusContainer>
   ) : null;
 };

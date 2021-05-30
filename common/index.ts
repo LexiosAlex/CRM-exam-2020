@@ -1,9 +1,11 @@
 import {
   ActivityType,
   ActivityStatus,
+  ActivityPriority,
   EmployeeType,
   VISIBLE_STATUSES,
   ACTIVITY_TYPES,
+  ACTIVITY_PRIORITIES,
 } from './constants';
 import {
   EmployeeId,
@@ -34,7 +36,9 @@ export {
   ActivityType,
   ActivityStatus,
   EmployeeType,
+  ActivityPriority,
   VISIBLE_STATUSES,
   ACTIVITY_TYPES,
+  ACTIVITY_PRIORITIES,
   getAllowedStatuses,
 };

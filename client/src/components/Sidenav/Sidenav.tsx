@@ -9,6 +9,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { StyledDrawer, StyledListItem, StyledList } from './Sidenav.style';
 import * as navPaths from '../../utils/router';
@@ -16,6 +17,7 @@ import { Box } from '@material-ui/core';
 
 export const Sidenav: React.FC = () => {
   const { pathname } = useLocation();
+  const { t } = useTranslation();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -35,7 +37,7 @@ export const Sidenav: React.FC = () => {
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary={'Dashboard'} />
+              <ListItemText primary={t('navigation.dashboard')} />
             </StyledListItem>
           </Link>
 
@@ -44,7 +46,7 @@ export const Sidenav: React.FC = () => {
               <ListItemIcon>
                 <GroupIcon />
               </ListItemIcon>
-              <ListItemText primary={'Users'} />
+              <ListItemText primary={t('navigation.users')} />
             </StyledListItem>
           </Link>
 
@@ -53,7 +55,7 @@ export const Sidenav: React.FC = () => {
               <ListItemIcon>
                 <ViewColumnIcon />
               </ListItemIcon>
-              <ListItemText primary={'Task Lists'} />
+              <ListItemText primary={t('navigation.taskLists')} />
             </StyledListItem>
           </Link>
         </StyledList>
