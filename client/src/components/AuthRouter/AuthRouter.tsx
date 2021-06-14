@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import * as navPath from '../../utils/router';
-import SignIn from '../../Pages/SignIn';
-import SignUp from '../../Pages/SignUp';
+import SignIn from '../../pages/SignIn';
+import SignUp from '../../pages/SignUp';
 import AppRouter from '../AppRouter';
-import WithAuth from '../../Hocs/WithAuth';
-import PwForget from '../../Pages/PasswordForget';
+import WithAuth from '../../hocs/WithAuth';
+import PwForget from '../../pages/PasswordForget';
 import Loading from '../Loading';
 
 const PrivateRouter: React.FC = (props: any) => {

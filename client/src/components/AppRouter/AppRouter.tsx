@@ -6,10 +6,10 @@ import NetworkDetector from '../NetworkDetector';
 import SideNav from '../Sidenav';
 import Notifier from '../Notifier';
 import * as navPath from '../../utils/router';
-import Account from '../../Pages/Account';
-import Stats from '../../Pages/Stats';
-import UsersTable from '../../Pages/UsersTable';
-import Tasks from '../../Pages/Tasks';
+import Account from '../../pages/Account';
+import Stats from '../../pages/Stats';
+import UsersTable from '../../pages/UsersTable';
+import Tasks from '../../pages/Tasks';
 import AppHeader from '../Header';
 
 import { LayoutContainer } from './AppRouter.styles';

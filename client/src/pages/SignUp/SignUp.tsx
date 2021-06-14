@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box } from '@material-ui/core';
 import { withRouter } from 'react-router';
-import * as navPaths from '../../utils/router';
 import { useFirebase } from 'react-redux-firebase';
-import WithAuth from '../../Hocs/WithAuth';
+import { Box } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
+import * as navPaths from '../../utils/router';
+import WithAuth from '../../hocs/WithAuth';
 import LanguageSelect from '../../components/LanguageSelect';
 import {
   StyledButtonPrimary,
@@ -14,24 +15,21 @@ import {
   StyledHead,
   StyledWrapper,
   LoadingSpinner,
-} from './SignIn.style';
-import { useTranslation } from 'react-i18next';
-
-interface User {
-  email: string;
-  password: string;
-}
+} from './SignUp.style';
 
 enum FormInputType {
   email,
   password,
+  name,
 }
 
-const SignIn: React.FC = (props: any) => {
+const SignUp: React.FC = (props: any) => {
   const { authError } = props;
   const { t } = useTranslation();
-  const [emailValue, setEmail] = useState<string>('');
-  const [passwordValue, setPassword] = useState<string>('');
+
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>('');
 
   const [isSendingData, setSendingData] = useState<boolean>(false);
 
@@ -40,26 +38,32 @@ const SignIn: React.FC = (props: any) => {
   const onChange: { [key in FormInputType]: Function } = {
     [FormInputType.email]: setEmail,
     [FormInputType.password]: setPassword,
+    [FormInputType.name]: setName,
   };
 
   const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSendingData(true);
-    const credentials: User = {
-      email: emailValue,
-      password: passwordValue,
-    };
-    firebase.login(credentials).finally(() => {
-      setSendingData(false);
-    });
+    firebase.createUser({ email, password }, { name }).finally(() => setSendingData(false));
   };
 
   return (
     <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center">
       <StyledWrapper>
         <form onSubmit={handleSubmitForm} noValidate>
-          <StyledHead>{t('loginPage.signIn')}</StyledHead>
+          <StyledHead>{t('loginPage.signUp')}</StyledHead>
           {authError ? <StyledErrorMsg>{authError.message}</StyledErrorMsg> : null}
+          <StyledInputWrapper>
+            <label htmlFor="name">{t('name')}</label>
+            <input
+              type="text"
+              placeholder={t('loginPage.namePlaceholder')}
+              name="name"
+              formNoValidate
+              onChange={(event) => onChange[FormInputType.name](event.target.value)}
+              value={name}
+            />
+          </StyledInputWrapper>
           <StyledInputWrapper>
             <label htmlFor="email">{t('loginPage.email')}</label>
             <input
@@ -68,7 +72,7 @@ const SignIn: React.FC = (props: any) => {
               name="email"
               formNoValidate
               onChange={(event) => onChange[FormInputType.email](event.target.value)}
-              value={emailValue}
+              value={email}
             />
           </StyledInputWrapper>
           <StyledInputWrapper>
@@ -79,7 +83,7 @@ const SignIn: React.FC = (props: any) => {
               name="password"
               formNoValidate
               onChange={(event) => onChange[FormInputType.password](event.target.value)}
-              value={passwordValue}
+              value={password}
             />
           </StyledInputWrapper>
           <Box
@@ -98,7 +102,7 @@ const SignIn: React.FC = (props: any) => {
                   <LoadingSpinner />
                 </Box>
               ) : (
-                <span>{t('loginPage.signIn')}</span>
+                <span>{t('loginPage.signUp')}</span>
               )}
             </StyledButtonPrimary>
           </Box>
@@ -113,7 +117,7 @@ const SignIn: React.FC = (props: any) => {
           marginTop="0.5rem"
           marginBottom="0.5rem"
         >
-          <Link to={navPaths.SIGN_UP}>{t('loginPage.dontHaveAccount')}</Link>
+          <Link to={navPaths.SIGN_IN}>{t('loginPage.alreadyRegistered')}</Link>
           <Link to={navPaths.PASSWORD_FORGET}>{t('loginPage.forgotPassword')}</Link>
           <Box paddingTop="8px">
             <LanguageSelect />
@@ -124,4 +128,4 @@ const SignIn: React.FC = (props: any) => {
   );
 };
 
-export const WrappedSignIn = WithAuth(withRouter(SignIn));
+export const WrappedSignUp = WithAuth(withRouter(SignUp));

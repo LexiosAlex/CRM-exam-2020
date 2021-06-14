@@ -4,7 +4,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useFirebase } from 'react-redux-firebase';
 import { Box } from '@material-ui/core';
 
-import WithAuth from '../../Hocs/WithAuth';
+import WithAuth from '../../hocs/WithAuth';
 import { TITLE_USER_TYPE_MAP } from '../../utils/users';
 
 import {

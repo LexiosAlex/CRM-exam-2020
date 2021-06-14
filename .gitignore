@@ -1,6 +1,8 @@
 .idea/
 .vscode/
+.firebase/
 .DS_Store
 
 .env
 *firebase-adminsdk*.json
+.firebase
