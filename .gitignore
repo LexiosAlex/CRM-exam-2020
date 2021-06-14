@@ -5,4 +5,4 @@
 
 .env
 *firebase-adminsdk*.json
-.firebase
+.firebaserc
