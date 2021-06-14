@@ -1,1 +1,3 @@
-Exam 2020 crm repository
+Exam 2021 crm repository
+
+Add .env file before start
